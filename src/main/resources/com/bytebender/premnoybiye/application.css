@@ -1,9 +1,8 @@
 #test {
-  -fx-font-size: 30;
-  -fx-text-fill: "blue";
+  /* -fx-font-size: 30;
+  -fx-text-fill: "blue"; */
 }
 .root {
-  -fx-background-color: #faf3ff;
   -fx-background-image: url("img/Splash_bg.png");
   -fx-background-size: 100% 100%;
   -fx-background-repeat: no-repeat;
@@ -12,4 +11,11 @@
 .label {
   -fx-font-size: 30;
   -fx-font-family: "Verdana";
+  -fx-text-fill: "White";
+}
+#splashLoadimg {
+  -fx-background-image: url("img/splashLoadimg.png");
+  -fx-background-size: 100% 100%;
+  -fx-background-repeat: no-repeat;
+  -fx-background-position: center center;
 }
