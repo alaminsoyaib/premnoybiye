@@ -4,6 +4,7 @@
 }
 .root {
   -fx-background-color: #faf3ff;
+  -fx-background-image: url("img/Splash_bg.png");
 }
 .label {
   -fx-font-size: 50;

@@ -5,7 +5,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" prefHeight="600.0" prefWidth="1000.0" spacing="20.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bytebender.premnoybiye.PrimaryController">
+<VBox alignment="CENTER" prefHeight="600.0" prefWidth="1000.0" spacing="20.0" styleClass="root" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bytebender.premnoybiye.PrimaryController">
    <children>
       <Label fx:id="test" text="Primary View" />
       <Button fx:id="primaryButton" onAction="#switchToSecondary" text="test main" />

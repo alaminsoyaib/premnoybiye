@@ -2,11 +2,9 @@ package com.bytebender.premnoybiye;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Group;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -20,7 +18,7 @@ public class App extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        Scene scene = new Scene(loadFXML("primary"), 1000, 600);
+        scene = new Scene(loadFXML("primary"), 1000, 600);
 
         String css = this.getClass().getResource("application.css").toExternalForm();
         scene.getStylesheets().add(css);

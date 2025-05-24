@@ -1,0 +1,21 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Run JavaFX App",
+      "type": "shell",
+      "command": "java",
+      "args": [
+        "--module-path",
+        "target/classes",
+        "--add-modules",
+        "javafx.controls,javafx.fxml",
+        "--module",
+        "com.bytebender.premnoybiye/com.bytebender.premnoybiye.App"
+      ],
+      "group": "build",
+      "isBackground": false,
+      "problemMatcher": []
+    }
+  ]
+}
