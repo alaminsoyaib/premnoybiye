@@ -3,7 +3,7 @@ package com.bytebender.premnoybiye;
 import java.io.IOException;
 import javafx.fxml.FXML;
 
-public class Transition {
+public class TransitionController {
 
     @FXML
     private void switchToTransition() throws IOException {

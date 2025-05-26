@@ -4,7 +4,7 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox id="splash_background" alignment="CENTER" prefHeight="600.0" prefWidth="1000.0" spacing="20.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bytebender.premnoybiye.Transition">
+<VBox id="splash_background" alignment="CENTER" prefHeight="600.0" prefWidth="1000.0" spacing="20.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bytebender.premnoybiye.TransitionController">
   <children>
     <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="440.0" spacing="34.0" style="-fx-background-color: white; -fx-background-radius: 16;">
       <children>
