@@ -24,10 +24,20 @@
 }
 #login_right {
   -fx-background-color: #f6f3ff;
-  /* -fx-background-image: url("img/Login_Illustration.png");
-  -fx-background-size: 100% 100%;
-  -fx-background-repeat: no-repeat;
-  -fx-background-position: center center; */
+}
+
+.button {
+  -fx-cursor: hand;
+}
+
+.text-field {
+  -fx-background-radius: 6;
+}
+.text-field:focused {
+  -fx-border-color: #6631c4;
+  -fx-border-width: 2;
+  -fx-border-radius: 6;
+  -fx-text-fill: #6631c4;
 }
 
 .label {
@@ -53,10 +63,6 @@
   -fx-text-fill: #6631c4;
   -fx-font-family: "Trebuchet MS, sans-serif";
   -fx-font-weight: 700;
-}
-
-.text-field {
-  -fx-background-radius: 6;
 }
 
 #login_button {
