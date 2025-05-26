@@ -6,12 +6,18 @@
 
 <VBox id="splash_background" alignment="CENTER" prefHeight="600.0" prefWidth="1000.0" spacing="20.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bytebender.premnoybiye.SecondaryController">
   <children>
-    <VBox id="login_signup_choice" fx:id="splashLoadimg" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="440.0" prefWidth="440.0">
+    <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="440.0" spacing="34.0" style="-fx-background-color: white; -fx-background-radius: 16;">
       <children>
-        <Button fx:id="secondaryButton" onAction="#switchToPrimary" text="test main" />
+        <VBox id="login_signup_choice" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="150.0" prefWidth="357.0" stylesheets="@application.css" />
+        <VBox alignment="TOP_CENTER" prefWidth="100.0" spacing="24.0">
+          <children>
+            <Button id="login_button" fx:id="secondaryButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#switchToPrimary" prefHeight="50.0" prefWidth="357.0" stylesheets="@application.css" text="Login" textAlignment="CENTER" />
+            <Button id="login_button" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="50.0" prefWidth="357.0" style="-fx-background-color: transparent; -fx-border-color: #6631C4; -fx-border-radius: 8; -fx-border-width: 2; -fx-text-fill: #6631C4;" stylesheets="@application.css" text="Sign up" textAlignment="CENTER" />
+          </children>
+        </VBox>
       </children>
       <padding>
-        <Insets left="185.0" top="380.0" />
+        <Insets bottom="48.0" left="40.0" right="40.0" top="48.0" />
       </padding>
     </VBox>
   </children>
