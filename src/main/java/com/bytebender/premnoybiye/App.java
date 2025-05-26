@@ -1,5 +1,6 @@
 package com.bytebender.premnoybiye;
 
+import javafx.animation.PauseTransition;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -7,6 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import java.io.IOException;
+import javafx.util.Duration;
 /*  JavaFX App */
 
 public class App extends Application {
@@ -36,6 +38,17 @@ public class App extends Application {
 
         Image icon = new Image(App.class.getResourceAsStream("/com/bytebender/premnoybiye/img/Main-Logo.png"));
         stage.getIcons().add(icon);
+
+        // Triggering delay to switch Splash Screen
+        PauseTransition delay = new PauseTransition(Duration.seconds(3));
+        delay.play();
+        delay.setOnFinished(event -> { // Code to execute after the delay
+            try {
+                App.setRoot("transition");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
     }
 
     public static void main(String[] args) {

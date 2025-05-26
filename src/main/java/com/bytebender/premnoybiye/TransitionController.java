@@ -5,10 +5,10 @@ import javafx.fxml.FXML;
 
 public class TransitionController {
 
-    @FXML
-    private void switchToTransition() throws IOException {
-        App.setRoot("transition");
-    }
+    // @FXML
+    // private void switchToTransition() throws IOException {
+    // App.setRoot("transition");
+    // }
 
     @FXML
     private void switchToLogin() throws IOException {
