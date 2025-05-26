@@ -1,33 +1,140 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.geometry.Rectangle2D?>
+<?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
   <children>
-    <VBox id="login_left" prefHeight="600.0" prefWidth="500.0" stylesheets="@application.css">
+    <VBox id="login_left" alignment="CENTER" prefHeight="600.0" prefWidth="500.0" stylesheets="@application.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
       <children>
-            <Label id="login_label" stylesheets="@application.css" text="Login" />
-            <Label id="login_sub_label" layoutX="89.0" layoutY="102.0" stylesheets="@application.css" text="Please fill your information below">
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-               <VBox.margin>
-                  <Insets top="8.0" />
-               </VBox.margin>
-            </Label>
-            <Label id="login_sub_label" layoutX="89.0" layoutY="157.0" stylesheets="@application.css" text="Please fill your information below">
-               <opaqueInsets>
-                  <Insets />
-               </opaqueInsets>
-            </Label>
+            <VBox alignment="CENTER" prefWidth="341.0" spacing="24.0">
+               <children>
+                  <VBox layoutX="10.0" layoutY="235.0" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="341.0">
+                     <children>
+                        <Label id="login_label" stylesheets="@application.css" text="Login" textFill="#1d2939">
+                           <font>
+                              <Font name="Trebuchet MS Bold" size="32.0" />
+                           </font>
+                        </Label>
+                        <Label id="login_sub_label" stylesheets="@application.css" text="Please fill your information below">
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <VBox.margin>
+                              <Insets top="8.0" />
+                           </VBox.margin>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <VBox maxWidth="-Infinity" minWidth="-Infinity" prefWidth="341.0">
+                     <children>
+                        <Label id="login_email_label" stylesheets="@application.css" text="Email">
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <font>
+                              <Font name="Inter Regular" size="14.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets top="36.0" />
+                           </VBox.margin>
+                           <padding>
+                              <Insets bottom="6.0" />
+                           </padding>
+                        </Label>
+                        <TextField maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="341.0" promptText="abc@gmail.com">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                           <padding>
+                              <Insets bottom="10.0" left="14.0" right="14.0" top="10.0" />
+                           </padding>
+                        </TextField>
+                     </children>
+                  </VBox>
+                  <VBox maxWidth="-Infinity" minWidth="-Infinity" prefWidth="341.0">
+                     <children>
+                        <Label id="login_email_label" stylesheets="@application.css" text="Password">
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <font>
+                              <Font name="Inter Regular" size="14.0" />
+                           </font>
+                           <padding>
+                              <Insets bottom="6.0" />
+                           </padding>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </Label>
+                        <TextField maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="341.0" promptText="**********">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <padding>
+                              <Insets bottom="10.0" left="14.0" right="14.0" top="10.0" />
+                           </padding>
+                        </TextField>
+                     </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                  </VBox>
+                  <VBox maxWidth="-Infinity" minWidth="-Infinity" prefWidth="341.0">
+                     <children>
+                        <Button id="login_button" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="50.0" prefWidth="341.0" stylesheets="@application.css" text="Login" textAlignment="CENTER" />
+                     </children>
+                  </VBox>
+                  <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="341.0">
+                     <children>
+                        <Label id="login_register_label" stylesheets="@application.css" text="Don’t have an account? ">
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                        </Label>
+                        <Label id="login_register_sub_label" layoutX="59.0" layoutY="10.0" stylesheets="@application.css" text="Register">
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                        </Label>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
       </children>
       <padding>
-        <Insets left="79.5" top="92.0" />
+        <Insets bottom="92.0" left="79.5" right="79.5" top="92.0" />
       </padding>
     </VBox>
-    <VBox id="login_right" layoutX="500.0" prefHeight="600.0" prefWidth="500.0" stylesheets="@application.css" />
+    <VBox id="login_right" alignment="CENTER" layoutX="500.0" prefHeight="600.0" prefWidth="500.0" stylesheets="@application.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="500.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <ImageView fitHeight="600.0" fitWidth="500.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@img/Login_Illustration.png" />
+               </image>
+               <viewport>
+                  <Rectangle2D />
+               </viewport>
+            </ImageView>
+         </children></VBox>
   </children>
 </AnchorPane>

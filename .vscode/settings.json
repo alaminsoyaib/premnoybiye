@@ -1,4 +1,5 @@
 {
   "java.configuration.updateBuildConfiguration": "automatic",
-  "editor.hover.enabled": false
+  "editor.hover.enabled": false,
+  "css.validate": false
 }
