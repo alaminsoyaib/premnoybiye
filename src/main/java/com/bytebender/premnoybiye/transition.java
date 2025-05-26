@@ -4,11 +4,16 @@ import java.io.IOException;
 
 import javafx.fxml.FXML;
 
-public class transition {
+public class Transition {
 
     @FXML
-    private void switchToPrimary() throws IOException {
-        App.setRoot("primary");
+    private void switchToLogin() throws IOException {
+        App.setRoot("login");
+    }
+
+    @FXML
+    private void switchToSignUp() throws IOException {
+        App.setRoot("signup");
     }
 
 }

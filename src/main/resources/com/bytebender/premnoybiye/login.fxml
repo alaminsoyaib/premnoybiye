@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bytebender.premnoybiye.Transition">
   <children>
     <VBox id="login_right" alignment="CENTER" layoutX="500.0" prefHeight="600.0" prefWidth="500.0" stylesheets="@application.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="500.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -122,7 +122,7 @@
                               <Insets />
                            </opaqueInsets>
                         </Label>
-                        <Label id="login_register_sub_label" layoutX="59.0" layoutY="10.0" stylesheets="@application.css" text="Register">
+                        <Label id="login_register_sub_label" layoutX="59.0" layoutY="10.0" onMouseClicked="#switchToSignUp" style="-fx-cursor: hand;" stylesheets="@application.css" text="Sign up">
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>
