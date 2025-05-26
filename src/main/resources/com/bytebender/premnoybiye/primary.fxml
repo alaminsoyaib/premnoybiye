@@ -1,16 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
 <VBox id="splash_background" alignment="CENTER" prefHeight="600.0" prefWidth="1000.0" spacing="20.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bytebender.premnoybiye.TransitionController">
   <children>
     <VBox fx:id="splashLoadimg" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="440.0" prefWidth="440.0">
       <padding>
-        <Insets top="340.0" />
+        <Insets top="348.0" />
       </padding>
          <children>
-            <VBox alignment="CENTER" />
+            <HBox alignment="TOP_CENTER" spacing="20.0">
+               <children>
+                  <ImageView fitHeight="145.0" fitWidth="141.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@img/a1.gif" />
+                     </image>
+                  </ImageView>
+                  <ImageView fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@img/a3.gif" />
+                     </image>
+                     <HBox.margin>
+                        <Insets top="32.0" />
+                     </HBox.margin>
+                  </ImageView>
+                  <ImageView fitWidth="80.0" layoutX="152.0" layoutY="42.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@img/a2.gif" />
+                     </image>
+                     <HBox.margin>
+                        <Insets top="32.0" />
+                     </HBox.margin>
+                  </ImageView>
+               </children>
+            </HBox>
          </children>
     </VBox>
   </children>

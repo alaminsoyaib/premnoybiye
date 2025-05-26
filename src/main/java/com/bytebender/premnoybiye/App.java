@@ -40,15 +40,15 @@ public class App extends Application {
         stage.getIcons().add(icon);
 
         // Triggering delay to switch Splash Screen
-        PauseTransition delay = new PauseTransition(Duration.seconds(3));
-        delay.play();
-        delay.setOnFinished(event -> { // Code to execute after the delay
-            try {
-                App.setRoot("transition");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
+        // PauseTransition delay = new PauseTransition(Duration.seconds(3));
+        // delay.play();
+        // delay.setOnFinished(event -> { // Code to execute after the delay
+        // try {
+        // App.setRoot("transition");
+        // } catch (IOException e) {
+        // e.printStackTrace();
+        // }
+        // });
     }
 
     public static void main(String[] args) {
