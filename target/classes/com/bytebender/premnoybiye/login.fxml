@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+  <children>
+    <VBox id="login_left" prefHeight="600.0" prefWidth="500.0" stylesheets="@application.css">
+      <children>
+            <Label id="login_label" stylesheets="@application.css" text="Login" />
+            <Label id="login_sub_label" layoutX="89.0" layoutY="102.0" stylesheets="@application.css" text="Please fill your information below">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <VBox.margin>
+                  <Insets top="8.0" />
+               </VBox.margin>
+            </Label>
+            <Label id="login_sub_label" layoutX="89.0" layoutY="157.0" stylesheets="@application.css" text="Please fill your information below">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </Label>
+      </children>
+      <padding>
+        <Insets left="79.5" top="92.0" />
+      </padding>
+    </VBox>
+    <VBox id="login_right" layoutX="500.0" prefHeight="600.0" prefWidth="500.0" stylesheets="@application.css" />
+  </children>
+</AnchorPane>
