@@ -10,22 +10,22 @@
   <children>
     <VBox fx:id="splashLoadimg" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="440.0" prefWidth="440.0">
       <padding>
-        <Insets top="348.0" />
+        <Insets top="348.0"/>
       </padding>
-         <children>
-            <HBox alignment="TOP_CENTER" spacing="20.0">
-               <children>
-                  <ImageView fitHeight="145.0" fitWidth="141.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@img/a1.gif" />
-                     </image>
-                  </ImageView>
-               </children>
-            </HBox>
-         </children>
+      <children>
+        <HBox alignment="TOP_CENTER" spacing="20.0">
+          <children>
+            <ImageView fitHeight="145.0" fitWidth="141.0" pickOnBounds="true" preserveRatio="true">
+              <image>
+                <Image url="@img/Loading-Animation.gif"/>
+              </image>
+            </ImageView>
+          </children>
+        </HBox>
+      </children>
     </VBox>
   </children>
   <padding>
-    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
   </padding>
 </VBox>
