@@ -20,22 +20,6 @@
                         <Image url="@img/a1.gif" />
                      </image>
                   </ImageView>
-                  <ImageView fitWidth="80.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@img/a3.gif" />
-                     </image>
-                     <HBox.margin>
-                        <Insets top="32.0" />
-                     </HBox.margin>
-                  </ImageView>
-                  <ImageView fitWidth="80.0" layoutX="152.0" layoutY="42.0" pickOnBounds="true" preserveRatio="true">
-                     <image>
-                        <Image url="@img/a2.gif" />
-                     </image>
-                     <HBox.margin>
-                        <Insets top="32.0" />
-                     </HBox.margin>
-                  </ImageView>
                </children>
             </HBox>
          </children>
