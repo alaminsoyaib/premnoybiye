@@ -18,7 +18,7 @@
          <children>
             <ImageView fitHeight="600.0" fitWidth="500.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@img/Login_Illustration.png" />
+                  <Image url="@img/SignUp_Illustration.png" />
                </image>
                <viewport>
                   <Rectangle2D />
@@ -31,7 +31,7 @@
                <children>
                   <VBox layoutX="10.0" layoutY="235.0" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="341.0">
                      <children>
-                        <Label id="login_label" stylesheets="@application.css" text="Login" textFill="#1d2939">
+                        <Label id="login_label" stylesheets="@application.css" text="Sign Up" textFill="#1d2939">
                            <font>
                               <Font name="Trebuchet MS Bold" size="32.0" />
                            </font>
@@ -48,7 +48,7 @@
                   </VBox>
                   <VBox maxWidth="-Infinity" minWidth="-Infinity" prefWidth="341.0">
                      <children>
-                        <Label id="login_email_label" stylesheets="@application.css" text="Email">
+                        <Label id="login_email_label" stylesheets="@application.css" text="Name">
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>
@@ -57,6 +57,38 @@
                            </font>
                            <VBox.margin>
                               <Insets top="24.0" />
+                           </VBox.margin>
+                           <padding>
+                              <Insets bottom="6.0" />
+                           </padding>
+                        </Label>
+                        <TextField maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="341.0" promptText="Your Name">
+                           <font>
+                              <Font size="14.0" />
+                           </font>
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                           <padding>
+                              <Insets bottom="10.0" left="14.0" right="14.0" top="10.0" />
+                           </padding>
+                        </TextField>
+                     </children>
+                  </VBox>
+                  <VBox maxWidth="-Infinity" minWidth="-Infinity" prefWidth="341.0">
+                     <children>
+                        <Label id="login_email_label" stylesheets="@application.css" text="Email">
+                           <opaqueInsets>
+                              <Insets />
+                           </opaqueInsets>
+                           <font>
+                              <Font name="Inter Regular" size="14.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets />
                            </VBox.margin>
                            <padding>
                               <Insets bottom="6.0" />
@@ -112,17 +144,17 @@
                   </VBox>
                   <VBox maxWidth="-Infinity" minWidth="-Infinity" prefWidth="341.0">
                      <children>
-                        <Button id="login_button" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="50.0" prefWidth="341.0" stylesheets="@application.css" text="Login" textAlignment="CENTER" />
+                        <Button id="login_button" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="50.0" prefWidth="341.0" stylesheets="@application.css" text="Register" textAlignment="CENTER" />
                      </children>
                   </VBox>
                   <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="341.0">
                      <children>
-                        <Label id="login_register_label" stylesheets="@application.css" text="Don’t have an account? ">
+                        <Label id="login_register_label" stylesheets="@application.css" text="Already a member? ">
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>
                         </Label>
-                        <Label id="login_register_sub_label" layoutX="59.0" layoutY="10.0" stylesheets="@application.css" text="Register">
+                        <Label id="login_register_sub_label" layoutX="59.0" layoutY="10.0" stylesheets="@application.css" text="Login">
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>

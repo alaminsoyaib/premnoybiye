@@ -5,12 +5,18 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" prefHeight="600.0" prefWidth="1000.0" spacing="20.0" styleClass="root" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bytebender.premnoybiye.PrimaryController">
-   <children>
-      <Label fx:id="test" text="Primary View" />
-      <Button fx:id="primaryButton" onAction="#switchToSecondary" text="test main" />
-   </children>
-   <padding>
-      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-   </padding>
+<VBox id="splash_background" alignment="CENTER" prefHeight="600.0" prefWidth="1000.0" spacing="20.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bytebender.premnoybiye.PrimaryController">
+  <children>
+    <VBox fx:id="splashLoadimg" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="440.0" prefWidth="440.0">
+      <children>
+        <Button fx:id="primaryButton" onAction="#switchToSecondary" text="Loading..."/>
+      </children>
+      <padding>
+        <Insets left="185.0" top="380.0"/>
+      </padding>
+    </VBox>
+  </children>
+  <padding>
+    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+  </padding>
 </VBox>

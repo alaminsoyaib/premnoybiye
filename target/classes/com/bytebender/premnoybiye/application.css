@@ -1,4 +1,6 @@
-.root {
+/* .root {
+} */
+#splash_background {
   -fx-background-image: url("img/Splash_bg.png");
   -fx-background-size: 100% 100%;
   -fx-background-repeat: no-repeat;
@@ -6,6 +8,12 @@
 }
 #splashLoadimg {
   -fx-background-image: url("img/splashLoadimg.png");
+  -fx-background-size: 100% 100%;
+  -fx-background-repeat: no-repeat;
+  -fx-background-position: center center;
+}
+#login_signup_choice {
+  -fx-background-image: url("img/login_signup_choice.png");
   -fx-background-size: 100% 100%;
   -fx-background-repeat: no-repeat;
   -fx-background-position: center center;
@@ -23,15 +31,13 @@
 }
 
 .label {
-  -fx-text-fill: #000000;
+  -fx-text-fill: #344054;
   -fx-font-family: "Inter";
   -fx-font-size: 16px;
   -fx-font-style: normal;
   -fx-font-weight: 500;
   -fx-line-height: 24px; /* 150% */
 }
-
-// make the login_label more bolder
 
 #login_label {
   -fx-text-fill: #1d2939;
@@ -42,13 +48,6 @@
 }
 #login_sub_label {
   -fx-text-fill: #667085;
-}
-#login_email_label {
-  -fx-text-fill: #344054;
-  /* -fx-font-weight: 600; */
-}
-#login_register_label {
-  -fx-text-fill: #475467;
 }
 #login_register_sub_label {
   -fx-text-fill: #6631c4;
