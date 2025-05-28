@@ -40,7 +40,7 @@ public class App extends Application {
         stage.getIcons().add(icon);
 
         // Triggering delay to switch Splash Screen
-        PauseTransition delay = new PauseTransition(Duration.seconds(0.5)); // default timing 6second decided
+        PauseTransition delay = new PauseTransition(Duration.seconds(6)); // default timing 6second decided
         delay.play();
         delay.setOnFinished(event -> { // Code to execute after the delay
             try {

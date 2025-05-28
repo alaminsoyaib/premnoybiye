@@ -16,7 +16,7 @@
                   <Insets top="10.0" />
                </VBox.margin>
                <image>
-                  <Image url="@img/t3.gif" />
+                  <Image url="@img/gif/get_ready_to_say.gif" />
                </image>
             </ImageView>
         <VBox alignment="TOP_CENTER" prefWidth="100.0" spacing="24.0">
