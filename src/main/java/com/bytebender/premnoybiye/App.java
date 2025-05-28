@@ -40,11 +40,12 @@ public class App extends Application {
         stage.getIcons().add(icon);
 
         // Triggering delay to switch Splash Screen
-        PauseTransition delay = new PauseTransition(Duration.seconds(6)); // default timing 6second decided
+        PauseTransition delay = new PauseTransition(Duration.seconds(6));
+        // default timing 6second decided
         delay.play();
         delay.setOnFinished(event -> { // Code to execute after the delay
             try {
-                App.setRoot("transition");
+                App.setRoot("login_signup_choice");
             } catch (IOException e) {
                 e.printStackTrace();
             }

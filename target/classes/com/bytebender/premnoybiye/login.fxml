@@ -12,9 +12,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bytebender.premnoybiye.TransitionController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bytebender.premnoybiye.Signin_upController">
   <children>
-    <VBox id="login_right" alignment="CENTER" layoutX="500.0" prefHeight="600.0" prefWidth="500.0" stylesheets="@application.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="500.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+    <VBox alignment="CENTER" layoutX="500.0" prefHeight="600.0" prefWidth="500.0" style="-fx-background-color: #f6f3ff;" stylesheets="@application.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="500.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <ImageView fitHeight="600.0" fitWidth="500.0" pickOnBounds="true" preserveRatio="true">
                <image>
@@ -25,7 +25,7 @@
                </viewport>
             </ImageView>
          </children></VBox>
-    <VBox id="login_left" alignment="CENTER" prefHeight="600.0" prefWidth="500.0" stylesheets="@application.css" AnchorPane.bottomAnchor="-8.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+    <VBox alignment="CENTER" prefHeight="600.0" prefWidth="500.0" style="-fx-background-color: #ffffff;" stylesheets="@application.css" AnchorPane.bottomAnchor="-8.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
       <children>
             <VBox alignment="CENTER" prefWidth="341.0" spacing="24.0">
                <children>
@@ -36,7 +36,7 @@
                               <Font name="Trebuchet MS Bold" size="32.0" />
                            </font>
                         </Label>
-                        <Label id="login_sub_label" stylesheets="@application.css" text="Please fill your information below">
+                        <Label id="sub_label" stylesheets="@application.css" text="Please fill your information below">
                            <opaqueInsets>
                               <Insets />
                            </opaqueInsets>
@@ -112,7 +112,7 @@
                   </VBox>
                   <VBox maxWidth="-Infinity" minWidth="-Infinity" prefWidth="341.0">
                      <children>
-                        <Button id="login_button" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="50.0" prefWidth="341.0" stylesheets="@application.css" text="Login" textAlignment="CENTER" />
+                        <Button id="cta_button" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="50.0" prefWidth="341.0" stylesheets="@application.css" text="Login" textAlignment="CENTER" />
                      </children>
                   </VBox>
                   <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="341.0">

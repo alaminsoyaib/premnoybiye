@@ -3,7 +3,7 @@ package com.bytebender.premnoybiye;
 import java.io.IOException;
 import javafx.fxml.FXML;
 
-public class TransitionController {
+public class Signin_upController {
 
     @FXML
     private void switchToLogin() throws IOException {
