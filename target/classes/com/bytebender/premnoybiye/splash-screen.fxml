@@ -7,24 +7,24 @@
 
 <VBox id="splash_background" alignment="CENTER" prefHeight="600.0" prefWidth="1000.0" spacing="20.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bytebender.premnoybiye.TransitionController">
   <children>
-      <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="455.0" prefWidth="440.0" style="-fx-background-color: #FAF3FF; -fx-background-radius: 16;">
-         <children>
-            <VBox id="splashLoadimg" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="317.0" prefWidth="384.0" stylesheets="@application.css" />
-      <ImageView fitHeight="127.0" fitWidth="121.0" pickOnBounds="true" preserveRatio="true" translateY="-16.0">
-        <image>
-          <Image url="@img/Loading-Animation.gif" />
-        </image>
-      </ImageView>
-         </children>
-         <padding>
-            <Insets left="25.0" right="25.0" top="32.0" />
-         </padding>
-      </VBox>
+    <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="455.0" prefWidth="440.0" style="-fx-background-color: #FAF3FF; -fx-background-radius: 16;">
+      <children>
+        <VBox id="splashLoadimg" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="317.0" prefWidth="384.0" stylesheets="@application.css"/>
+        <ImageView fitHeight="127.0" fitWidth="121.0" pickOnBounds="true" preserveRatio="true" translateY="-16.0">
+          <image>
+            <Image url="@img/gif/Loading-Animation.gif"/>
+          </image>
+        </ImageView>
+      </children>
+      <padding>
+        <Insets left="25.0" right="25.0" top="32.0"/>
+      </padding>
+    </VBox>
   </children>
   <padding>
-    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
   </padding>
-   <opaqueInsets>
-      <Insets />
-   </opaqueInsets>
+  <opaqueInsets>
+    <Insets/>
+  </opaqueInsets>
 </VBox>
