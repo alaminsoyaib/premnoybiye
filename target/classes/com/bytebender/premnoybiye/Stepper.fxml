@@ -3,6 +3,8 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -13,106 +15,156 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
   <children>
-      <VBox alignment="TOP_CENTER" layoutX="310.0" prefHeight="600.0" prefWidth="690.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="310.0" AnchorPane.rightAnchor="-0.7999999999999545" AnchorPane.topAnchor="0.0">
-         <children>
-            <VBox alignment="CENTER" prefHeight="504.0" prefWidth="540.0" VBox.vgrow="SOMETIMES">
-               <children>
-                  <VBox alignment="TOP_CENTER" maxHeight="904.0" maxWidth="940.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="504.0" prefWidth="540.0">
-                     <children>
-                        <VBox>
-                           <children>
-                              <Label text="Personal Info" textFill="#333333">
-                                 <font>
-                                    <Font name="Trebuchet MS Bold" size="24.0" />
-                                 </font>
-                              </Label>
-                              <Label text="Please fill your information below" textFill="#667085">
-                                 <font>
-                                    <Font name="Trebuchet MS" size="15.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </VBox>
-                        <HBox alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="70.0" prefWidth="540.0" spacing="40.0">
-                           <children>
-                              <VBox>
-                                 <children>
-                                    <Label ellipsisString="***" text="Date of Birth" textFill="#344054">
-                                       <font>
-                                          <Font name="Trebuchet MS" size="14.0" />
-                                       </font>
-                                       <VBox.margin>
-                                          <Insets bottom="6.0" />
-                                       </VBox.margin>
-                                    </Label>
-                                    <HBox>
-                                       <children>
-                                          <DatePicker focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Select a Date" HBox.hgrow="ALWAYS" />
-                                       </children>
-                                    </HBox>
-                                 </children>
-                                 <HBox.margin>
-                                    <Insets />
-                                 </HBox.margin>
-                              </VBox>
-                              <VBox layoutX="10.0" layoutY="10.0">
-                                 <children>
-                                    <Label ellipsisString="***" text="Gender" textFill="#344054">
-                                       <font>
-                                          <Font name="Trebuchet MS" size="14.0" />
-                                       </font>
-                                       <VBox.margin>
-                                          <Insets bottom="6.0" />
-                                       </VBox.margin>
-                                    </Label>
-                                    <DatePicker focusTraversable="false" prefHeight="44.0" prefWidth="250.0" promptText="Select a Date" />
-                                 </children>
-                              </VBox>
-                           </children>
-                           <VBox.margin>
-                              <Insets top="56.0" />
-                           </VBox.margin>
-                        </HBox>
-                     </children>
-                  </VBox>
-                  <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="940.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="28.0" prefWidth="540.0">
-                     <children>
-                        <Label style="-fx-font-family: &quot;Trebuchet MS, sans-serif&quot;; -fx-font-weight: 700; -fx-font-size: 12; -fx-text-fill: #6631C4;" text="SKIP">
-                           <HBox.margin>
-                              <Insets />
-                           </HBox.margin>
+    <VBox alignment="TOP_CENTER" layoutX="310.0" prefHeight="600.0" prefWidth="690.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="310.0" AnchorPane.rightAnchor="-0.7999999999999545" AnchorPane.topAnchor="0.0">
+      <children>
+        <VBox alignment="CENTER" prefHeight="504.0" prefWidth="540.0" VBox.vgrow="SOMETIMES">
+          <children>
+            <VBox fx:id="genderChoiceBox" alignment="TOP_CENTER" maxHeight="904.0" maxWidth="940.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="504.0" prefWidth="540.0" spacing="24.0">
+              <children>
+                <VBox>
+                  <children>
+                    <Label text="Personal Info" textFill="#333333">
+                      <font>
+                        <Font name="Trebuchet MS Bold" size="24.0" />
+                      </font>
+                    </Label>
+                    <Label text="Please fill your information below" textFill="#667085">
+                      <font>
+                        <Font name="Trebuchet MS" size="15.0" />
+                      </font>
+                    </Label>
+                  </children>
+                  <VBox.margin>
+                    <Insets bottom="32.0" />
+                  </VBox.margin>
+                </VBox>
+                <HBox maxWidth="1.7976931348623157E308" prefHeight="70.0" prefWidth="540.0" spacing="40.0">
+                  <children>
+                    <VBox maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+                      <children>
+                        <Label ellipsisString="***" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" text="Date of Birth" textFill="#344054">
+                          <font>
+                            <Font name="Trebuchet MS" size="14.0" />
+                          </font>
+                          <VBox.margin>
+                            <Insets bottom="6.0" />
+                          </VBox.margin>
                         </Label>
-                        <HBox HBox.hgrow="ALWAYS" />
-                        <HBox alignment="CENTER" spacing="4.0">
-                           <children>
-                              <ImageView fitHeight="16.0" fitWidth="16.0" opacity="0.3" pickOnBounds="true" preserveRatio="true" rotate="180.0" translateY="-1.0">
-                                 <image>
-                                    <Image url="@img/icon/arrow.png" />
-                                 </image>
-                              </ImageView>
-                              <Label style="-fx-font-family: &quot;Trebuchet MS, sans-serif&quot;; -fx-font-weight: 700; -fx-font-size: 12; -fx-text-fill: #D1C2ED;" text="PREV" />
-                           </children>
-                        </HBox>
-                        <Pane prefHeight="10.0" prefWidth="32.0" />
-                        <HBox alignment="CENTER" layoutX="272.0" layoutY="10.0" spacing="4.0">
-                           <children>
-                              <Label style="-fx-font-family: &quot;Trebuchet MS, sans-serif&quot;; -fx-font-weight: 700; -fx-font-size: 12; -fx-text-fill: #6631C4;" text="NEXT" />
-                              <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true" translateY="-1.0">
-                                 <image>
-                                    <Image url="@img/icon/arrow.png" />
-                                 </image>
-                              </ImageView>
-                           </children>
-                        </HBox>
-                     </children>
-                  </HBox>
-               </children>
+                        <DatePicker focusTraversable="false" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" promptText="Select a Date" />
+                      </children>
+                      <HBox.margin>
+                        <Insets />
+                      </HBox.margin>
+                    </VBox>
+                    <VBox layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" HBox.hgrow="ALWAYS">
+                      <children>
+                        <Label ellipsisString="***" text="Gender" textFill="#344054">
+                          <font>
+                            <Font name="Trebuchet MS" size="14.0" />
+                          </font>
+                          <VBox.margin>
+                            <Insets bottom="6.0" />
+                          </VBox.margin>
+                        </Label>
+                        <MenuButton maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="175.0" mnemonicParsing="false" prefHeight="44.0" style="-fx-background-color: white; -fx-border-color: #D0D5DD; -fx-border-radius: 8; -fx-cursor: hand;" text="Pick yours">
+                          <items>
+                            <MenuItem mnemonicParsing="false" text="Male" />
+                            <MenuItem mnemonicParsing="false" text="Female" />
+                          </items>
+                        </MenuButton>
+                      </children>
+                    </VBox>
+                  </children>
+                  <VBox.margin>
+                    <Insets />
+                  </VBox.margin>
+                </HBox>
+                <HBox layoutX="10.0" layoutY="115.0" maxWidth="1.7976931348623157E308" prefHeight="70.0" prefWidth="540.0" spacing="40.0">
+                  <children>
+                    <VBox maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+                      <children>
+                        <Label ellipsisString="***" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" text="Religion" textFill="#344054">
+                          <font>
+                            <Font name="Trebuchet MS" size="14.0" />
+                          </font>
+                          <VBox.margin>
+                            <Insets bottom="6.0" />
+                          </VBox.margin>
+                        </Label>
+                        <MenuButton maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="44.0" style="-fx-background-color: white; -fx-border-color: #D0D5DD; -fx-border-radius: 8; -fx-cursor: hand;" text="Pick yours">
+                          <items>
+                            <MenuItem mnemonicParsing="false" text="Islam" />
+                            <MenuItem mnemonicParsing="false" text="Buddhism" />
+                            <MenuItem mnemonicParsing="false" text="Hinduism" />
+                            <MenuItem mnemonicParsing="false" text="Christianity" />
+                            <MenuItem mnemonicParsing="false" text="Others" />
+                          </items>
+                        </MenuButton>
+                      </children>
+                      <HBox.margin>
+                        <Insets />
+                      </HBox.margin>
+                    </VBox>
+                    <VBox layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" HBox.hgrow="ALWAYS">
+                      <children>
+                        <Label ellipsisString="***" text="Current City" textFill="#344054">
+                          <font>
+                            <Font name="Trebuchet MS" size="14.0" />
+                          </font>
+                          <VBox.margin>
+                            <Insets bottom="6.0" />
+                          </VBox.margin>
+                        </Label>
+                        <MenuButton maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="44.0" style="-fx-background-color: white; -fx-border-color: #D0D5DD; -fx-border-radius: 8; -fx-cursor: hand;" text="Pick yours">
+                          <items>
+                            <MenuItem mnemonicParsing="false" text="Dhaka" />
+                            <MenuItem mnemonicParsing="false" text="Chittagong" />
+                          </items>
+                        </MenuButton>
+                      </children>
+                    </VBox>
+                  </children>
+                </HBox>
+              </children>
             </VBox>
-         </children>
-         <padding>
-            <Insets bottom="48.0" left="75.0" right="75.0" top="48.0" />
-         </padding>
-      </VBox>
+            <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="940.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="28.0" prefWidth="540.0">
+              <children>
+                <Label style="-fx-font-family: &quot;Trebuchet MS, sans-serif&quot;; -fx-font-weight: 700; -fx-font-size: 12; -fx-text-fill: #6631C4;" text="SKIP">
+                  <HBox.margin>
+                    <Insets />
+                  </HBox.margin>
+                </Label>
+                <HBox HBox.hgrow="ALWAYS" />
+                <HBox alignment="CENTER" spacing="4.0">
+                  <children>
+                    <ImageView fitHeight="16.0" fitWidth="16.0" opacity="0.3" pickOnBounds="true" preserveRatio="true" rotate="180.0" translateY="-1.0">
+                      <image>
+                        <Image url="@img/icon/arrow.png" />
+                      </image>
+                    </ImageView>
+                    <Label style="-fx-font-family: &quot;Trebuchet MS, sans-serif&quot;; -fx-font-weight: 700; -fx-font-size: 12; -fx-text-fill: #D1C2ED;" text="PREV" />
+                  </children>
+                </HBox>
+                <Pane prefHeight="10.0" prefWidth="32.0" />
+                <HBox alignment="CENTER" layoutX="272.0" layoutY="10.0" spacing="4.0">
+                  <children>
+                    <Label style="-fx-font-family: &quot;Trebuchet MS, sans-serif&quot;; -fx-font-weight: 700; -fx-font-size: 12; -fx-text-fill: #6631C4;" text="NEXT" />
+                    <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true" translateY="-1.0">
+                      <image>
+                        <Image url="@img/icon/arrow.png" />
+                      </image>
+                    </ImageView>
+                  </children>
+                </HBox>
+              </children>
+            </HBox>
+          </children>
+        </VBox>
+      </children>
+      <padding>
+        <Insets bottom="48.0" left="75.0" right="75.0" top="48.0" />
+      </padding>
+    </VBox>
     <VBox alignment="CENTER" prefHeight="600.0" prefWidth="310.0" style="-fx-background-color: #f6f3ff;" stylesheets="@application.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
       <children>
         <VBox fillWidth="false" spacing="1.0">
