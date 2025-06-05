@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
   <children>
     <VBox alignment="TOP_CENTER" layoutX="310.0" prefHeight="600.0" prefWidth="690.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="310.0" AnchorPane.rightAnchor="-0.7999999999999545" AnchorPane.topAnchor="0.0">
       <children>
@@ -51,7 +51,7 @@
                             <Insets bottom="6.0"/>
                           </VBox.margin>
                         </Label>
-                        <DatePicker focusTraversable="false" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Select a date" style="-fx-border-color: #E4E7EC; -fx-border-radius: 8; -fx-font-family: 'Trebuchet MS'; -fx-font-size: 14px; -fx-text-fill: #667085;"/>
+                        <DatePicker focusTraversable="false" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Select a date" styleClass="date-picker"/>
                       </children>
                       <HBox.margin>
                         <Insets/>
@@ -67,7 +67,7 @@
                             <Insets bottom="6.0"/>
                           </VBox.margin>
                         </Label>
-                        <ComboBox fx:id="genderComboBox" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick one" style="-fx-background-color: white; -fx-border-color: #E4E7EC; -fx-border-radius: 8; -fx-border-width: 1; -fx-font-family: 'Trebuchet MS'; -fx-font-size: 14px; -fx-text-fill: #667085;">
+                        <ComboBox fx:id="genderComboBox" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick one" styleClass="combo-box">
                           <items>
                             <FXCollections fx:factory="observableArrayList">
                               <String fx:value="Male"/>
@@ -94,7 +94,7 @@
                             <Insets bottom="6.0"/>
                           </VBox.margin>
                         </Label>
-                        <ComboBox fx:id="religionComboBox" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick one" style="-fx-background-color: white; -fx-border-color: #E4E7EC; -fx-border-radius: 8; -fx-border-width: 1; -fx-font-family: 'Trebuchet MS'; -fx-font-size: 14px; -fx-text-fill: #667085;">
+                        <ComboBox fx:id="religionComboBox" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick one" styleClass="combo-box">
                           <items>
                             <FXCollections fx:factory="observableArrayList">
                               <String fx:value="Islam"/>
@@ -120,7 +120,7 @@
                             <Insets bottom="6.0"/>
                           </VBox.margin>
                         </Label>
-                        <ComboBox fx:id="cityComboBox" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick one" style="-fx-background-color: white; -fx-border-color: #E4E7EC; -fx-border-radius: 8; -fx-border-width: 1; -fx-font-family: 'Trebuchet MS'; -fx-font-size: 14px; -fx-text-fill: #667085;">
+                        <ComboBox fx:id="cityComboBox" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick one" styleClass="combo-box">
                           <items>
                             <FXCollections fx:factory="observableArrayList">
                               <String fx:value="Dhaka"/>

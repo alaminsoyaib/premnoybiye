@@ -62,3 +62,71 @@
   -fx-text-fill: #ffffff;
   -fx-background-radius: 8;
 }
+
+/* Form Controls Styling */
+.form-control {
+  -fx-background-color: white;
+  -fx-border-color: #e4e7ec;
+  -fx-border-radius: 8;
+  -fx-border-width: 1;
+  -fx-font-family: "Trebuchet MS";
+  -fx-font-size: 14px;
+  -fx-text-fill: #344054;
+}
+
+.form-control:focused {
+  -fx-border-color: #6631c4;
+  -fx-border-width: 2;
+}
+
+/* DatePicker specific styling */
+.date-picker {
+  -fx-background-color: white;
+  -fx-border-color: #e4e7ec;
+  -fx-border-radius: 8;
+  -fx-border-width: 1;
+  -fx-font-family: "Trebuchet MS";
+  -fx-font-size: 14px;
+}
+
+.date-picker .text-field {
+  -fx-prompt-text-fill: #667085;
+  -fx-text-fill: #344054;
+  -fx-background-color: transparent;
+  -fx-border-color: transparent;
+}
+
+.date-picker:focused {
+  -fx-border-color: #6631c4;
+  -fx-border-width: 2;
+}
+
+/* ComboBox specific styling */
+.combo-box {
+  -fx-background-color: white;
+  -fx-border-color: #e4e7ec;
+  -fx-border-radius: 8;
+  -fx-border-width: 1;
+  -fx-font-family: "Trebuchet MS";
+  -fx-font-size: 14px;
+}
+
+.combo-box .text-field {
+  -fx-prompt-text-fill: #667085;
+  -fx-text-fill: #344054;
+  -fx-background-color: transparent;
+  -fx-border-color: transparent;
+}
+
+.combo-box:focused {
+  -fx-border-color: #6631c4;
+  -fx-border-width: 2;
+}
+
+.combo-box .arrow-button {
+  -fx-background-color: transparent;
+}
+
+.combo-box .arrow-button .arrow {
+  -fx-background-color: #667085;
+}
