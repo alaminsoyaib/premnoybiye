@@ -109,6 +109,7 @@
   -fx-border-width: 1;
   -fx-font-family: "Trebuchet MS";
   -fx-font-size: 14px;
+  -fx-cursor: hand;
 }
 
 .combo-box .text-field {
