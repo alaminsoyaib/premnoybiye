@@ -3,6 +3,7 @@
 <?import java.lang.String?>
 <?import javafx.collections.FXCollections?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
@@ -26,17 +27,17 @@
                   <children>
                     <Label text="Personal Info" textFill="#333333">
                       <font>
-                        <Font name="Trebuchet MS Bold" size="24.0"/>
+                        <Font name="Trebuchet MS Bold" size="24.0" />
                       </font>
                     </Label>
                     <Label text="Please fill your information below" textFill="#667085">
                       <font>
-                        <Font name="Trebuchet MS" size="15.0"/>
+                        <Font name="Trebuchet MS" size="15.0" />
                       </font>
                     </Label>
                   </children>
                   <VBox.margin>
-                    <Insets bottom="32.0"/>
+                    <Insets bottom="32.0" />
                   </VBox.margin>
                 </VBox>
                 <HBox maxWidth="1.7976931348623157E308" prefHeight="70.0" prefWidth="540.0" spacing="40.0">
@@ -45,33 +46,33 @@
                       <children>
                         <Label ellipsisString="***" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" text="Date of Birth" textFill="#344054">
                           <font>
-                            <Font name="Trebuchet MS" size="14.0"/>
+                            <Font name="Trebuchet MS" size="14.0" />
                           </font>
                           <VBox.margin>
-                            <Insets bottom="6.0"/>
+                            <Insets bottom="6.0" />
                           </VBox.margin>
                         </Label>
-                        <DatePicker focusTraversable="false" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Select a date" styleClass="date-picker"/>
+                        <DatePicker focusTraversable="false" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Select a date" styleClass="date-picker" />
                       </children>
                       <HBox.margin>
-                        <Insets/>
+                        <Insets />
                       </HBox.margin>
                     </VBox>
                     <VBox layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" HBox.hgrow="ALWAYS">
                       <children>
                         <Label ellipsisString="***" text="Gender" textFill="#344054">
                           <font>
-                            <Font name="Trebuchet MS" size="14.0"/>
+                            <Font name="Trebuchet MS" size="14.0" />
                           </font>
                           <VBox.margin>
-                            <Insets bottom="6.0"/>
+                            <Insets bottom="6.0" />
                           </VBox.margin>
                         </Label>
-                        <ComboBox fx:id="genderComboBox" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick one" styleClass="combo-box">
+                        <ComboBox fx:id="genderComboBox" editable="true" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick one" styleClass="combo-box">
                           <items>
                             <FXCollections fx:factory="observableArrayList">
-                              <String fx:value="Male"/>
-                              <String fx:value="Female"/>
+                              <String fx:value="Male" />
+                              <String fx:value="Female" />
                             </FXCollections>
                           </items>
                         </ComboBox>
@@ -79,7 +80,7 @@
                     </VBox>
                   </children>
                   <VBox.margin>
-                    <Insets/>
+                    <Insets />
                   </VBox.margin>
                 </HBox>
                 <HBox layoutX="10.0" layoutY="115.0" maxWidth="1.7976931348623157E308" prefHeight="70.0" prefWidth="540.0" spacing="40.0">
@@ -88,43 +89,43 @@
                       <children>
                         <Label ellipsisString="***" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" text="Religion" textFill="#344054">
                           <font>
-                            <Font name="Trebuchet MS" size="14.0"/>
+                            <Font name="Trebuchet MS" size="14.0" />
                           </font>
                           <VBox.margin>
-                            <Insets bottom="6.0"/>
+                            <Insets bottom="6.0" />
                           </VBox.margin>
                         </Label>
-                        <ComboBox fx:id="religionComboBox" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick one" styleClass="combo-box">
+                        <ComboBox fx:id="religionComboBox" editable="true" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick one" styleClass="combo-box">
                           <items>
                             <FXCollections fx:factory="observableArrayList">
-                              <String fx:value="Islam"/>
-                              <String fx:value="Buddhism"/>
-                              <String fx:value="Hinduism"/>
-                              <String fx:value="Christianity"/>
-                              <String fx:value="Others"/>
+                              <String fx:value="Islam" />
+                              <String fx:value="Buddhism" />
+                              <String fx:value="Hinduism" />
+                              <String fx:value="Christianity" />
+                              <String fx:value="Others" />
                             </FXCollections>
                           </items>
                         </ComboBox>
                       </children>
                       <HBox.margin>
-                        <Insets/>
+                        <Insets />
                       </HBox.margin>
                     </VBox>
                     <VBox layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" HBox.hgrow="ALWAYS">
                       <children>
                         <Label ellipsisString="***" text="Current City" textFill="#344054">
                           <font>
-                            <Font name="Trebuchet MS" size="14.0"/>
+                            <Font name="Trebuchet MS" size="14.0" />
                           </font>
                           <VBox.margin>
-                            <Insets bottom="6.0"/>
+                            <Insets bottom="6.0" />
                           </VBox.margin>
                         </Label>
-                        <ComboBox fx:id="cityComboBox" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick one" styleClass="combo-box">
+                        <ComboBox fx:id="cityComboBox" editable="true" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick one" styleClass="combo-box">
                           <items>
                             <FXCollections fx:factory="observableArrayList">
-                              <String fx:value="Dhaka"/>
-                              <String fx:value="Chittagong"/>
+                              <String fx:value="Dhaka" />
+                              <String fx:value="Chittagong" />
                             </FXCollections>
                           </items>
                         </ComboBox>
@@ -138,30 +139,36 @@
               <children>
                 <Label style="-fx-font-family: &quot;Trebuchet MS, sans-serif&quot;; -fx-font-weight: 700; -fx-font-size: 12; -fx-text-fill: #6631C4;" text="SKIP">
                   <HBox.margin>
-                    <Insets/>
+                    <Insets />
                   </HBox.margin>
                 </Label>
-                <HBox HBox.hgrow="ALWAYS"/>
+                <HBox HBox.hgrow="ALWAYS" />
                 <HBox alignment="CENTER" spacing="4.0">
                   <children>
                     <ImageView fitHeight="16.0" fitWidth="16.0" opacity="0.3" pickOnBounds="true" preserveRatio="true" rotate="180.0" translateY="-1.0">
                       <image>
-                        <Image url="@img/icon/arrow.png"/>
+                        <Image url="@img/icon/arrow.png" />
                       </image>
                     </ImageView>
-                    <Label style="-fx-font-family: &quot;Trebuchet MS, sans-serif&quot;; -fx-font-weight: 700; -fx-font-size: 12; -fx-text-fill: #D1C2ED;" text="PREV"/>
+                    <Label style="-fx-font-family: &quot;Trebuchet MS, sans-serif&quot;; -fx-font-weight: 700; -fx-font-size: 12; -fx-text-fill: #D1C2ED;" text="PREV" />
                   </children>
+                           <cursor>
+                              <Cursor fx:constant="OPEN_HAND" />
+                           </cursor>
                 </HBox>
-                <Pane prefHeight="10.0" prefWidth="32.0"/>
+                <Pane prefHeight="10.0" prefWidth="32.0" />
                 <HBox alignment="CENTER" layoutX="272.0" layoutY="10.0" spacing="4.0">
                   <children>
-                    <Label style="-fx-font-family: &quot;Trebuchet MS, sans-serif&quot;; -fx-font-weight: 700; -fx-font-size: 12; -fx-text-fill: #6631C4;" text="NEXT"/>
+                    <Label style="-fx-font-family: &quot;Trebuchet MS, sans-serif&quot;; -fx-font-weight: 700; -fx-font-size: 12; -fx-text-fill: #6631C4;" text="NEXT" />
                     <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true" translateY="-1.0">
                       <image>
-                        <Image url="@img/icon/arrow.png"/>
+                        <Image url="@img/icon/arrow.png" />
                       </image>
                     </ImageView>
                   </children>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
                 </HBox>
               </children>
             </HBox>
@@ -169,7 +176,7 @@
         </VBox>
       </children>
       <padding>
-        <Insets bottom="48.0" left="75.0" right="75.0" top="48.0"/>
+        <Insets bottom="48.0" left="75.0" right="75.0" top="48.0" />
       </padding>
     </VBox>
     <VBox alignment="CENTER" prefHeight="600.0" prefWidth="310.0" style="-fx-background-color: #f6f3ff;" stylesheets="@application.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -180,113 +187,113 @@
               <children>
                 <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                   <image>
-                    <Image url="@img/icon/Checkbox_Complete.png"/>
+                    <Image url="@img/icon/Checkbox_Complete.png" />
                   </image>
                   <HBox.margin>
-                    <Insets bottom="3.0" left="3.0" right="3.0" top="3.0"/>
+                    <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                   </HBox.margin>
                 </ImageView>
                 <VBox spacing="4.0">
                   <children>
                     <Label style="-fx-font-family: &quot;Trebuchet MS, sans-serif&quot;; -fx-font-weight: 700;" text="Personal Info">
                       <VBox.margin>
-                        <Insets top="2.0"/>
+                        <Insets top="2.0" />
                       </VBox.margin>
                       <font>
-                        <Font size="16.0"/>
+                        <Font size="16.0" />
                       </font>
                     </Label>
                     <ImageView fitHeight="19.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true">
                       <image>
-                        <Image url="@img/icon/Tag_Complete.png"/>
+                        <Image url="@img/icon/Tag_Complete.png" />
                       </image>
                       <VBox.margin>
-                        <Insets bottom="2.0"/>
+                        <Insets bottom="2.0" />
                       </VBox.margin>
                     </ImageView>
                   </children>
                   <HBox.margin>
-                    <Insets left="9.0"/>
+                    <Insets left="9.0" />
                   </HBox.margin>
                 </VBox>
               </children>
             </HBox>
             <ImageView fitHeight="116.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true" translateY="-1.0">
               <image>
-                <Image url="@img/icon/Stepper_Line_Enable.png"/>
+                <Image url="@img/icon/Stepper_Line_Enable.png" />
               </image>
             </ImageView>
             <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="46.0">
               <children>
                 <ImageView fitHeight="51.0" fitWidth="51.0" pickOnBounds="true" preserveRatio="true" translateX="-2.5">
                   <image>
-                    <Image url="@img/icon/Checkbox_Progress.png"/>
+                    <Image url="@img/icon/Checkbox_Progress.png" />
                   </image>
                   <HBox.margin>
-                    <Insets/>
+                    <Insets />
                   </HBox.margin>
                 </ImageView>
                 <VBox spacing="4.0" translateX="-2.5">
                   <children>
                     <Label style="-fx-font-family: &quot;Trebuchet MS, sans-serif&quot;; -fx-font-weight: 700;" text="Education &amp; Career">
                       <VBox.margin>
-                        <Insets top="2.0"/>
+                        <Insets top="2.0" />
                       </VBox.margin>
                       <font>
-                        <Font size="16.0"/>
+                        <Font size="16.0" />
                       </font>
                     </Label>
                     <ImageView fitHeight="19.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true">
                       <image>
-                        <Image url="@img/icon/Tag_Progress.png"/>
+                        <Image url="@img/icon/Tag_Progress.png" />
                       </image>
                       <VBox.margin>
-                        <Insets bottom="2.0"/>
+                        <Insets bottom="2.0" />
                       </VBox.margin>
                     </ImageView>
                   </children>
                   <HBox.margin>
-                    <Insets left="9.0"/>
+                    <Insets left="9.0" />
                   </HBox.margin>
                 </VBox>
               </children>
             </HBox>
             <ImageView fitHeight="116.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="true" translateY="1.0">
               <image>
-                <Image url="@img/icon/Stepper_Line_Disable.png"/>
+                <Image url="@img/icon/Stepper_Line_Disable.png" />
               </image>
             </ImageView>
             <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="46.0">
               <children>
                 <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                   <image>
-                    <Image url="@img/icon/Checkbox_Pending.png"/>
+                    <Image url="@img/icon/Checkbox_Pending.png" />
                   </image>
                   <HBox.margin>
-                    <Insets bottom="3.0" left="3.0" right="3.0" top="3.0"/>
+                    <Insets bottom="3.0" left="3.0" right="3.0" top="3.0" />
                   </HBox.margin>
                 </ImageView>
                 <VBox spacing="4.0">
                   <children>
                     <Label style="-fx-font-family: &quot;Trebuchet MS, sans-serif&quot;; -fx-font-weight: 700;" text="Additional Info">
                       <VBox.margin>
-                        <Insets top="2.0"/>
+                        <Insets top="2.0" />
                       </VBox.margin>
                       <font>
-                        <Font size="16.0"/>
+                        <Font size="16.0" />
                       </font>
                     </Label>
                     <ImageView fitHeight="19.0" fitWidth="65.0" pickOnBounds="true" preserveRatio="true">
                       <image>
-                        <Image url="@img/icon/Tag_Pending.png"/>
+                        <Image url="@img/icon/Tag_Pending.png" />
                       </image>
                       <VBox.margin>
-                        <Insets bottom="2.0"/>
+                        <Insets bottom="2.0" />
                       </VBox.margin>
                     </ImageView>
                   </children>
                   <HBox.margin>
-                    <Insets left="9.0"/>
+                    <Insets left="9.0" />
                   </HBox.margin>
                 </VBox>
               </children>
@@ -295,7 +302,7 @@
         </VBox>
       </children>
       <padding>
-        <Insets bottom="110.0" left="52.0" right="52.0" top="110.0"/>
+        <Insets bottom="110.0" left="52.0" right="52.0" top="110.0" />
       </padding>
     </VBox>
   </children>
