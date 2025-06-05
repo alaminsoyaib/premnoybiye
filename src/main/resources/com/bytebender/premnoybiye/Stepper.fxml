@@ -33,11 +33,11 @@
                               </Label>
                            </children>
                         </VBox>
-                        <HBox alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="70.0" prefWidth="540.0" spacing="40.0">
+                        <HBox maxWidth="1.7976931348623157E308" prefHeight="70.0" prefWidth="540.0" spacing="40.0">
                            <children>
-                              <VBox>
+                              <VBox maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Label ellipsisString="***" text="Date of Birth" textFill="#344054">
+                                    <Label ellipsisString="***" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" text="Date of Birth" textFill="#344054">
                                        <font>
                                           <Font name="Trebuchet MS" size="14.0" />
                                        </font>
@@ -45,17 +45,13 @@
                                           <Insets bottom="6.0" />
                                        </VBox.margin>
                                     </Label>
-                                    <HBox>
-                                       <children>
-                                          <DatePicker focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Select a Date" HBox.hgrow="ALWAYS" />
-                                       </children>
-                                    </HBox>
+                                    <DatePicker focusTraversable="false" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" promptText="Select a Date" />
                                  </children>
                                  <HBox.margin>
                                     <Insets />
                                  </HBox.margin>
                               </VBox>
-                              <VBox layoutX="10.0" layoutY="10.0">
+                              <VBox layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" HBox.hgrow="ALWAYS">
                                  <children>
                                     <Label ellipsisString="***" text="Gender" textFill="#344054">
                                        <font>
@@ -65,7 +61,7 @@
                                           <Insets bottom="6.0" />
                                        </VBox.margin>
                                     </Label>
-                                    <DatePicker focusTraversable="false" prefHeight="44.0" prefWidth="250.0" promptText="Select a Date" />
+                                    <DatePicker focusTraversable="false" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="44.0" promptText="Select a Date" />
                                  </children>
                               </VBox>
                            </children>
