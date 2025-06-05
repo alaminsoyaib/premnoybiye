@@ -32,16 +32,14 @@
   -fx-border-radius: 6;
   -fx-text-fill: #6631c4;
 }
-
-.label {
+/* .label {
   -fx-text-fill: #344054;
   -fx-font-family: "Inter";
   -fx-font-size: 16px;
   -fx-font-style: normal;
   -fx-font-weight: 500;
-  -fx-line-height: 24px; /* 150% */
-}
-
+  -fx-line-height: 24px; 
+} */
 #login_label {
   -fx-text-fill: #1d2939;
   -fx-font-family: "Trebuchet MS, sans-serif";
