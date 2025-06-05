@@ -23,7 +23,7 @@
           <children>
             <VBox fx:id="genderChoiceBox" alignment="TOP_CENTER" maxHeight="876.0" maxWidth="940.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="476.0" prefWidth="540.0" spacing="24.0">
               <children>
-                <VBox>
+                <VBox spacing="10.0">
                   <children>
                     <Label text="Personal Info" textFill="#333333">
                       <font>
