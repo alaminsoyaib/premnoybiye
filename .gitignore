@@ -109,3 +109,5 @@ Thumbs.db
 .idea/**/dynamic.xml
 .idea/**/uiDesigner.xml
 .idea/**/dbnavigator.xml
+
+target/
