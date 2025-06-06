@@ -147,10 +147,13 @@
                                                 <Insets bottom="6.0" />
                                              </VBox.margin>
                                           </Label>
-                                          <VBox id="image_picker" fx:id="imagePicker" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" VBox.vgrow="NEVER">
+                                          <VBox id="image_picker" fx:id="imagePicker" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="84.0" prefWidth="84.0" VBox.vgrow="NEVER">
                                              <cursor>
                                                 <Cursor fx:constant="HAND" />
                                              </cursor>
+                                             <children>
+                                                <ImageView fx:id="img_inside_imgPicker" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" translateX="-0.4" translateY="-0.4" VBox.vgrow="NEVER" />
+                                             </children>
                                           </VBox>
                                        </children>
                                        <HBox.margin>

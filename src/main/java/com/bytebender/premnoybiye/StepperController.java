@@ -20,6 +20,12 @@ public class StepperController {
 	private VBox Stepper3;
 
 	@FXML
+	private VBox imagePicker;
+
+	@FXML
+	private ImageView img_inside_imgPicker;
+
+	@FXML
 	private ImageView stepperIcon_1;
 	@FXML
 	private ImageView stepperIcon_2;
@@ -50,6 +56,38 @@ public class StepperController {
 		Stepper2.setManaged(false);
 		Stepper3.setVisible(false);
 		Stepper3.setManaged(false);
+
+		// image picker code starts
+		img_inside_imgPicker.setOnMouseClicked((MouseEvent event) -> {
+			try {
+				javafx.stage.FileChooser fileChooser = new javafx.stage.FileChooser();
+				fileChooser.setTitle("Select Image");
+				fileChooser.getExtensionFilters().addAll(
+						new javafx.stage.FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg", "*.gif",
+								"*.bmp"));
+
+				java.io.File selectedFile = fileChooser.showOpenDialog(img_inside_imgPicker.getScene().getWindow());
+
+				if (selectedFile != null) {
+					Image image = new Image(selectedFile.toURI().toString());
+					img_inside_imgPicker.setImage(image);
+
+					// Set size to 80x80
+					img_inside_imgPicker.setFitWidth(80);
+					img_inside_imgPicker.setFitHeight(80);
+					img_inside_imgPicker.setPreserveRatio(false);
+
+					// Set rounded corners
+					javafx.scene.shape.Rectangle clip = new javafx.scene.shape.Rectangle(80, 80);
+					clip.setArcWidth(20);
+					clip.setArcHeight(20);
+					img_inside_imgPicker.setClip(clip);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		});
+		// image picker code ends
 	}
 
 	@FXML
