@@ -54,7 +54,11 @@
                                 <Insets bottom="6.0" />
                               </VBox.margin>
                             </Label>
+<<<<<<< HEAD
                             <DatePicker fx:id="dobComboBox" focusTraversable="false" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Select a date" styleClass="date-picker" />
+=======
+                            <DatePicker focusTraversable="false" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Select a date" styleClass="date-picker" />
+>>>>>>> parent of 8d458e6 (Merge branch 'PlayGround-1' of https://github.com/alaminsoyaib/premnoybiye into PlayGround-1)
                           </children>
                           <HBox.margin>
                             <Insets />
@@ -135,6 +139,7 @@
                         </VBox>
                       </children>
                     </HBox>
+<<<<<<< HEAD
                               <HBox maxWidth="1.7976931348623157E308" prefHeight="70.0" prefWidth="540.0" spacing="40.0">
                                  <children>
                                     <VBox maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
@@ -159,6 +164,8 @@
                                     </VBox>
                                  </children>
                               </HBox>
+=======
+>>>>>>> parent of 8d458e6 (Merge branch 'PlayGround-1' of https://github.com/alaminsoyaib/premnoybiye into PlayGround-1)
                   </children>
                 </VBox>
                 <VBox fx:id="Stepper2" alignment="TOP_CENTER" maxHeight="876.0" maxWidth="940.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="476.0" prefWidth="540.0" spacing="24.0" visible="false">
@@ -192,7 +199,11 @@
                                 <Insets bottom="6.0" />
                               </VBox.margin>
                             </Label>
+<<<<<<< HEAD
                                           <ComboBox fx:id="highestEduComboBox" editable="true" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick yours" styleClass="combo-box">
+=======
+                                          <ComboBox fx:id="genderComboBox12" editable="true" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick yours" styleClass="combo-box">
+>>>>>>> parent of 8d458e6 (Merge branch 'PlayGround-1' of https://github.com/alaminsoyaib/premnoybiye into PlayGround-1)
                                              <items>
                                                 <FXCollections fx:factory="observableArrayList">
                                                    <String fx:value="Male" />
@@ -215,7 +226,7 @@
                                 <Insets bottom="6.0" />
                               </VBox.margin>
                             </Label>
-                            <ComboBox fx:id="professionComboBox" editable="true" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick yours" styleClass="combo-box">
+                            <ComboBox fx:id="genderComboBox1" editable="true" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick yours" styleClass="combo-box">
                               <items>
                                 <FXCollections fx:factory="observableArrayList">
                                   <String fx:value="Male" />
@@ -242,7 +253,7 @@
                                 <Insets bottom="6.0" />
                               </VBox.margin>
                             </Label>
-                            <ComboBox fx:id="monthlyIncomeComboBox" editable="true" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick yours" styleClass="combo-box">
+                            <ComboBox fx:id="religionComboBox1" editable="true" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick yours" styleClass="combo-box">
                               <items>
                                 <FXCollections fx:factory="observableArrayList">
                                   <String fx:value="Islam" />
@@ -294,7 +305,11 @@
                                 <Insets bottom="6.0" />
                               </VBox.margin>
                             </Label>
+<<<<<<< HEAD
                                           <ComboBox fx:id="prefPartnerAgeComboBox" editable="true" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick yours" styleClass="combo-box">
+=======
+                                          <ComboBox fx:id="religionComboBox111" editable="true" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick yours" styleClass="combo-box">
+>>>>>>> parent of 8d458e6 (Merge branch 'PlayGround-1' of https://github.com/alaminsoyaib/premnoybiye into PlayGround-1)
                                              <items>
                                                 <FXCollections fx:factory="observableArrayList">
                                                    <String fx:value="Islam" />
@@ -320,7 +335,7 @@
                                 <Insets bottom="6.0" />
                               </VBox.margin>
                             </Label>
-                            <ComboBox fx:id="prefLocationComboBox" editable="true" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick yours" styleClass="combo-box">
+                            <ComboBox fx:id="genderComboBox11" editable="true" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick yours" styleClass="combo-box">
                               <items>
                                 <FXCollections fx:factory="observableArrayList">
                                   <String fx:value="Male" />
@@ -347,7 +362,7 @@
                                 <Insets bottom="6.0" />
                               </VBox.margin>
                             </Label>
-                            <ComboBox fx:id="prefProfessionComboBox" editable="true" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick yours" styleClass="combo-box">
+                            <ComboBox fx:id="religionComboBox11" editable="true" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick yours" styleClass="combo-box">
                               <items>
                                 <FXCollections fx:factory="observableArrayList">
                                   <String fx:value="Islam" />
@@ -392,7 +407,11 @@
                   </cursor>
                 </HBox>
                 <Pane prefHeight="10.0" prefWidth="32.0" />
+<<<<<<< HEAD
                 <HBox fx:id="nextButton" alignment="CENTER" layoutX="272.0" layoutY="10.0" onMouseClicked="#nextButtonClicked" spacing="4.0" style="-fx-cursor: hand;">
+=======
+                <HBox alignment="CENTER" layoutX="272.0" layoutY="10.0" onMouseClicked="#nextButtonClicked" spacing="4.0" style="-fx-cursor: hand;">
+>>>>>>> parent of 8d458e6 (Merge branch 'PlayGround-1' of https://github.com/alaminsoyaib/premnoybiye into PlayGround-1)
                   <children>
                     <Label style="-fx-font-family: &quot;Trebuchet MS, sans-serif&quot;; -fx-font-weight: 700; -fx-font-size: 12; -fx-text-fill: #6631C4;" text="NEXT" />
                     <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true" translateY="-1.0">

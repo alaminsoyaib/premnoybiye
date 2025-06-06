@@ -54,7 +54,7 @@
                                 <Insets bottom="6.0" />
                               </VBox.margin>
                             </Label>
-                            <DatePicker fx:id="dobComboBox" focusTraversable="false" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Select a date" styleClass="date-picker" />
+                            <DatePicker focusTraversable="false" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Select a date" styleClass="date-picker" />
                           </children>
                           <HBox.margin>
                             <Insets />
@@ -135,30 +135,6 @@
                         </VBox>
                       </children>
                     </HBox>
-                              <HBox maxWidth="1.7976931348623157E308" prefHeight="70.0" prefWidth="540.0" spacing="40.0">
-                                 <children>
-                                    <VBox maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
-                                       <children>
-                                          <Label ellipsisString="***" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" text="Upload Image" textFill="#344054">
-                                             <font>
-                                                <Font name="Trebuchet MS" size="14.0" />
-                                             </font>
-                                             <VBox.margin>
-                                                <Insets bottom="6.0" />
-                                             </VBox.margin>
-                                          </Label>
-                                          <VBox id="image_picker" fx:id="imagePicker" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="80.0" prefWidth="80.0" VBox.vgrow="NEVER">
-                                             <cursor>
-                                                <Cursor fx:constant="HAND" />
-                                             </cursor>
-                                          </VBox>
-                                       </children>
-                                       <HBox.margin>
-                                          <Insets />
-                                       </HBox.margin>
-                                    </VBox>
-                                 </children>
-                              </HBox>
                   </children>
                 </VBox>
                 <VBox fx:id="Stepper2" alignment="TOP_CENTER" maxHeight="876.0" maxWidth="940.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="476.0" prefWidth="540.0" spacing="24.0" visible="false">
@@ -192,7 +168,7 @@
                                 <Insets bottom="6.0" />
                               </VBox.margin>
                             </Label>
-                                          <ComboBox fx:id="highestEduComboBox" editable="true" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick yours" styleClass="combo-box">
+                                          <ComboBox fx:id="genderComboBox12" editable="true" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick yours" styleClass="combo-box">
                                              <items>
                                                 <FXCollections fx:factory="observableArrayList">
                                                    <String fx:value="Male" />
@@ -215,7 +191,7 @@
                                 <Insets bottom="6.0" />
                               </VBox.margin>
                             </Label>
-                            <ComboBox fx:id="professionComboBox" editable="true" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick yours" styleClass="combo-box">
+                            <ComboBox fx:id="genderComboBox1" editable="true" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick yours" styleClass="combo-box">
                               <items>
                                 <FXCollections fx:factory="observableArrayList">
                                   <String fx:value="Male" />
@@ -242,7 +218,7 @@
                                 <Insets bottom="6.0" />
                               </VBox.margin>
                             </Label>
-                            <ComboBox fx:id="monthlyIncomeComboBox" editable="true" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick yours" styleClass="combo-box">
+                            <ComboBox fx:id="religionComboBox1" editable="true" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick yours" styleClass="combo-box">
                               <items>
                                 <FXCollections fx:factory="observableArrayList">
                                   <String fx:value="Islam" />
@@ -294,7 +270,7 @@
                                 <Insets bottom="6.0" />
                               </VBox.margin>
                             </Label>
-                                          <ComboBox fx:id="prefPartnerAgeComboBox" editable="true" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick yours" styleClass="combo-box">
+                                          <ComboBox fx:id="religionComboBox111" editable="true" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick yours" styleClass="combo-box">
                                              <items>
                                                 <FXCollections fx:factory="observableArrayList">
                                                    <String fx:value="Islam" />
@@ -320,7 +296,7 @@
                                 <Insets bottom="6.0" />
                               </VBox.margin>
                             </Label>
-                            <ComboBox fx:id="prefLocationComboBox" editable="true" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick yours" styleClass="combo-box">
+                            <ComboBox fx:id="genderComboBox11" editable="true" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick yours" styleClass="combo-box">
                               <items>
                                 <FXCollections fx:factory="observableArrayList">
                                   <String fx:value="Male" />
@@ -347,7 +323,7 @@
                                 <Insets bottom="6.0" />
                               </VBox.margin>
                             </Label>
-                            <ComboBox fx:id="prefProfessionComboBox" editable="true" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick yours" styleClass="combo-box">
+                            <ComboBox fx:id="religionComboBox11" editable="true" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick yours" styleClass="combo-box">
                               <items>
                                 <FXCollections fx:factory="observableArrayList">
                                   <String fx:value="Islam" />
