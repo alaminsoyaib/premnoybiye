@@ -395,7 +395,7 @@
                   </cursor>
                 </HBox>
                 <Pane prefHeight="10.0" prefWidth="32.0" />
-                <HBox alignment="CENTER" layoutX="272.0" layoutY="10.0" onMouseClicked="#nextButtonClicked" spacing="4.0" style="-fx-cursor: hand;">
+                <HBox fx:id="nextButton" alignment="CENTER" layoutX="272.0" layoutY="10.0" onMouseClicked="#nextButtonClicked" spacing="4.0" style="-fx-cursor: hand;">
                   <children>
                     <Label style="-fx-font-family: &quot;Trebuchet MS, sans-serif&quot;; -fx-font-weight: 700; -fx-font-size: 12; -fx-text-fill: #6631C4;" text="NEXT" />
                     <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true" translateY="-1.0">

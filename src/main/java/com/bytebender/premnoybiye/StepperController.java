@@ -1,13 +1,8 @@
 package com.bytebender.premnoybiye;
-// package com.bytebender.premnoybiye.DBConnection;
 
 import javafx.fxml.FXML;
 import java.io.IOException;
-
-import com.bytebender.premnoybiye.DBConnection.userInfo;
-
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -16,11 +11,6 @@ import javafx.scene.input.MouseEvent;
 
 public class StepperController {
 	int flag = 0;
-
-	public static userInfo currentUser;
-
-	@FXML
-	private Label demoLabel;
 
 	@FXML
 	private VBox Stepper1;
@@ -56,13 +46,6 @@ public class StepperController {
 	private HBox nextButton;
 	@FXML
 	private HBox prevButton;
-
-	@FXML
-	private ComboBox<?> religionComboBox;
-	@FXML
-	private ComboBox<?> cityComboBox;
-	@FXML
-	private ComboBox<?> genderComboBox;
 
 	@FXML
 	private void initialize() {
@@ -169,32 +152,8 @@ public class StepperController {
 			stepperIcon_3.scaleYProperty().set(1.27);
 
 			prevButton.setOpacity(1);
+			nextButton.setOpacity(0.3);
 			flag = 2;
-
-		} else if (flag == 2) {
-			String name = "";
-			String email = "";
-			String password = "";
-			String dob = "";
-			String gender = "";
-			String religion = "";
-			String city = "";
-			if (genderComboBox.getValue() != null) {
-				gender = genderComboBox.getValue().toString();
-			}
-			if (religionComboBox.getValue() != null) {
-				religion = religionComboBox.getValue().toString();
-			}
-			if (cityComboBox.getValue() != null) {
-				city = cityComboBox.getValue().toString();
-			}
-
-			userInfo user = new userInfo(name, email, password, dob, gender, religion, city);
-
-			currentUser = user;
-
-			App.setRoot("DemoTest");
-
 		}
 	}
 
