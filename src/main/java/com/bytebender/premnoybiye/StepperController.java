@@ -42,6 +42,8 @@ public class StepperController {
                 Stepper1.setManaged(true);
                 Stepper2.setVisible(false);
                 Stepper2.setManaged(false);
+                Stepper3.setVisible(false);
+                Stepper3.setManaged(false);
         }
 
         @FXML
