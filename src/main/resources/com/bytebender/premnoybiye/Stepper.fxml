@@ -25,7 +25,7 @@
               <children>
                 <VBox fx:id="Stepper1" alignment="TOP_CENTER" maxHeight="876.0" maxWidth="940.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="476.0" prefWidth="540.0" spacing="24.0">
                   <children>
-                    <VBox>
+                    <VBox spacing="10.0">
                       <children>
                         <Label text="Personal Info" textFill="#333333">
                           <font>
@@ -139,7 +139,7 @@
                 </VBox>
                 <VBox fx:id="Stepper2" alignment="TOP_CENTER" maxHeight="876.0" maxWidth="940.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="476.0" prefWidth="540.0" spacing="24.0" visible="false">
                   <children>
-                    <VBox>
+                    <VBox spacing="10.0">
                       <children>
                         <Label text="Education &amp; Career" textFill="#333333">
                           <font>
@@ -160,7 +160,7 @@
                       <children>
                         <VBox maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
                           <children>
-                            <Label ellipsisString="***" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" text="Date of Birth" textFill="#344054">
+                            <Label ellipsisString="***" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" text="Highest Education" textFill="#344054">
                               <font>
                                 <Font name="Trebuchet MS" size="14.0" />
                               </font>
@@ -168,7 +168,14 @@
                                 <Insets bottom="6.0" />
                               </VBox.margin>
                             </Label>
-                            <DatePicker focusTraversable="false" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Select a date" styleClass="date-picker" />
+                                          <ComboBox fx:id="genderComboBox12" editable="true" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick yours" styleClass="combo-box">
+                                             <items>
+                                                <FXCollections fx:factory="observableArrayList">
+                                                   <String fx:value="Male" />
+                                                   <String fx:value="Female" />
+                                                </FXCollections>
+                                             </items>
+                                          </ComboBox>
                           </children>
                           <HBox.margin>
                             <Insets />
@@ -176,7 +183,7 @@
                         </VBox>
                         <VBox layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" HBox.hgrow="ALWAYS">
                           <children>
-                            <Label ellipsisString="***" text="Gender" textFill="#344054">
+                            <Label ellipsisString="***" text="Profession" textFill="#344054">
                               <font>
                                 <Font name="Trebuchet MS" size="14.0" />
                               </font>
@@ -203,7 +210,7 @@
                       <children>
                         <VBox maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
                           <children>
-                            <Label ellipsisString="***" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" text="Religion" textFill="#344054">
+                            <Label ellipsisString="***" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" text="Monthly Income Range" textFill="#344054">
                               <font>
                                 <Font name="Trebuchet MS" size="14.0" />
                               </font>
@@ -227,33 +234,14 @@
                             <Insets />
                           </HBox.margin>
                         </VBox>
-                        <VBox layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" HBox.hgrow="ALWAYS">
-                          <children>
-                            <Label ellipsisString="***" text="Current City" textFill="#344054">
-                              <font>
-                                <Font name="Trebuchet MS" size="14.0" />
-                              </font>
-                              <VBox.margin>
-                                <Insets bottom="6.0" />
-                              </VBox.margin>
-                            </Label>
-                            <ComboBox fx:id="cityComboBox1" editable="true" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick one" styleClass="combo-box">
-                              <items>
-                                <FXCollections fx:factory="observableArrayList">
-                                  <String fx:value="Dhaka" />
-                                  <String fx:value="Chittagong" />
-                                </FXCollections>
-                              </items>
-                            </ComboBox>
-                          </children>
-                        </VBox>
+                        <VBox layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="70.0" prefWidth="250.0" HBox.hgrow="ALWAYS" />
                       </children>
                     </HBox>
                   </children>
                 </VBox>
                 <VBox fx:id="Stepper3" alignment="TOP_CENTER" layoutX="10.0" layoutY="486.0" maxHeight="876.0" maxWidth="940.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="476.0" prefWidth="540.0" spacing="24.0" visible="false">
                   <children>
-                    <VBox>
+                    <VBox spacing="10.0">
                       <children>
                         <Label text="Additional Info" textFill="#333333">
                           <font>
@@ -274,7 +262,7 @@
                       <children>
                         <VBox maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
                           <children>
-                            <Label ellipsisString="***" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" text="Date of Birth" textFill="#344054">
+                            <Label ellipsisString="***" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" text="Preferred Partner Age" textFill="#344054">
                               <font>
                                 <Font name="Trebuchet MS" size="14.0" />
                               </font>
@@ -282,7 +270,17 @@
                                 <Insets bottom="6.0" />
                               </VBox.margin>
                             </Label>
-                            <DatePicker focusTraversable="false" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Select a date" styleClass="date-picker" />
+                                          <ComboBox fx:id="religionComboBox111" editable="true" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick yours" styleClass="combo-box">
+                                             <items>
+                                                <FXCollections fx:factory="observableArrayList">
+                                                   <String fx:value="Islam" />
+                                                   <String fx:value="Buddhism" />
+                                                   <String fx:value="Hinduism" />
+                                                   <String fx:value="Christianity" />
+                                                   <String fx:value="Others" />
+                                                </FXCollections>
+                                             </items>
+                                          </ComboBox>
                           </children>
                           <HBox.margin>
                             <Insets />
@@ -290,7 +288,7 @@
                         </VBox>
                         <VBox layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" HBox.hgrow="ALWAYS">
                           <children>
-                            <Label ellipsisString="***" text="Gender" textFill="#344054">
+                            <Label ellipsisString="***" text="Preferred Location" textFill="#344054">
                               <font>
                                 <Font name="Trebuchet MS" size="14.0" />
                               </font>
@@ -317,7 +315,7 @@
                       <children>
                         <VBox maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
                           <children>
-                            <Label ellipsisString="***" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" text="Religion" textFill="#344054">
+                            <Label ellipsisString="***" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" text="Preferred Education/Profession" textFill="#344054">
                               <font>
                                 <Font name="Trebuchet MS" size="14.0" />
                               </font>
@@ -341,26 +339,7 @@
                             <Insets />
                           </HBox.margin>
                         </VBox>
-                        <VBox layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" HBox.hgrow="ALWAYS">
-                          <children>
-                            <Label ellipsisString="***" text="Current City" textFill="#344054">
-                              <font>
-                                <Font name="Trebuchet MS" size="14.0" />
-                              </font>
-                              <VBox.margin>
-                                <Insets bottom="6.0" />
-                              </VBox.margin>
-                            </Label>
-                            <ComboBox fx:id="cityComboBox11" editable="true" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick one" styleClass="combo-box">
-                              <items>
-                                <FXCollections fx:factory="observableArrayList">
-                                  <String fx:value="Dhaka" />
-                                  <String fx:value="Chittagong" />
-                                </FXCollections>
-                              </items>
-                            </ComboBox>
-                          </children>
-                        </VBox>
+                        <VBox layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="70.0" prefWidth="250.0" HBox.hgrow="ALWAYS" />
                       </children>
                     </HBox>
                   </children>
