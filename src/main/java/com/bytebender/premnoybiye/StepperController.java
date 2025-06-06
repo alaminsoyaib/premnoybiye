@@ -16,6 +16,7 @@ public class StepperController {
 
     @FXML
     private VBox Stepper2;
+    
     @FXML
     private VBox Stepper3;
 
