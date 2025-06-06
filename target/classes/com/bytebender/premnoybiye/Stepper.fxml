@@ -375,21 +375,21 @@
                   </HBox.margin>
                 </Label>
                 <HBox HBox.hgrow="ALWAYS" />
-                <HBox alignment="CENTER" onMouseClicked="#prevButtonClicked" spacing="4.0" style="-fx-cursor: hand;">
+                <HBox fx:id="prevButton" alignment="CENTER" onMouseClicked="#prevButtonClicked" opacity="0.3" spacing="4.0" style="-fx-cursor: hand;">
                   <children>
-                    <ImageView fitHeight="16.0" fitWidth="16.0" opacity="0.3" pickOnBounds="true" preserveRatio="true" rotate="180.0" translateY="-1.0">
+                    <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true" rotate="180.0" translateY="-1.0">
                       <image>
                         <Image url="@img/icon/arrow.png" />
                       </image>
                     </ImageView>
-                    <Label style="-fx-font-family: &quot;Trebuchet MS, sans-serif&quot;; -fx-font-weight: 700; -fx-font-size: 12; -fx-text-fill: #D1C2ED;" text="PREV" />
+                    <Label style="-fx-font-family: &quot;Trebuchet MS, sans-serif&quot;; -fx-font-weight: 700; -fx-font-size: 12; -fx-text-fill: #6631C4;" text="PREV" />
                   </children>
                   <cursor>
                     <Cursor fx:constant="OPEN_HAND" />
                   </cursor>
                 </HBox>
                 <Pane prefHeight="10.0" prefWidth="32.0" />
-                <HBox alignment="CENTER" layoutX="272.0" layoutY="10.0" onMouseClicked="#nextButtonClicked" spacing="4.0" style="-fx-cursor: hand;">
+                <HBox fx:id="nextButton" alignment="CENTER" layoutX="272.0" layoutY="10.0" onMouseClicked="#nextButtonClicked" spacing="4.0" style="-fx-cursor: hand;">
                   <children>
                     <Label style="-fx-font-family: &quot;Trebuchet MS, sans-serif&quot;; -fx-font-weight: 700; -fx-font-size: 12; -fx-text-fill: #6631C4;" text="NEXT" />
                     <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true" translateY="-1.0">
@@ -417,7 +417,7 @@
           <children>
             <HBox alignment="CENTER_LEFT" prefHeight="46.0">
               <children>
-                <ImageView fx:id="stepperIcon_1" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                <ImageView fx:id="stepperIcon_1" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" scaleX="1.27" scaleY="1.27">
                   <image>
                     <Image url="@img/icon/Checkbox_Progress.png" />
                   </image>
