@@ -110,4 +110,4 @@ Thumbs.db
 .idea/**/uiDesigner.xml
 .idea/**/dbnavigator.xml
 
-/target
+target/
