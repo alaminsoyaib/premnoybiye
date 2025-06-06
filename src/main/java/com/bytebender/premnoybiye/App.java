@@ -28,7 +28,8 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
 
-        scene = new Scene(loadFXML("splash-screen"), 1000, 600);
+        // scene = new Scene(loadFXML("splash-screen"), 1000, 600); // main code
+        scene = new Scene(loadFXML("Stepper"), 1000, 600); // demo code for test
         stage.setScene(scene);
         stage.setTitle("Prem Noy Biye");
         stage.show();
@@ -40,16 +41,16 @@ public class App extends Application {
         stage.getIcons().add(icon);
 
         // Triggering delay to switch Splash Screen
-        PauseTransition delay = new PauseTransition(Duration.seconds(6));
-        // default timing 6second decided
-        delay.play();
-        delay.setOnFinished(event -> { // Code to execute after the delay
-            try {
-                App.setRoot("login_signup_choice");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
+        // PauseTransition delay = new PauseTransition(Duration.seconds(0.2));
+        // // default timing 6second decided
+        // delay.play();
+        // delay.setOnFinished(event -> { // Code to execute after the delay
+        // try {
+        // App.setRoot("login_signup_choice");
+        // } catch (IOException e) {
+        // e.printStackTrace();
+        // }
+        // });
     }
 
     public static void main(String[] args) {

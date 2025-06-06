@@ -15,4 +15,9 @@ public class Signin_upController {
         App.setRoot("signup");
     }
 
+    @FXML // temporary method to develop stepper
+    private void switchToStepper() throws IOException {
+        App.setRoot("Stepper");
+    }
+
 }

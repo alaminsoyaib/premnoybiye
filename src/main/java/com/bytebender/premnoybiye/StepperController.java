@@ -1,0 +1,155 @@
+package com.bytebender.premnoybiye;
+
+import javafx.fxml.FXML;
+import java.io.IOException;
+import javafx.scene.control.ComboBox;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.VBox;
+import javafx.scene.input.MouseEvent;
+
+public class StepperController {
+    int flag = 0;
+
+    @FXML
+    private VBox Stepper1;
+
+    @FXML
+    private VBox Stepper2;
+    @FXML
+    private VBox Stepper3;
+
+    @FXML
+    private ImageView stepperIcon_1;
+
+    @FXML
+    private ImageView stepperIcon_2;
+
+    @FXML
+    private ImageView stepperIcon_3;
+
+    @FXML
+    private ImageView stepperLine_12;
+
+    @FXML
+    private ImageView stepperLine_23;
+
+    @FXML
+    private ImageView stepperProgress_1;
+
+    @FXML
+    private ImageView stepperProgress_2;
+
+    @FXML
+    private ImageView stepperProgress_3;
+
+    @FXML
+    private ComboBox<?> cityComboBox;
+
+    @FXML
+    private ComboBox<?> cityComboBox1;
+
+    @FXML
+    private ComboBox<?> genderComboBox;
+
+    @FXML
+    private ComboBox<?> genderComboBox1;
+
+    @FXML
+    private ComboBox<?> religionComboBox;
+
+    @FXML
+    private ComboBox<?> religionComboBox1;
+
+    @FXML
+    private void initialize() {
+        // Initialize: Show Stepper1, hide Stepper2
+        Stepper1.setVisible(true);
+        Stepper1.setManaged(true);
+        Stepper2.setVisible(false);
+        Stepper2.setManaged(false);
+    }
+
+    @FXML
+    private void nextButtonClicked() throws IOException {
+        // flag 0 means Stepper1 is visible
+        // flag 1 means Stepper2 is visible
+        // flag 2 means Stepper3 is visible
+        // flag 3 means done
+        if (flag == 0) {
+            Stepper1.setVisible(false);
+            Stepper1.setManaged(false);
+            Stepper2.setVisible(true);
+            Stepper2.setManaged(true);
+            stepperIcon_1.setImage(new Image(
+                    App.class.getResourceAsStream("/com/bytebender/premnoybiye/img/icon/Checkbox_Complete.png")));
+            stepperProgress_1.setImage(new Image(
+                    App.class.getResourceAsStream("/com/bytebender/premnoybiye/img/icon/Tag_Complete.png")));
+            stepperLine_12.setImage(new Image(
+                    App.class.getResourceAsStream("/com/bytebender/premnoybiye/img/icon/Stepper_Line_Enable.png")));
+            stepperIcon_2.setImage(new Image(
+                    App.class.getResourceAsStream("/com/bytebender/premnoybiye/img/icon/Checkbox_Progress.png")));
+            stepperProgress_2.setImage(new Image(
+                    App.class.getResourceAsStream("/com/bytebender/premnoybiye/img/icon/Tag_Progress.png")));
+
+            flag = 1;
+        } else if (flag == 1) {
+            Stepper2.setVisible(false);
+            Stepper2.setManaged(false);
+            Stepper3.setVisible(true);
+            Stepper3.setManaged(true);
+            stepperIcon_2.setImage(new Image(
+                    App.class.getResourceAsStream("/com/bytebender/premnoybiye/img/icon/Checkbox_Complete.png")));
+            stepperProgress_2.setImage(new Image(
+                    App.class.getResourceAsStream("/com/bytebender/premnoybiye/img/icon/Tag_Complete.png")));
+            stepperLine_23.setImage(new Image(
+                    App.class.getResourceAsStream("/com/bytebender/premnoybiye/img/icon/Stepper_Line_Enable.png")));
+            stepperIcon_3.setImage(new Image(
+                    App.class.getResourceAsStream("/com/bytebender/premnoybiye/img/icon/Checkbox_Progress.png")));
+            stepperProgress_3.setImage(new Image(
+                    App.class.getResourceAsStream("/com/bytebender/premnoybiye/img/icon/Tag_Progress.png")));
+
+            flag = 2;
+        }
+    }
+
+    @FXML
+    private void prevButtonClicked() throws IOException {
+        if (flag == 1) {
+            Stepper2.setVisible(false);
+            Stepper2.setManaged(false);
+            Stepper1.setVisible(true);
+            Stepper1.setManaged(true);
+            stepperIcon_1.setImage(new Image(
+                    App.class.getResourceAsStream("/com/bytebender/premnoybiye/img/icon/Checkbox_Progress.png")));
+            stepperProgress_1.setImage(new Image(
+                    App.class.getResourceAsStream("/com/bytebender/premnoybiye/img/icon/Tag_Progress.png")));
+            stepperLine_12.setImage(new Image(
+                    App.class.getResourceAsStream("/com/bytebender/premnoybiye/img/icon/Stepper_Line_Disable.png")));
+            stepperIcon_2.setImage(new Image(
+                    App.class.getResourceAsStream("/com/bytebender/premnoybiye/img/icon/Checkbox_Pending.png")));
+            stepperProgress_2.setImage(new Image(
+                    App.class.getResourceAsStream("/com/bytebender/premnoybiye/img/icon/Tag_Pending.png")));
+
+            flag = 0;
+        } else if (flag == 2) {
+            Stepper3.setVisible(false);
+            Stepper3.setManaged(false);
+            Stepper2.setVisible(true);
+            Stepper2.setManaged(true);
+            stepperIcon_2.setImage(new Image(
+                    App.class.getResourceAsStream("/com/bytebender/premnoybiye/img/icon/Checkbox_Progress.png")));
+            stepperProgress_2.setImage(new Image(
+                    App.class.getResourceAsStream("/com/bytebender/premnoybiye/img/icon/Tag_Progress.png")));
+            stepperLine_23.setImage(new Image(
+                    App.class.getResourceAsStream("/com/bytebender/premnoybiye/img/icon/Stepper_Line_Disable.png")));
+            stepperIcon_3.setImage(new Image(
+                    App.class.getResourceAsStream("/com/bytebender/premnoybiye/img/icon/Checkbox_Pending.png")));
+            stepperProgress_3.setImage(new Image(
+                    App.class.getResourceAsStream("/com/bytebender/premnoybiye/img/icon/Tag_Pending.png")));
+
+            flag = 1;
+        }
+
+    }
+}

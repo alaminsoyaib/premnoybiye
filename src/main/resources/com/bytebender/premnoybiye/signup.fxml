@@ -144,7 +144,7 @@
                   </VBox>
                   <VBox maxWidth="-Infinity" minWidth="-Infinity" prefWidth="341.0">
                      <children>
-                        <Button id="cta_button" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="50.0" prefWidth="341.0" stylesheets="@application.css" text="Sign Up" textAlignment="CENTER" />
+                        <Button id="cta_button" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#switchToStepper" prefHeight="50.0" prefWidth="341.0" stylesheets="@application.css" text="Sign Up" textAlignment="CENTER" />
                      </children>
                   </VBox>
                   <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="341.0">
