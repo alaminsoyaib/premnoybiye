@@ -55,7 +55,11 @@
                               </VBox.margin>
                             </Label>
 <<<<<<< HEAD
+<<<<<<< HEAD
                             <DatePicker fx:id="dobComboBox" focusTraversable="false" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Select a date" styleClass="date-picker" />
+=======
+                            <DatePicker focusTraversable="false" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Select a date" styleClass="date-picker" />
+>>>>>>> parent of 8d458e6 (Merge branch 'PlayGround-1' of https://github.com/alaminsoyaib/premnoybiye into PlayGround-1)
 =======
                             <DatePicker focusTraversable="false" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Select a date" styleClass="date-picker" />
 >>>>>>> parent of 8d458e6 (Merge branch 'PlayGround-1' of https://github.com/alaminsoyaib/premnoybiye into PlayGround-1)
@@ -140,6 +144,7 @@
                       </children>
                     </HBox>
 <<<<<<< HEAD
+<<<<<<< HEAD
                               <HBox maxWidth="1.7976931348623157E308" prefHeight="70.0" prefWidth="540.0" spacing="40.0">
                                  <children>
                                     <VBox maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
@@ -164,6 +169,8 @@
                                     </VBox>
                                  </children>
                               </HBox>
+=======
+>>>>>>> parent of 8d458e6 (Merge branch 'PlayGround-1' of https://github.com/alaminsoyaib/premnoybiye into PlayGround-1)
 =======
 >>>>>>> parent of 8d458e6 (Merge branch 'PlayGround-1' of https://github.com/alaminsoyaib/premnoybiye into PlayGround-1)
                   </children>
@@ -200,7 +207,11 @@
                               </VBox.margin>
                             </Label>
 <<<<<<< HEAD
+<<<<<<< HEAD
                                           <ComboBox fx:id="highestEduComboBox" editable="true" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick yours" styleClass="combo-box">
+=======
+                                          <ComboBox fx:id="genderComboBox12" editable="true" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick yours" styleClass="combo-box">
+>>>>>>> parent of 8d458e6 (Merge branch 'PlayGround-1' of https://github.com/alaminsoyaib/premnoybiye into PlayGround-1)
 =======
                                           <ComboBox fx:id="genderComboBox12" editable="true" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick yours" styleClass="combo-box">
 >>>>>>> parent of 8d458e6 (Merge branch 'PlayGround-1' of https://github.com/alaminsoyaib/premnoybiye into PlayGround-1)
@@ -306,7 +317,11 @@
                               </VBox.margin>
                             </Label>
 <<<<<<< HEAD
+<<<<<<< HEAD
                                           <ComboBox fx:id="prefPartnerAgeComboBox" editable="true" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick yours" styleClass="combo-box">
+=======
+                                          <ComboBox fx:id="religionComboBox111" editable="true" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick yours" styleClass="combo-box">
+>>>>>>> parent of 8d458e6 (Merge branch 'PlayGround-1' of https://github.com/alaminsoyaib/premnoybiye into PlayGround-1)
 =======
                                           <ComboBox fx:id="religionComboBox111" editable="true" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick yours" styleClass="combo-box">
 >>>>>>> parent of 8d458e6 (Merge branch 'PlayGround-1' of https://github.com/alaminsoyaib/premnoybiye into PlayGround-1)
@@ -408,8 +423,11 @@
                 </HBox>
                 <Pane prefHeight="10.0" prefWidth="32.0" />
 <<<<<<< HEAD
+<<<<<<< HEAD
                 <HBox fx:id="nextButton" alignment="CENTER" layoutX="272.0" layoutY="10.0" onMouseClicked="#nextButtonClicked" spacing="4.0" style="-fx-cursor: hand;">
 =======
+=======
+>>>>>>> parent of 8d458e6 (Merge branch 'PlayGround-1' of https://github.com/alaminsoyaib/premnoybiye into PlayGround-1)
                 <HBox alignment="CENTER" layoutX="272.0" layoutY="10.0" onMouseClicked="#nextButtonClicked" spacing="4.0" style="-fx-cursor: hand;">
 >>>>>>> parent of 8d458e6 (Merge branch 'PlayGround-1' of https://github.com/alaminsoyaib/premnoybiye into PlayGround-1)
                   <children>
