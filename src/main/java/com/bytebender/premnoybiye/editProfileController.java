@@ -10,7 +10,7 @@ public class editProfileController {
     @FXML
     private Label demoLabel;
     @FXML
-    private Label demosubLabel;
+    private Label demosub;
     @FXML
     private Label emailLabel;
 
@@ -43,16 +43,16 @@ public class editProfileController {
         // Access the user info
         userInfo user = StepperController.currentUser;
         if (user != null) {
-            String name = user.getBio();
+            String name = user.getName();
             if (name != "") {
-                demoLabel.setText(user.getBio());
-                demosubLabel.setText(user.getBio());
+                demoLabel.setText(user.getName());
+                demosub.setText(name);
             }
             if (user.getEmail() != "") {
                 emailLabel.setText(user.getEmail());
             }
             if (user.getReligion() != "") {
-                demosubLabel.setText(user.getReligion());
+                religionComboBox.setPromptText(user.getReligion());
             }
             if (user.getDob() != "") {
                 dobComboBox.setPromptText(user.getDob());

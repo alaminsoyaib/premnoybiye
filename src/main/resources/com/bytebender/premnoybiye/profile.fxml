@@ -39,7 +39,7 @@
                         <Font name="Trebuchet MS" size="12.0" />
                       </font>
                     </Text>
-                              <Label fx:id="demosubLabel" text="Kuddus Begum" textFill="#6631c4">
+                              <Label fx:id="demosub" text="Kuddus Begum" textFill="#6631c4">
                                  <font>
                                     <Font name="Trebuchet MS Bold" size="14.0" />
                                  </font>

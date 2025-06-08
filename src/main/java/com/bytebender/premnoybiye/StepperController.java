@@ -186,9 +186,10 @@ public class StepperController {
 			prevButton.setOpacity(1);
 			flag = 2;
 		} else if (flag == 2) {
-			String name = "";
-			String email = "";
-			String password = "";
+			userInfo tempuser = Signin_upController.NewUser;
+			String name = tempuser.getName();
+			String email = tempuser.getEmail();
+			String password = tempuser.getPassword();
 			String dob = "";
 			String gender = "";
 			String religion = "";
