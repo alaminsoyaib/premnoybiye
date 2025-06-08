@@ -23,7 +23,167 @@
           <children>
             <VBox alignment="TOP_CENTER" maxHeight="876.0" maxWidth="940.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="476.0" prefWidth="540.0">
               <children>
+<<<<<<< Updated upstream
                 <VBox fx:id="Stepper1" alignment="TOP_CENTER" maxHeight="876.0" maxWidth="940.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="476.0" prefWidth="540.0" spacing="24.0">
+=======
+                <VBox fx:id="Stepper3" alignment="TOP_CENTER" layoutX="10.0" layoutY="486.0" maxHeight="876.0" maxWidth="940.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="476.0" prefWidth="540.0" spacing="24.0">
+                  <children>
+                    <VBox spacing="10.0">
+                      <children>
+                        <Label text="Additional Info" textFill="#333333">
+                          <font>
+                            <Font name="Trebuchet MS Bold" size="24.0"/>
+                          </font>
+                        </Label>
+                        <Label text="Please fill your information below" textFill="#667085">
+                          <font>
+                            <Font name="Trebuchet MS" size="15.0"/>
+                          </font>
+                        </Label>
+                      </children>
+                      <VBox.margin>
+                        <Insets bottom="32.0"/>
+                      </VBox.margin>
+                    </VBox>
+                    <HBox maxWidth="1.7976931348623157E308" prefHeight="70.0" prefWidth="540.0" spacing="40.0">
+                      <children>
+                        <VBox maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+                          <children>
+                            <Label ellipsisString="***" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" text="About you" textFill="#344054">
+                              <font>
+                                <Font name="Trebuchet MS" size="14.0"/>
+                              </font>
+                              <VBox.margin>
+                                <Insets bottom="6.0"/>
+                              </VBox.margin>
+                            </Label>
+                            <TextField fx:id="aboutYouTextField" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" promptText="A short bio" styleClass="combo-box"/>
+                          </children>
+                          <HBox.margin>
+                            <Insets/>
+                          </HBox.margin>
+                        </VBox>
+                      </children>
+                      <VBox.margin>
+                        <Insets/>
+                      </VBox.margin>
+                    </HBox>
+                    <HBox layoutX="10.0" layoutY="125.0" maxWidth="1.7976931348623157E308" prefHeight="70.0" prefWidth="540.0" spacing="40.0">
+                      <children>
+                        <VBox maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+                          <children>
+                            <Label ellipsisString="***" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" text="Preferred Partner Age" textFill="#344054">
+                              <font>
+                                <Font name="Trebuchet MS" size="14.0"/>
+                              </font>
+                              <VBox.margin>
+                                <Insets bottom="6.0"/>
+                              </VBox.margin>
+                            </Label>
+                            <ComboBox fx:id="prefPartnerAgeComboBox" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick one" styleClass="combo-box">
+                              <items>
+                                <FXCollections fx:factory="observableArrayList">
+                                  <String fx:value="Any"/>
+                                  <String fx:value="18 - 25"/>
+                                  <String fx:value="25 - 30"/>
+                                  <String fx:value="30 - 35"/>
+                                  <String fx:value="35 - 40"/>
+                                  <String fx:value="40+"/>
+                                </FXCollections>
+                              </items>
+                            </ComboBox>
+                          </children>
+                          <HBox.margin>
+                            <Insets/>
+                          </HBox.margin>
+                        </VBox>
+                        <VBox layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" HBox.hgrow="ALWAYS">
+                          <children>
+                            <Label ellipsisString="***" text="Preferred Location" textFill="#344054">
+                              <font>
+                                <Font name="Trebuchet MS" size="14.0"/>
+                              </font>
+                              <VBox.margin>
+                                <Insets bottom="6.0"/>
+                              </VBox.margin>
+                            </Label>
+                            <ComboBox fx:id="prefLocationComboBox" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick one" styleClass="combo-box">
+                              <items>
+                                <FXCollections fx:factory="observableArrayList">
+                                  <String fx:value="Any"/>
+                                  <String fx:value="Noakhali"/>
+                                  <String fx:value="Dhaka"/>
+                                  <String fx:value="Chittagong"/>
+                                  <String fx:value="Khulna"/>
+                                  <String fx:value="Rajshahi"/>
+                                  <String fx:value="Sylhet"/>
+                                  <String fx:value="Barisal"/>
+                                  <String fx:value="Rangpur"/>
+                                  <String fx:value="Comilla"/>
+                                  <String fx:value="Narayanganj"/>
+                                  <String fx:value="Gazipur"/>
+                                  <String fx:value="Narsingdi"/>
+                                  <String fx:value="Bogra"/>
+                                  <String fx:value="Jessore"/>
+                                  <String fx:value="Mymensingh"/>
+                                  <String fx:value="Tangail"/>
+                                  <String fx:value="Pabna"/>
+                                  <String fx:value="Cox's Bazar"/>
+                                  <String fx:value="Satkhira"/>
+                                  <String fx:value="Brahmanbaria"/>
+                                  <String fx:value="Patuakhali"/>
+                                  <String fx:value="Jamalpur"/>
+                                  <String fx:value="Dinajpur"/>
+                                  <String fx:value="Kushtia"/>
+                                  <String fx:value="Chuadanga"/>
+                                  <String fx:value="Naogaon"/>
+                                  <String fx:value="Pirojpur"/>
+                                  <String fx:value="Lalmonirhat"/>
+                                  <String fx:value="Sherpur"/>
+                                </FXCollections>
+                              </items>
+                            </ComboBox>
+                          </children>
+                        </VBox>
+                      </children>
+                    </HBox>
+                    <HBox layoutX="10.0" layoutY="115.0" maxWidth="1.7976931348623157E308" prefHeight="70.0" prefWidth="540.0" spacing="40.0">
+                      <children>
+                        <VBox maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+                          <children>
+                            <Label ellipsisString="***" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" text="Preferred Education/Profession" textFill="#344054">
+                              <font>
+                                <Font name="Trebuchet MS" size="14.0"/>
+                              </font>
+                              <VBox.margin>
+                                <Insets bottom="6.0"/>
+                              </VBox.margin>
+                            </Label>
+                            <ComboBox fx:id="prefProfessionComboBox" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick one" styleClass="combo-box">
+                              <items>
+                                <FXCollections fx:factory="observableArrayList">
+                                  <String fx:value="Any"/>
+                                  <String fx:value="Student"/>
+                                  <String fx:value="Service Holder"/>
+                                  <String fx:value="Business"/>
+                                  <String fx:value="Self-Employed"/>
+                                  <String fx:value="Freelancer"/>
+                                  <String fx:value="Others"/>
+                                </FXCollections>
+                              </items>
+                            </ComboBox>
+                          </children>
+                          <HBox.margin>
+                            <Insets/>
+                          </HBox.margin>
+                        </VBox>
+                        <VBox layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="70.0" prefWidth="250.0" HBox.hgrow="ALWAYS"/>
+                      </children>
+                    </HBox>
+                  </children>
+                </VBox>
+                <VBox fx:id="Stepper1" alignment="TOP_CENTER" maxHeight="876.0" maxWidth="940.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="476.0" prefWidth="540.0" spacing="24.0" visible="false">
+>>>>>>> Stashed changes
                   <children>
                     <VBox spacing="10.0">
                       <children>
@@ -54,7 +214,11 @@
                                 <Insets bottom="6.0"/>
                               </VBox.margin>
                             </Label>
+<<<<<<< Updated upstream
                             <DatePicker focusTraversable="false" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Select a date" styleClass="date-picker"/>
+=======
+                            <DatePicker fx:id="dobComboBox" focusTraversable="false" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Select a date" styleClass="date-picker"/>
+>>>>>>> Stashed changes
                           </children>
                           <HBox.margin>
                             <Insets/>
@@ -75,6 +239,10 @@
                                 <FXCollections fx:factory="observableArrayList">
                                   <String fx:value="Male"/>
                                   <String fx:value="Female"/>
+<<<<<<< Updated upstream
+=======
+                                  <String fx:value="Other"/>
+>>>>>>> Stashed changes
                                 </FXCollections>
                               </items>
                             </ComboBox>
@@ -101,8 +269,13 @@
                               <items>
                                 <FXCollections fx:factory="observableArrayList">
                                   <String fx:value="Islam"/>
+<<<<<<< Updated upstream
                                   <String fx:value="Buddhism"/>
                                   <String fx:value="Hinduism"/>
+=======
+                                  <String fx:value="Hinduism"/>
+                                  <String fx:value="Buddhism"/>
+>>>>>>> Stashed changes
                                   <String fx:value="Christianity"/>
                                   <String fx:value="Others"/>
                                 </FXCollections>
@@ -126,8 +299,41 @@
                             <ComboBox fx:id="cityComboBox" editable="true" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick one" styleClass="combo-box">
                               <items>
                                 <FXCollections fx:factory="observableArrayList">
+<<<<<<< Updated upstream
                                   <String fx:value="Dhaka"/>
                                   <String fx:value="Chittagong"/>
+=======
+                                  <String fx:value="Any"/>
+                                  <String fx:value="Noakhali"/>
+                                  <String fx:value="Dhaka"/>
+                                  <String fx:value="Chittagong"/>
+                                  <String fx:value="Khulna"/>
+                                  <String fx:value="Rajshahi"/>
+                                  <String fx:value="Sylhet"/>
+                                  <String fx:value="Barisal"/>
+                                  <String fx:value="Rangpur"/>
+                                  <String fx:value="Comilla"/>
+                                  <String fx:value="Narayanganj"/>
+                                  <String fx:value="Gazipur"/>
+                                  <String fx:value="Narsingdi"/>
+                                  <String fx:value="Bogra"/>
+                                  <String fx:value="Jessore"/>
+                                  <String fx:value="Mymensingh"/>
+                                  <String fx:value="Tangail"/>
+                                  <String fx:value="Pabna"/>
+                                  <String fx:value="Cox's Bazar"/>
+                                  <String fx:value="Satkhira"/>
+                                  <String fx:value="Brahmanbaria"/>
+                                  <String fx:value="Patuakhali"/>
+                                  <String fx:value="Jamalpur"/>
+                                  <String fx:value="Dinajpur"/>
+                                  <String fx:value="Kushtia"/>
+                                  <String fx:value="Chuadanga"/>
+                                  <String fx:value="Naogaon"/>
+                                  <String fx:value="Pirojpur"/>
+                                  <String fx:value="Lalmonirhat"/>
+                                  <String fx:value="Sherpur"/>
+>>>>>>> Stashed changes
                                 </FXCollections>
                               </items>
                             </ComboBox>
@@ -135,6 +341,36 @@
                         </VBox>
                       </children>
                     </HBox>
+<<<<<<< Updated upstream
+=======
+                    <HBox maxWidth="1.7976931348623157E308" prefHeight="70.0" prefWidth="540.0" spacing="40.0">
+                      <children>
+                        <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="100.0" HBox.hgrow="ALWAYS">
+                          <children>
+                            <Label ellipsisString="***" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" text="Upload Image" textFill="#344054">
+                              <font>
+                                <Font name="Trebuchet MS" size="14.0"/>
+                              </font>
+                              <VBox.margin>
+                                <Insets bottom="6.0"/>
+                              </VBox.margin>
+                            </Label>
+                            <VBox id="image_picker" fx:id="imagePicker" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="88.0" prefWidth="88.0">
+                              <cursor>
+                                <Cursor fx:constant="HAND"/>
+                              </cursor>
+                              <children>
+                                <ImageView fx:id="img_inside_imgPicker" fitHeight="80.0" fitWidth="80.0" pickOnBounds="true" preserveRatio="true" translateX="-0.4" translateY="-0.2" VBox.vgrow="NEVER"/>
+                              </children>
+                            </VBox>
+                          </children>
+                          <HBox.margin>
+                            <Insets/>
+                          </HBox.margin>
+                        </VBox>
+                      </children>
+                    </HBox>
+>>>>>>> Stashed changes
                   </children>
                 </VBox>
                 <VBox fx:id="Stepper2" alignment="TOP_CENTER" maxHeight="876.0" maxWidth="940.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="476.0" prefWidth="540.0" spacing="24.0" visible="false">
@@ -171,8 +407,17 @@
                             <ComboBox fx:id="genderComboBox12" editable="true" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick yours" styleClass="combo-box">
                               <items>
                                 <FXCollections fx:factory="observableArrayList">
+<<<<<<< Updated upstream
                                   <String fx:value="Male"/>
                                   <String fx:value="Female"/>
+=======
+                                  <String fx:value="SSC/Equivalent"/>
+                                  <String fx:value="HSC/Equivalent"/>
+                                  <String fx:value="Bachelor's"/>
+                                  <String fx:value="Master's"/>
+                                  <String fx:value="PhD or Upper"/>
+                                  <String fx:value="Others"/>
+>>>>>>> Stashed changes
                                 </FXCollections>
                               </items>
                             </ComboBox>
@@ -194,8 +439,17 @@
                             <ComboBox fx:id="genderComboBox1" editable="true" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick yours" styleClass="combo-box">
                               <items>
                                 <FXCollections fx:factory="observableArrayList">
+<<<<<<< Updated upstream
                                   <String fx:value="Male"/>
                                   <String fx:value="Female"/>
+=======
+                                  <String fx:value="Student"/>
+                                  <String fx:value="Service Holder"/>
+                                  <String fx:value="Business"/>
+                                  <String fx:value="Self-Employed"/>
+                                  <String fx:value="Freelancer"/>
+                                  <String fx:value="Others"/>
+>>>>>>> Stashed changes
                                 </FXCollections>
                               </items>
                             </ComboBox>
@@ -221,11 +475,19 @@
                             <ComboBox fx:id="religionComboBox1" editable="true" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick yours" styleClass="combo-box">
                               <items>
                                 <FXCollections fx:factory="observableArrayList">
+<<<<<<< Updated upstream
                                   <String fx:value="Islam"/>
                                   <String fx:value="Buddhism"/>
                                   <String fx:value="Hinduism"/>
                                   <String fx:value="Christianity"/>
                                   <String fx:value="Others"/>
+=======
+                                  <String fx:value="0 - 20,000"/>
+                                  <String fx:value="20,000 - 40,000"/>
+                                  <String fx:value="40,000 - 70,000"/>
+                                  <String fx:value="70,000 - 1,00,000"/>
+                                  <String fx:value="1,00,000+"/>
+>>>>>>> Stashed changes
                                 </FXCollections>
                               </items>
                             </ComboBox>
@@ -235,6 +497,7 @@
                           </HBox.margin>
                         </VBox>
                         <VBox layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="70.0" prefWidth="250.0" HBox.hgrow="ALWAYS"/>
+<<<<<<< Updated upstream
                       </children>
                     </HBox>
                   </children>
@@ -340,6 +603,8 @@
                           </HBox.margin>
                         </VBox>
                         <VBox layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="70.0" prefWidth="250.0" HBox.hgrow="ALWAYS"/>
+=======
+>>>>>>> Stashed changes
                       </children>
                     </HBox>
                   </children>
