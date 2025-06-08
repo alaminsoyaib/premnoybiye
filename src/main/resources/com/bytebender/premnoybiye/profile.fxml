@@ -41,7 +41,7 @@
                         <Font name="Trebuchet MS" size="12.0" />
                       </font>
                     </Text>
-                              <Label fx:id="demosub" prefWidth="98.0" text="Kuddus Begum" textFill="#6631c4">
+                              <Label fx:id="demosub" prefWidth="98.0" text="Loading..." textFill="#6631c4">
                                  <font>
                                     <Font name="Trebuchet MS Bold" size="14.0" />
                                  </font>
@@ -70,47 +70,7 @@
                         <Image url="@img/icon/home-icon.png" />
                       </image>
                     </ImageView>
-                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Home">
-                      <font>
-                        <Font name="Trebuchet MS" size="16.0" />
-                      </font>
-                    </Text>
-                  </children>
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                </HBox>
-                <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" spacing="16.0">
-                  <padding>
-                    <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
-                  </padding>
-                  <children>
-                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                      <image>
-                        <Image url="@img/icon/match-icon.png" />
-                      </image>
-                    </ImageView>
-                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="My Matches">
-                      <font>
-                        <Font name="Trebuchet MS" size="16.0" />
-                      </font>
-                    </Text>
-                  </children>
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
-                </HBox>
-                <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" spacing="16.0">
-                  <padding>
-                    <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
-                  </padding>
-                  <children>
-                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                      <image>
-                        <Image url="@img/icon/message-icon.png" />
-                      </image>
-                    </ImageView>
-                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Messages">
+                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Discover">
                       <font>
                         <Font name="Trebuchet MS" size="16.0" />
                       </font>
@@ -131,6 +91,66 @@
                       </image>
                     </ImageView>
                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Profile">
+                      <font>
+                        <Font name="Trebuchet MS" size="16.0" />
+                      </font>
+                    </Text>
+                  </children>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                </HBox>
+                        <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="70.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" spacing="16.0">
+                           <padding>
+                              <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+                           </padding>
+                           <children>
+                              <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@img/icon/match-icon.png" />
+                                 </image>
+                              </ImageView>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="My Matches">
+                                 <font>
+                                    <Font name="Trebuchet MS" size="16.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </HBox>
+                <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" spacing="16.0">
+                  <padding>
+                    <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+                  </padding>
+                  <children>
+                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                      <image>
+                        <Image url="@img/icon/favorite-icon.png" />
+                      </image>
+                    </ImageView>
+                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Favorites">
+                      <font>
+                        <Font name="Trebuchet MS" size="16.0" />
+                      </font>
+                    </Text>
+                  </children>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                </HBox>
+                <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" spacing="16.0">
+                  <padding>
+                    <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
+                  </padding>
+                  <children>
+                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                      <image>
+                        <Image url="@img/icon/message-icon.png" />
+                      </image>
+                    </ImageView>
+                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Messages">
                       <font>
                         <Font name="Trebuchet MS" size="16.0" />
                       </font>
@@ -192,12 +212,12 @@
                         </ImageView>
                         <VBox alignment="CENTER_LEFT" spacing="6.0" HBox.hgrow="ALWAYS">
                           <children>
-                                          <Label fx:id="demoLabel" text="Kuddus Begum" textFill="#262626">
+                                          <Label fx:id="demoLabel" prefWidth="300.0" text="Loading..." textFill="#262626">
                                              <font>
                                                 <Font name="Trebuchet MS Bold" size="20.0" />
                                              </font>
                                           </Label>
-                                          <Label fx:id="emailLabel" layoutX="10.0" layoutY="26.0" opacity="0.5" text="abc@gmail.com">
+                                          <Label fx:id="emailLabel" layoutX="10.0" layoutY="26.0" opacity="0.5" text="Loading...">
                                              <font>
                                                 <Font name="Trebuchet MS" size="17.0" />
                                              </font>

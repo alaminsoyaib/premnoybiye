@@ -5,6 +5,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
 
 public class editProfileController {
     @FXML
@@ -30,14 +31,14 @@ public class editProfileController {
     @FXML
     private ComboBox<?> monthlyIncomeComboBox;
 
-    // @FXML
-    // private TextField aboutYouTextField;
-    // @FXML
-    // private ComboBox<?> prefPartnerAgeComboBox;
-    // @FXML
-    // private ComboBox<?> prefLocationComboBox;
-    // @FXML
-    // private ComboBox<?> prefProfessionComboBox;
+    @FXML
+    private TextField aboutYouTextField;
+    @FXML
+    private ComboBox<?> prefPartnerAgeComboBox;
+    @FXML
+    private ComboBox<?> prefLocationComboBox;
+    @FXML
+    private ComboBox<?> prefProfessionComboBox;
 
     public void initialize() {
         // Access the user info
@@ -74,6 +75,18 @@ public class editProfileController {
             }
             if (user.getIncome() != "") {
                 monthlyIncomeComboBox.setPromptText(user.getIncome());
+            }
+            if (user.getBio() != "") {
+                aboutYouTextField.setText(user.getBio());
+            }
+            if (user.getPrefAge() != "") {
+                prefPartnerAgeComboBox.setPromptText(user.getPrefAge());
+            }
+            if (user.getPrefLocation() != "") {
+                prefLocationComboBox.setPromptText(user.getPrefLocation());
+            }
+            if (user.getPrefProfession() != "") {
+                prefProfessionComboBox.setPromptText(user.getPrefProfession());
             }
 
             // demoLabel.setText("Date of Birth: " + user.getDob() + "\nGender: " +
