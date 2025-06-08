@@ -152,13 +152,13 @@
             <Insets bottom="16.0" left="12.0" right="12.0" top="40.0" />
          </padding>
       </VBox>
-      <ScrollPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+      <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
         <content>
           <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="756.0">
                <children>
-                  <VBox id="test_full" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" spacing="1.0" style="-fx-background-color: green;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <VBox id="test_full" alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" spacing="1.0" style="-fx-background-color: white;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                      <children>
-                        <HBox maxWidth="1.7976931348623157E308" prefHeight="100.0" prefWidth="756.0" style="-fx-background-color: white;">
+                        <HBox maxWidth="940.0" prefHeight="100.0" prefWidth="756.0" style="-fx-background-color: white;">
                            <padding>
                               <Insets bottom="16.0" left="32.0" right="32.0" top="40.0" />
                            </padding>
@@ -193,7 +193,7 @@
                               </HBox>
                            </children>
                         </HBox>
-                        <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" spacing="12.0" style="-fx-background-color: white;">
+                        <VBox maxHeight="-Infinity" maxWidth="940.0" minHeight="-Infinity" minWidth="-Infinity" spacing="12.0" style="-fx-background-color: white;">
                            <children>
                               <Text fill="#6631c4" strokeType="OUTSIDE" strokeWidth="0.0" text="Personal Info">
                                  <font>
@@ -327,7 +327,7 @@
                               <Insets bottom="24.0" left="32.0" right="32.0" top="24.0" />
                            </padding>
                         </VBox>
-                        <VBox layoutX="10.0" layoutY="151.0" maxWidth="1.7976931348623157E308" spacing="12.0" style="-fx-background-color: white;">
+                        <VBox layoutX="10.0" layoutY="151.0" maxWidth="940.0" spacing="12.0" style="-fx-background-color: white;">
                            <children>
                               <Text fill="#6631c4" strokeType="OUTSIDE" strokeWidth="0.0" text="Education &amp; Career">
                                  <font>
@@ -429,7 +429,7 @@
                               <Insets bottom="24.0" left="32.0" right="32.0" top="24.0" />
                            </padding>
                         </VBox>
-                        <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" spacing="12.0" style="-fx-background-color: white;">
+                        <VBox maxHeight="-Infinity" maxWidth="940.0" minHeight="-Infinity" minWidth="-Infinity" spacing="12.0" style="-fx-background-color: white;">
                            <children>
                               <Text fill="#6631c4" strokeType="OUTSIDE" strokeWidth="0.0" text="Personal Info">
                                  <font>
