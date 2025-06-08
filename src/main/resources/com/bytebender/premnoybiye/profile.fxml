@@ -172,7 +172,7 @@
                         </ImageView>
                         <VBox alignment="CENTER_LEFT" spacing="6.0" HBox.hgrow="ALWAYS">
                           <children>
-                            <Text fill="#262626" strokeType="OUTSIDE" strokeWidth="0.0" text="Kuddus Begum">
+                            <Text fx:id="demoLabel" fill="#262626" strokeType="OUTSIDE" strokeWidth="0.0" text="Kuddus Begum">
                               <font>
                                 <Font name="Trebuchet MS Bold" size="20.0" />
                               </font>
