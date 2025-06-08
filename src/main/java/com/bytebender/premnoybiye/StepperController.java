@@ -150,7 +150,6 @@ public class StepperController {
 			stepperIcon_3.scaleYProperty().set(1.27);
 
 			prevButton.setOpacity(1);
-			nextButton.setOpacity(0.3);
 			flag = 2;
 		}
 	}
@@ -211,8 +210,6 @@ public class StepperController {
 			stepperIcon_3.scaleYProperty().set(1.0);
 			stepperIcon_2.scaleXProperty().set(1.27);
 			stepperIcon_2.scaleYProperty().set(1.27);
-
-			nextButton.setOpacity(1);
 
 			flag = 1;
 		}
