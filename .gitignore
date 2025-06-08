@@ -111,3 +111,9 @@ Thumbs.db
 .idea/**/uiDesigner.xml
 .idea/**/dbnavigator.xml
 *.class
+/target/classes/com/bytebender/premnoybiye
+/target/classes/com/bytebender
+/target/classes/com
+/target/classes
+/target
+target/classes/com/bytebender/premnoybiye/StepperController.class
