@@ -6,6 +6,8 @@ import java.io.IOException;
 import com.bytebender.premnoybiye.DBConnection.userInfo;
 
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -24,6 +26,8 @@ public class StepperController {
 	@FXML
 	private VBox Stepper3;
 
+	@FXML
+	private VBox imagePicker;
 	@FXML
 	private ImageView img_inside_imgPicker;
 
@@ -50,11 +54,29 @@ public class StepperController {
 	private HBox prevButton;
 
 	@FXML
+	private DatePicker dobComboBox;
+	@FXML
 	private ComboBox<?> genderComboBox;
 	@FXML
 	private ComboBox<?> religionComboBox;
 	@FXML
 	private ComboBox<?> cityComboBox;
+
+	@FXML
+	private ComboBox<?> highestEduComboBox;
+	@FXML
+	private ComboBox<?> professionComboBox;
+	@FXML
+	private ComboBox<?> monthlyIncomeComboBox;
+
+	@FXML
+	private TextField aboutYouTextField;
+	@FXML
+	private ComboBox<?> prefPartnerAgeComboBox;
+	@FXML
+	private ComboBox<?> prefLocationComboBox;
+	@FXML
+	private ComboBox<?> prefProfessionComboBox;
 
 	@FXML
 	private void initialize() {
@@ -171,7 +193,16 @@ public class StepperController {
 			String gender = "";
 			String religion = "";
 			String city = "";
-
+			String education = "";
+			String profession = "";
+			String income = "";
+			String bio = "";
+			String prefAge = "";
+			String prefLocation = "";
+			String prefProfession = "";
+			if (dobComboBox.getValue() != null) {
+				dob = dobComboBox.getValue().toString();
+			}
 			if (genderComboBox.getValue() != null) {
 				gender = genderComboBox.getValue().toString();
 			}
@@ -181,12 +212,34 @@ public class StepperController {
 			if (cityComboBox.getValue() != null) {
 				city = cityComboBox.getValue().toString();
 			}
-
-			userInfo user = new userInfo(name, email, password, dob, gender, religion, city);
+			if (highestEduComboBox.getValue() != null) {
+				education = highestEduComboBox.getValue().toString();
+			}
+			if (professionComboBox.getValue() != null) {
+				profession = professionComboBox.getValue().toString();
+			}
+			if (monthlyIncomeComboBox.getValue() != null) {
+				income = monthlyIncomeComboBox.getValue().toString();
+			}
+			if (aboutYouTextField.getText() != null) {
+				bio = aboutYouTextField.getText();
+			}
+			if (prefPartnerAgeComboBox.getValue() != null) {
+				prefAge = prefPartnerAgeComboBox.getValue().toString();
+			}
+			if (prefLocationComboBox.getValue() != null) {
+				prefLocation = prefLocationComboBox.getValue().toString();
+			}
+			if (prefProfessionComboBox.getValue() != null) {
+				prefProfession = prefProfessionComboBox.getValue().toString();
+			}
+			userInfo user = new userInfo(name, email, password, dob, gender, religion, city, education, profession,
+					income, bio, prefAge, prefLocation, prefProfession);
 
 			currentUser = user;
 
-			App.setRoot("profile");
+			App.setRoot("DemoTest");
+			// App.setRoot("profile");
 
 		}
 	}
