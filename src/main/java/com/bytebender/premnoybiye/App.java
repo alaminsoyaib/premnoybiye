@@ -29,7 +29,7 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
 
         // scene = new Scene(loadFXML("splash-screen"), 1000, 600); // main code
-        scene = new Scene(loadFXML("Stepper"), 1000, 600); // demo code for test
+        scene = new Scene(loadFXML("profile"), 1000, 600); // demo code for test , Stepper, profile
         stage.setScene(scene);
         stage.setTitle("Prem Noy Biye");
         stage.show();
