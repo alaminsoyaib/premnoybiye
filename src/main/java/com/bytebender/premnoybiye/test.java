@@ -1,7 +1,6 @@
 package com.bytebender.premnoybiye;
 
 import com.bytebender.premnoybiye.DBConnection.userInfo;
-import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 

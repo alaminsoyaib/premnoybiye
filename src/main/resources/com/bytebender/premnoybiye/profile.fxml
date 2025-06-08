@@ -16,7 +16,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: #E7E6ED;" stylesheets="@application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: #E7E6ED;" stylesheets="@application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bytebender.premnoybiye.editProfileController">
   <children>
     <VBox maxHeight="1.7976931348623157E308" prefHeight="200.0" prefWidth="244.0" style="-fx-background-color: #F6F3FF;">
       <children>
@@ -34,16 +34,16 @@
                 </ImageView>
                 <VBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
                   <children>
-                    <Text fill="#262626" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello">
+                    <Text fill="#262626" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello,">
                       <font>
                         <Font name="Trebuchet MS" size="12.0" />
                       </font>
                     </Text>
-                    <Text fill="#6631c4" strokeType="OUTSIDE" strokeWidth="0.0" text="Kudds Alamin">
-                      <font>
-                        <Font name="Trebuchet MS Bold" size="14.0" />
-                      </font>
-                    </Text>
+                              <Label fx:id="demosubLabel" text="Kuddus Begum" textFill="#6631c4">
+                                 <font>
+                                    <Font name="Trebuchet MS Bold" size="14.0" />
+                                 </font>
+                              </Label>
                   </children>
                 </VBox>
                 <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
@@ -172,16 +172,16 @@
                         </ImageView>
                         <VBox alignment="CENTER_LEFT" spacing="6.0" HBox.hgrow="ALWAYS">
                           <children>
-                            <Text fx:id="demoLabel" fill="#262626" strokeType="OUTSIDE" strokeWidth="0.0" text="Kuddus Begum">
-                              <font>
-                                <Font name="Trebuchet MS Bold" size="20.0" />
-                              </font>
-                            </Text>
-                            <Text opacity="0.5" strokeType="OUTSIDE" strokeWidth="0.0" text="abc@gmail.com">
-                              <font>
-                                <Font name="Trebuchet MS" size="17.0" />
-                              </font>
-                            </Text>
+                                          <Label fx:id="demoLabel" text="Kuddus Begum" textFill="#262626">
+                                             <font>
+                                                <Font name="Trebuchet MS Bold" size="20.0" />
+                                             </font>
+                                          </Label>
+                                          <Label fx:id="emailLabel" layoutX="10.0" layoutY="26.0" opacity="0.5" text="abc@gmail.com">
+                                             <font>
+                                                <Font name="Trebuchet MS" size="17.0" />
+                                             </font>
+                                          </Label>
                           </children>
                         </VBox>
                         <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="36.0" prefWidth="130.0" style="-fx-border-color: #6631C4; -fx-border-radius: 8; -fx-border-width: 2; -fx-background-radius: 8; -fx-background-color: transparent; -fx-text-fill: #6631C4;" text="Change Picture" textAlignment="CENTER">
@@ -214,7 +214,7 @@
                                     <Insets bottom="6.0" />
                                   </VBox.margin>
                                 </Label>
-                                <DatePicker fx:id="dobComboBox" focusTraversable="false" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Select a date" styleClass="date-picker" />
+                                <DatePicker fx:id="dobComboBox" focusTraversable="false" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Select a date" />
                               </children>
                               <HBox.margin>
                                 <Insets />
