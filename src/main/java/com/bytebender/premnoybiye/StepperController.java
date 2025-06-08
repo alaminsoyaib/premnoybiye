@@ -151,6 +151,7 @@ public class StepperController {
 
 			prevButton.setOpacity(1);
 			flag = 2;
+		} else if (flag == 2) {
 		}
 	}
 
