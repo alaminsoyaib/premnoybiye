@@ -2,6 +2,9 @@ package com.bytebender.premnoybiye;
 
 import javafx.fxml.FXML;
 import java.io.IOException;
+
+import com.bytebender.premnoybiye.DBConnection.userInfo;
+
 import javafx.scene.control.ComboBox;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -11,6 +14,8 @@ import javafx.scene.input.MouseEvent;
 
 public class StepperController {
 	int flag = 0;
+
+	static userInfo currentUser;
 
 	@FXML
 	private VBox Stepper1;
@@ -43,6 +48,13 @@ public class StepperController {
 	private HBox nextButton;
 	@FXML
 	private HBox prevButton;
+
+	@FXML
+	private ComboBox<?> genderComboBox;
+	@FXML
+	private ComboBox<?> religionComboBox;
+	@FXML
+	private ComboBox<?> cityComboBox;
 
 	@FXML
 	private void initialize() {
@@ -152,6 +164,30 @@ public class StepperController {
 			prevButton.setOpacity(1);
 			flag = 2;
 		} else if (flag == 2) {
+			String name = "";
+			String email = "";
+			String password = "";
+			String dob = "";
+			String gender = "";
+			String religion = "";
+			String city = "";
+
+			if (genderComboBox.getValue() != null) {
+				gender = genderComboBox.getValue().toString();
+			}
+			if (religionComboBox.getValue() != null) {
+				religion = religionComboBox.getValue().toString();
+			}
+			if (cityComboBox.getValue() != null) {
+				city = cityComboBox.getValue().toString();
+			}
+
+			userInfo user = new userInfo(name, email, password, dob, gender, religion, city);
+
+			currentUser = user;
+
+			App.setRoot("DemoTest");
+
 		}
 	}
 
