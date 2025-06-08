@@ -3,11 +3,13 @@
 <?import java.lang.String?>
 <?import javafx.collections.FXCollections?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -39,7 +41,7 @@
                         <Font name="Trebuchet MS" size="12.0" />
                       </font>
                     </Text>
-                              <Label fx:id="demosub" text="Kuddus Begum" textFill="#6631c4">
+                              <Label fx:id="demosub" prefWidth="98.0" text="Kuddus Begum" textFill="#6631c4">
                                  <font>
                                     <Font name="Trebuchet MS Bold" size="14.0" />
                                  </font>
@@ -50,6 +52,9 @@
                   <image>
                     <Image url="@img/icon/close-drawer-icon.png" />
                   </image>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
                 </ImageView>
               </children>
             </HBox>
@@ -71,6 +76,9 @@
                       </font>
                     </Text>
                   </children>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
                 </HBox>
                 <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" spacing="16.0">
                   <padding>
@@ -88,6 +96,9 @@
                       </font>
                     </Text>
                   </children>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
                 </HBox>
                 <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" spacing="16.0">
                   <padding>
@@ -105,6 +116,9 @@
                       </font>
                     </Text>
                   </children>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
                 </HBox>
                 <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" spacing="16.0">
                   <padding>
@@ -122,6 +136,9 @@
                       </font>
                     </Text>
                   </children>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
                 </HBox>
               </children>
               <padding>
@@ -146,6 +163,9 @@
               </font>
             </Text>
           </children>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
         </HBox>
       </children>
       <padding>
@@ -188,6 +208,9 @@
                           <font>
                             <Font name="Trebuchet MS" size="12.0" />
                           </font>
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
                         </Button>
                       </children>
                     </HBox>
@@ -431,18 +454,31 @@
                 </VBox>
                         <VBox layoutX="10.0" layoutY="391.0" maxWidth="940.0" spacing="12.0" style="-fx-background-color: white;">
                            <children>
-                              <Text fill="#6631c4" strokeType="OUTSIDE" strokeWidth="0.0" text="Education &amp; Career">
+                              <Text fill="#6631c4" strokeType="OUTSIDE" strokeWidth="0.0" text="Additional Info">
                                  <font>
                                     <Font name="Trebuchet MS Bold" size="12.0" />
                                  </font>
                               </Text>
                               <VBox spacing="24.0">
                                  <children>
+                                    <VBox maxWidth="1.7976931348623157E308">
+                                       <children>
+                                          <Label ellipsisString="***" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" text="About you" textFill="#344054">
+                                             <font>
+                                                <Font name="Trebuchet MS" size="14.0" />
+                                             </font>
+                                             <VBox.margin>
+                                                <Insets bottom="6.0" />
+                                             </VBox.margin>
+                                          </Label>
+                                          <TextField fx:id="aboutYouTextField" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" promptText="A short bio" styleClass="combo-box" />
+                                       </children>
+                                    </VBox>
                                     <HBox maxWidth="1.7976931348623157E308" prefHeight="70.0" prefWidth="540.0" spacing="40.0">
                                        <children>
                                           <VBox maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <Label ellipsisString="***" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" text="Highest Education" textFill="#344054">
+                                                <Label ellipsisString="***" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" text="Preferred Partner Age" textFill="#344054">
                                                    <font>
                                                       <Font name="Trebuchet MS" size="14.0" />
                                                    </font>
@@ -450,15 +486,14 @@
                                                       <Insets bottom="6.0" />
                                                    </VBox.margin>
                                                 </Label>
-                                                <ComboBox fx:id="highestEduComboBox1" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick one" styleClass="combo-box">
+                                                <ComboBox fx:id="prefPartnerAgeComboBox" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick one" styleClass="combo-box">
                                                    <items>
                                                       <FXCollections fx:factory="observableArrayList">
-                                                         <String fx:value="SSC/Equivalent" />
-                                                         <String fx:value="HSC/Equivalent" />
-                                                         <String fx:value="Bachelor's" />
-                                                         <String fx:value="Master's" />
-                                                         <String fx:value="PhD or Upper" />
-                                                         <String fx:value="Others" />
+                                                         <String fx:value="18 - 25" />
+                                                         <String fx:value="25 - 30" />
+                                                         <String fx:value="30 - 35" />
+                                                         <String fx:value="35 - 40" />
+                                                         <String fx:value="40+" />
                                                       </FXCollections>
                                                    </items>
                                                 </ComboBox>
@@ -469,7 +504,7 @@
                                           </VBox>
                                           <VBox layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" HBox.hgrow="ALWAYS">
                                              <children>
-                                                <Label ellipsisString="***" text="Profession" textFill="#344054">
+                                                <Label ellipsisString="***" text="Preferred Location" textFill="#344054">
                                                    <font>
                                                       <Font name="Trebuchet MS" size="14.0" />
                                                    </font>
@@ -477,7 +512,58 @@
                                                       <Insets bottom="6.0" />
                                                    </VBox.margin>
                                                 </Label>
-                                                <ComboBox fx:id="professionComboBox1" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick one" styleClass="combo-box">
+                                                <ComboBox fx:id="prefLocationComboBox" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick one" styleClass="combo-box">
+                                                   <items>
+                                                      <FXCollections fx:factory="observableArrayList">
+                                                         <String fx:value="Noakhali" />
+                                                         <String fx:value="Dhaka" />
+                                                         <String fx:value="Chittagong" />
+                                                         <String fx:value="Khulna" />
+                                                         <String fx:value="Rajshahi" />
+                                                         <String fx:value="Sylhet" />
+                                                         <String fx:value="Barisal" />
+                                                         <String fx:value="Rangpur" />
+                                                         <String fx:value="Comilla" />
+                                                         <String fx:value="Narayanganj" />
+                                                         <String fx:value="Gazipur" />
+                                                         <String fx:value="Narsingdi" />
+                                                         <String fx:value="Bogra" />
+                                                         <String fx:value="Jessore" />
+                                                         <String fx:value="Mymensingh" />
+                                                         <String fx:value="Tangail" />
+                                                         <String fx:value="Pabna" />
+                                                         <String fx:value="Cox's Bazar" />
+                                                         <String fx:value="Satkhira" />
+                                                         <String fx:value="Brahmanbaria" />
+                                                         <String fx:value="Patuakhali" />
+                                                         <String fx:value="Jamalpur" />
+                                                         <String fx:value="Dinajpur" />
+                                                         <String fx:value="Kushtia" />
+                                                         <String fx:value="Chuadanga" />
+                                                         <String fx:value="Naogaon" />
+                                                         <String fx:value="Pirojpur" />
+                                                         <String fx:value="Lalmonirhat" />
+                                                         <String fx:value="Sherpur" />
+                                                      </FXCollections>
+                                                   </items>
+                                                </ComboBox>
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </HBox>
+                                    <HBox maxWidth="1.7976931348623157E308" prefHeight="70.0" prefWidth="540.0" spacing="40.0">
+                                       <children>
+                                          <VBox maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+                                             <children>
+                                                <Label ellipsisString="***" text="Preferred Education/Profession" textFill="#344054">
+                                                   <font>
+                                                      <Font name="Trebuchet MS" size="14.0" />
+                                                   </font>
+                                                   <VBox.margin>
+                                                      <Insets bottom="6.0" />
+                                                   </VBox.margin>
+                                                </Label>
+                                                <ComboBox fx:id="prefProfessionComboBox" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick one" styleClass="combo-box">
                                                    <items>
                                                       <FXCollections fx:factory="observableArrayList">
                                                          <String fx:value="Student" />
@@ -490,36 +576,6 @@
                                                    </items>
                                                 </ComboBox>
                                              </children>
-                                          </VBox>
-                                       </children>
-                                    </HBox>
-                                    <HBox maxWidth="1.7976931348623157E308" prefHeight="70.0" prefWidth="540.0" spacing="40.0">
-                                       <children>
-                                          <VBox maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
-                                             <children>
-                                                <Label ellipsisString="***" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" text="Monthly Income Range" textFill="#344054">
-                                                   <font>
-                                                      <Font name="Trebuchet MS" size="14.0" />
-                                                   </font>
-                                                   <VBox.margin>
-                                                      <Insets bottom="6.0" />
-                                                   </VBox.margin>
-                                                </Label>
-                                                <ComboBox fx:id="monthlyIncomeComboBox1" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick one" styleClass="combo-box">
-                                                   <items>
-                                                      <FXCollections fx:factory="observableArrayList">
-                                                         <String fx:value="0 - 20,000" />
-                                                         <String fx:value="20,000 - 40,000" />
-                                                         <String fx:value="40,000 - 70,000" />
-                                                         <String fx:value="70,000 - 1,00,000" />
-                                                         <String fx:value="1,00,000+" />
-                                                      </FXCollections>
-                                                   </items>
-                                                </ComboBox>
-                                             </children>
-                                             <HBox.margin>
-                                                <Insets />
-                                             </HBox.margin>
                                           </VBox>
                                           <VBox layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="70.0" prefWidth="250.0" HBox.hgrow="ALWAYS" />
                                        </children>

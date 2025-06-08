@@ -45,7 +45,7 @@ public class editProfileController {
         if (user != null) {
             String name = user.getName();
             if (name != "") {
-                demoLabel.setText(user.getName());
+                demoLabel.setText(name);
                 demosub.setText(name);
             }
             if (user.getEmail() != "") {
