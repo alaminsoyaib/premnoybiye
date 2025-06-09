@@ -82,6 +82,11 @@ public class editProfileController {
                 demoProfileImg.setFitWidth(84);
                 demoProfileImg.setFitHeight(84);
                 demoProfileImg.setPreserveRatio(false);
+
+                javafx.scene.shape.Rectangle clip = new javafx.scene.shape.Rectangle(84, 84);
+                clip.setArcWidth(20);
+                clip.setArcHeight(20);
+                demoProfileImg.setClip(clip);
             }
             if (user.getEducation() != "") {
                 highestEduComboBox.setPromptText(user.getEducation());
