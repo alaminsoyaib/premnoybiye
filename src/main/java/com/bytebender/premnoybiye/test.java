@@ -1,9 +1,9 @@
 package com.bytebender.premnoybiye;
 
+import com.bytebender.premnoybiye.Component.sidebarToggle;
 import com.bytebender.premnoybiye.DBConnection.userInfo;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
@@ -12,6 +12,8 @@ import javafx.scene.text.Text;
 
 public class test {
     int flag = 0;
+
+    private sidebarToggle sidebarComponent = new sidebarToggle();
 
     @FXML
     private Label demoLabel;
@@ -40,26 +42,7 @@ public class test {
 
     @FXML
     void sideCollapse(MouseEvent event) {
-
-        if (flag == 0) {
-            sidebarCollapse.setImage(new Image(
-                    App.class.getResourceAsStream("/com/bytebender/premnoybiye/img/icon/open-drawer-icon.png")));
-            demosidebarProfile.setVisible(false);
-            demosidebarProfile.setManaged(false);
-            logoutLabel.setVisible(false);
-            logoutLabel.setManaged(false);
-            Sidebar.setPrefWidth(72);
-            flag = 1;
-        } else if (flag == 1) {
-            sidebarCollapse.setImage(new Image(
-                    App.class.getResourceAsStream("/com/bytebender/premnoybiye/img/icon/close-drawer-icon.png")));
-            demosidebarProfile.setVisible(true);
-            demosidebarProfile.setManaged(true);
-            logoutLabel.setVisible(true);
-            logoutLabel.setManaged(true);
-            Sidebar.setPrefWidth(244);
-            flag = 0;
-        }
-
+        // Calling toggling method of the sidebar component
+        flag = sidebarComponent.toggleSidebarState(sidebarCollapse, demosidebarProfile, logoutLabel, Sidebar, flag);
     }
 }
