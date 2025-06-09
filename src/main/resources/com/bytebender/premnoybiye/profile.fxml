@@ -26,34 +26,34 @@
           <children>
             <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" spacing="12.0">
               <padding>
-                <Insets left="12.0" right="12.0"/>
+                <Insets left="12.0" right="12.0" />
               </padding>
               <children>
                 <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                   <image>
-                    <Image url="@img/icon/profile-image.png"/>
+                    <Image url="@img/icon/profile-image.png" />
                   </image>
                 </ImageView>
                 <VBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
                   <children>
                     <Text fill="#262626" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello,">
                       <font>
-                        <Font name="Trebuchet MS" size="12.0"/>
+                        <Font name="Trebuchet MS" size="12.0" />
                       </font>
                     </Text>
                     <Label fx:id="demosub" prefWidth="98.0" text="Loading..." textFill="#6631c4">
                       <font>
-                        <Font name="Trebuchet MS Bold" size="14.0"/>
+                        <Font name="Trebuchet MS Bold" size="14.0" />
                       </font>
                     </Label>
                   </children>
                 </VBox>
                 <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                   <image>
-                    <Image url="@img/icon/close-drawer-icon.png"/>
+                    <Image url="@img/icon/close-drawer-icon.png" />
                   </image>
                   <cursor>
-                    <Cursor fx:constant="HAND"/>
+                    <Cursor fx:constant="HAND" />
                   </cursor>
                 </ImageView>
               </children>
@@ -62,134 +62,114 @@
               <children>
                 <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" spacing="16.0">
                   <padding>
-                    <Insets bottom="12.0" left="12.0" right="12.0" top="12.0"/>
+                    <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
                   </padding>
                   <children>
                     <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                       <image>
-                        <Image url="@img/icon/home-icon.png"/>
+                        <Image url="@img/icon/home-icon.png" />
                       </image>
                     </ImageView>
                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Discover">
                       <font>
-                        <Font name="Trebuchet MS" size="16.0"/>
+                        <Font name="Trebuchet MS" size="16.0" />
                       </font>
                     </Text>
                   </children>
                   <cursor>
-                    <Cursor fx:constant="HAND"/>
+                    <Cursor fx:constant="HAND" />
                   </cursor>
                 </HBox>
                 <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" spacing="16.0">
                   <padding>
-                    <Insets bottom="12.0" left="12.0" right="12.0" top="12.0"/>
+                    <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
                   </padding>
                   <children>
                     <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                       <image>
-                        <Image url="@img/icon/profile-icon.png"/>
+                        <Image url="@img/icon/profile-icon.png" />
                       </image>
                     </ImageView>
                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Profile">
                       <font>
-                        <Font name="Trebuchet MS" size="16.0"/>
+                        <Font name="Trebuchet MS" size="16.0" />
                       </font>
                     </Text>
                   </children>
                   <cursor>
-                    <Cursor fx:constant="HAND"/>
+                    <Cursor fx:constant="HAND" />
                   </cursor>
                 </HBox>
                 <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="70.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" spacing="16.0">
                   <padding>
-                    <Insets bottom="12.0" left="12.0" right="12.0" top="12.0"/>
+                    <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
                   </padding>
                   <children>
                     <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                       <image>
-                        <Image url="@img/icon/match-icon.png"/>
+                        <Image url="@img/icon/match-icon.png" />
                       </image>
                     </ImageView>
                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="My Matches">
                       <font>
-                        <Font name="Trebuchet MS" size="16.0"/>
+                        <Font name="Trebuchet MS" size="16.0" />
                       </font>
                     </Text>
                   </children>
                   <cursor>
-                    <Cursor fx:constant="HAND"/>
+                    <Cursor fx:constant="HAND" />
                   </cursor>
                 </HBox>
                 <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" spacing="16.0">
                   <padding>
-                    <Insets bottom="12.0" left="12.0" right="12.0" top="12.0"/>
+                    <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
                   </padding>
                   <children>
                     <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
                       <image>
-                        <Image url="@img/icon/favorite-icon.png"/>
-                      </image>
-                    </ImageView>
-                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Favorites">
-                      <font>
-                        <Font name="Trebuchet MS" size="16.0"/>
-                      </font>
-                    </Text>
-                  </children>
-                  <cursor>
-                    <Cursor fx:constant="HAND"/>
-                  </cursor>
-                </HBox>
-                <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" spacing="16.0">
-                  <padding>
-                    <Insets bottom="12.0" left="12.0" right="12.0" top="12.0"/>
-                  </padding>
-                  <children>
-                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                      <image>
-                        <Image url="@img/icon/message-icon.png"/>
+                        <Image url="@img/icon/message-icon.png" />
                       </image>
                     </ImageView>
                     <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Messages">
                       <font>
-                        <Font name="Trebuchet MS" size="16.0"/>
+                        <Font name="Trebuchet MS" size="16.0" />
                       </font>
                     </Text>
                   </children>
                   <cursor>
-                    <Cursor fx:constant="HAND"/>
+                    <Cursor fx:constant="HAND" />
                   </cursor>
                 </HBox>
               </children>
               <padding>
-                <Insets bottom="4.0" top="4.0"/>
+                <Insets bottom="4.0" top="4.0" />
               </padding>
             </VBox>
           </children>
         </VBox>
         <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" spacing="16.0">
           <padding>
-            <Insets bottom="12.0" left="12.0" right="12.0" top="12.0"/>
+            <Insets bottom="12.0" left="12.0" right="12.0" top="12.0" />
           </padding>
           <children>
             <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
               <image>
-                <Image url="@img/icon/logout-icon.png"/>
+                <Image url="@img/icon/logout-icon.png" />
               </image>
             </ImageView>
             <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Logout">
               <font>
-                <Font name="Trebuchet MS" size="16.0"/>
+                <Font name="Trebuchet MS" size="16.0" />
               </font>
             </Text>
           </children>
           <cursor>
-            <Cursor fx:constant="HAND"/>
+            <Cursor fx:constant="HAND" />
           </cursor>
         </HBox>
       </children>
       <padding>
-        <Insets bottom="16.0" left="12.0" right="12.0" top="40.0"/>
+        <Insets bottom="16.0" left="12.0" right="12.0" top="40.0" />
       </padding>
     </VBox>
     <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
@@ -200,36 +180,36 @@
               <children>
                 <HBox maxWidth="940.0" prefHeight="100.0" prefWidth="756.0" style="-fx-background-color: white;">
                   <padding>
-                    <Insets bottom="16.0" left="32.0" right="32.0" top="30.0"/>
+                    <Insets bottom="16.0" left="32.0" right="32.0" top="30.0" />
                   </padding>
                   <children>
                     <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" spacing="12.0" HBox.hgrow="ALWAYS">
                       <children>
-                        <ImageView fitHeight="84.0" fitWidth="84.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="demoProfileImg" fitHeight="84.0" fitWidth="84.0" pickOnBounds="true" preserveRatio="true">
                           <image>
-                            <Image url="@img/icon/profile-image.png"/>
+                            <Image url="@img/icon/profile-image.png" />
                           </image>
                         </ImageView>
                         <VBox alignment="CENTER_LEFT" spacing="6.0" HBox.hgrow="ALWAYS">
                           <children>
                             <Label fx:id="demoLabel" prefWidth="300.0" text="Loading..." textFill="#262626">
                               <font>
-                                <Font name="Trebuchet MS Bold" size="20.0"/>
+                                <Font name="Trebuchet MS Bold" size="20.0" />
                               </font>
                             </Label>
                             <Label fx:id="emailLabel" layoutX="10.0" layoutY="26.0" opacity="0.5" text="Loading...">
                               <font>
-                                <Font name="Trebuchet MS" size="17.0"/>
+                                <Font name="Trebuchet MS" size="17.0" />
                               </font>
                             </Label>
                           </children>
                         </VBox>
                         <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="36.0" prefWidth="130.0" style="-fx-border-color: #6631C4; -fx-border-radius: 8; -fx-border-width: 2; -fx-background-radius: 8; -fx-background-color: transparent; -fx-text-fill: #6631C4;" text="Change Picture" textAlignment="CENTER">
                           <font>
-                            <Font name="Trebuchet MS" size="12.0"/>
+                            <Font name="Trebuchet MS" size="12.0" />
                           </font>
                           <cursor>
-                            <Cursor fx:constant="HAND"/>
+                            <Cursor fx:constant="HAND" />
                           </cursor>
                         </Button>
                       </children>
@@ -240,7 +220,7 @@
                   <children>
                     <Text fill="#6631c4" strokeType="OUTSIDE" strokeWidth="0.0" text="Personal Info">
                       <font>
-                        <Font name="Trebuchet MS Bold" size="12.0"/>
+                        <Font name="Trebuchet MS Bold" size="12.0" />
                       </font>
                     </Text>
                     <VBox maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" spacing="24.0">
@@ -251,34 +231,34 @@
                               <children>
                                 <Label ellipsisString="***" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" text="Date of Birth" textFill="#344054">
                                   <font>
-                                    <Font name="Trebuchet MS" size="14.0"/>
+                                    <Font name="Trebuchet MS" size="14.0" />
                                   </font>
                                   <VBox.margin>
-                                    <Insets bottom="6.0"/>
+                                    <Insets bottom="6.0" />
                                   </VBox.margin>
                                 </Label>
-                                <DatePicker fx:id="dobComboBox" focusTraversable="false" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Select a date"/>
+                                <DatePicker fx:id="dobComboBox" focusTraversable="false" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Select a date" />
                               </children>
                               <HBox.margin>
-                                <Insets/>
+                                <Insets />
                               </HBox.margin>
                             </VBox>
                             <VBox layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" HBox.hgrow="ALWAYS">
                               <children>
                                 <Label ellipsisString="***" text="Gender" textFill="#344054">
                                   <font>
-                                    <Font name="Trebuchet MS" size="14.0"/>
+                                    <Font name="Trebuchet MS" size="14.0" />
                                   </font>
                                   <VBox.margin>
-                                    <Insets bottom="6.0"/>
+                                    <Insets bottom="6.0" />
                                   </VBox.margin>
                                 </Label>
                                 <ComboBox fx:id="genderComboBox" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick one" styleClass="combo-box">
                                   <items>
                                     <FXCollections fx:factory="observableArrayList">
-                                      <String fx:value="Male"/>
-                                      <String fx:value="Female"/>
-                                      <String fx:value="Other"/>
+                                      <String fx:value="Male" />
+                                      <String fx:value="Female" />
+                                      <String fx:value="Other" />
                                     </FXCollections>
                                   </items>
                                 </ComboBox>
@@ -292,70 +272,70 @@
                               <children>
                                 <Label ellipsisString="***" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" text="Religion" textFill="#344054">
                                   <font>
-                                    <Font name="Trebuchet MS" size="14.0"/>
+                                    <Font name="Trebuchet MS" size="14.0" />
                                   </font>
                                   <VBox.margin>
-                                    <Insets bottom="6.0"/>
+                                    <Insets bottom="6.0" />
                                   </VBox.margin>
                                 </Label>
                                 <ComboBox fx:id="religionComboBox" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick one" styleClass="combo-box">
                                   <items>
                                     <FXCollections fx:factory="observableArrayList">
-                                      <String fx:value="Islam"/>
-                                      <String fx:value="Hinduism"/>
-                                      <String fx:value="Buddhism"/>
-                                      <String fx:value="Christianity"/>
-                                      <String fx:value="Others"/>
+                                      <String fx:value="Islam" />
+                                      <String fx:value="Hinduism" />
+                                      <String fx:value="Buddhism" />
+                                      <String fx:value="Christianity" />
+                                      <String fx:value="Others" />
                                     </FXCollections>
                                   </items>
                                 </ComboBox>
                               </children>
                               <HBox.margin>
-                                <Insets/>
+                                <Insets />
                               </HBox.margin>
                             </VBox>
                             <VBox layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" HBox.hgrow="ALWAYS">
                               <children>
                                 <Label ellipsisString="***" text="Current City" textFill="#344054">
                                   <font>
-                                    <Font name="Trebuchet MS" size="14.0"/>
+                                    <Font name="Trebuchet MS" size="14.0" />
                                   </font>
                                   <VBox.margin>
-                                    <Insets bottom="6.0"/>
+                                    <Insets bottom="6.0" />
                                   </VBox.margin>
                                 </Label>
                                 <ComboBox fx:id="cityComboBox" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick one" styleClass="combo-box">
                                   <items>
                                     <FXCollections fx:factory="observableArrayList">
-                                      <String fx:value="Noakhali"/>
-                                      <String fx:value="Dhaka"/>
-                                      <String fx:value="Chittagong"/>
-                                      <String fx:value="Khulna"/>
-                                      <String fx:value="Rajshahi"/>
-                                      <String fx:value="Sylhet"/>
-                                      <String fx:value="Barisal"/>
-                                      <String fx:value="Rangpur"/>
-                                      <String fx:value="Comilla"/>
-                                      <String fx:value="Narayanganj"/>
-                                      <String fx:value="Gazipur"/>
-                                      <String fx:value="Narsingdi"/>
-                                      <String fx:value="Bogra"/>
-                                      <String fx:value="Jessore"/>
-                                      <String fx:value="Mymensingh"/>
-                                      <String fx:value="Tangail"/>
-                                      <String fx:value="Pabna"/>
-                                      <String fx:value="Cox's Bazar"/>
-                                      <String fx:value="Satkhira"/>
-                                      <String fx:value="Brahmanbaria"/>
-                                      <String fx:value="Patuakhali"/>
-                                      <String fx:value="Jamalpur"/>
-                                      <String fx:value="Dinajpur"/>
-                                      <String fx:value="Kushtia"/>
-                                      <String fx:value="Chuadanga"/>
-                                      <String fx:value="Naogaon"/>
-                                      <String fx:value="Pirojpur"/>
-                                      <String fx:value="Lalmonirhat"/>
-                                      <String fx:value="Sherpur"/>
+                                      <String fx:value="Noakhali" />
+                                      <String fx:value="Dhaka" />
+                                      <String fx:value="Chittagong" />
+                                      <String fx:value="Khulna" />
+                                      <String fx:value="Rajshahi" />
+                                      <String fx:value="Sylhet" />
+                                      <String fx:value="Barisal" />
+                                      <String fx:value="Rangpur" />
+                                      <String fx:value="Comilla" />
+                                      <String fx:value="Narayanganj" />
+                                      <String fx:value="Gazipur" />
+                                      <String fx:value="Narsingdi" />
+                                      <String fx:value="Bogra" />
+                                      <String fx:value="Jessore" />
+                                      <String fx:value="Mymensingh" />
+                                      <String fx:value="Tangail" />
+                                      <String fx:value="Pabna" />
+                                      <String fx:value="Cox's Bazar" />
+                                      <String fx:value="Satkhira" />
+                                      <String fx:value="Brahmanbaria" />
+                                      <String fx:value="Patuakhali" />
+                                      <String fx:value="Jamalpur" />
+                                      <String fx:value="Dinajpur" />
+                                      <String fx:value="Kushtia" />
+                                      <String fx:value="Chuadanga" />
+                                      <String fx:value="Naogaon" />
+                                      <String fx:value="Pirojpur" />
+                                      <String fx:value="Lalmonirhat" />
+                                      <String fx:value="Sherpur" />
                                     </FXCollections>
                                   </items>
                                 </ComboBox>
@@ -367,14 +347,14 @@
                     </VBox>
                   </children>
                   <padding>
-                    <Insets bottom="24.0" left="32.0" right="32.0" top="24.0"/>
+                    <Insets bottom="24.0" left="32.0" right="32.0" top="24.0" />
                   </padding>
                 </VBox>
                 <VBox layoutX="10.0" layoutY="151.0" maxWidth="940.0" spacing="12.0" style="-fx-background-color: white;">
                   <children>
                     <Text fill="#6631c4" strokeType="OUTSIDE" strokeWidth="0.0" text="Education &amp; Career">
                       <font>
-                        <Font name="Trebuchet MS Bold" size="12.0"/>
+                        <Font name="Trebuchet MS Bold" size="12.0" />
                       </font>
                     </Text>
                     <VBox spacing="24.0">
@@ -385,48 +365,48 @@
                               <children>
                                 <Label ellipsisString="***" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" text="Highest Education" textFill="#344054">
                                   <font>
-                                    <Font name="Trebuchet MS" size="14.0"/>
+                                    <Font name="Trebuchet MS" size="14.0" />
                                   </font>
                                   <VBox.margin>
-                                    <Insets bottom="6.0"/>
+                                    <Insets bottom="6.0" />
                                   </VBox.margin>
                                 </Label>
                                 <ComboBox fx:id="highestEduComboBox" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick one" styleClass="combo-box">
                                   <items>
                                     <FXCollections fx:factory="observableArrayList">
-                                      <String fx:value="SSC/Equivalent"/>
-                                      <String fx:value="HSC/Equivalent"/>
-                                      <String fx:value="Bachelor's"/>
-                                      <String fx:value="Master's"/>
-                                      <String fx:value="PhD or Upper"/>
-                                      <String fx:value="Others"/>
+                                      <String fx:value="SSC/Equivalent" />
+                                      <String fx:value="HSC/Equivalent" />
+                                      <String fx:value="Bachelor's" />
+                                      <String fx:value="Master's" />
+                                      <String fx:value="PhD or Upper" />
+                                      <String fx:value="Others" />
                                     </FXCollections>
                                   </items>
                                 </ComboBox>
                               </children>
                               <HBox.margin>
-                                <Insets/>
+                                <Insets />
                               </HBox.margin>
                             </VBox>
                             <VBox layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" HBox.hgrow="ALWAYS">
                               <children>
                                 <Label ellipsisString="***" text="Profession" textFill="#344054">
                                   <font>
-                                    <Font name="Trebuchet MS" size="14.0"/>
+                                    <Font name="Trebuchet MS" size="14.0" />
                                   </font>
                                   <VBox.margin>
-                                    <Insets bottom="6.0"/>
+                                    <Insets bottom="6.0" />
                                   </VBox.margin>
                                 </Label>
                                 <ComboBox fx:id="professionComboBox" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick one" styleClass="combo-box">
                                   <items>
                                     <FXCollections fx:factory="observableArrayList">
-                                      <String fx:value="Student"/>
-                                      <String fx:value="Service Holder"/>
-                                      <String fx:value="Business"/>
-                                      <String fx:value="Self-Employed"/>
-                                      <String fx:value="Freelancer"/>
-                                      <String fx:value="Others"/>
+                                      <String fx:value="Student" />
+                                      <String fx:value="Service Holder" />
+                                      <String fx:value="Business" />
+                                      <String fx:value="Self-Employed" />
+                                      <String fx:value="Freelancer" />
+                                      <String fx:value="Others" />
                                     </FXCollections>
                                   </items>
                                 </ComboBox>
@@ -440,43 +420,43 @@
                               <children>
                                 <Label ellipsisString="***" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" text="Monthly Income Range" textFill="#344054">
                                   <font>
-                                    <Font name="Trebuchet MS" size="14.0"/>
+                                    <Font name="Trebuchet MS" size="14.0" />
                                   </font>
                                   <VBox.margin>
-                                    <Insets bottom="6.0"/>
+                                    <Insets bottom="6.0" />
                                   </VBox.margin>
                                 </Label>
                                 <ComboBox fx:id="monthlyIncomeComboBox" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick one" styleClass="combo-box">
                                   <items>
                                     <FXCollections fx:factory="observableArrayList">
-                                      <String fx:value="0 - 20,000"/>
-                                      <String fx:value="20,000 - 40,000"/>
-                                      <String fx:value="40,000 - 70,000"/>
-                                      <String fx:value="70,000 - 1,00,000"/>
-                                      <String fx:value="1,00,000+"/>
+                                      <String fx:value="0 - 20,000" />
+                                      <String fx:value="20,000 - 40,000" />
+                                      <String fx:value="40,000 - 70,000" />
+                                      <String fx:value="70,000 - 1,00,000" />
+                                      <String fx:value="1,00,000+" />
                                     </FXCollections>
                                   </items>
                                 </ComboBox>
                               </children>
                               <HBox.margin>
-                                <Insets/>
+                                <Insets />
                               </HBox.margin>
                             </VBox>
-                            <VBox layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="70.0" prefWidth="250.0" HBox.hgrow="ALWAYS"/>
+                            <VBox layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="70.0" prefWidth="250.0" HBox.hgrow="ALWAYS" />
                           </children>
                         </HBox>
                       </children>
                     </VBox>
                   </children>
                   <padding>
-                    <Insets bottom="24.0" left="32.0" right="32.0" top="24.0"/>
+                    <Insets bottom="24.0" left="32.0" right="32.0" top="24.0" />
                   </padding>
                 </VBox>
                 <VBox layoutX="10.0" layoutY="391.0" maxWidth="940.0" spacing="12.0" style="-fx-background-color: white;">
                   <children>
                     <Text fill="#6631c4" strokeType="OUTSIDE" strokeWidth="0.0" text="Additional Info">
                       <font>
-                        <Font name="Trebuchet MS Bold" size="12.0"/>
+                        <Font name="Trebuchet MS Bold" size="12.0" />
                       </font>
                     </Text>
                     <VBox spacing="24.0">
@@ -485,13 +465,13 @@
                           <children>
                             <Label ellipsisString="***" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" text="About you" textFill="#344054">
                               <font>
-                                <Font name="Trebuchet MS" size="14.0"/>
+                                <Font name="Trebuchet MS" size="14.0" />
                               </font>
                               <VBox.margin>
-                                <Insets bottom="6.0"/>
+                                <Insets bottom="6.0" />
                               </VBox.margin>
                             </Label>
-                            <TextField fx:id="aboutYouTextField" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" promptText="A short bio" styleClass="combo-box"/>
+                            <TextField fx:id="aboutYouTextField" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" promptText="A short bio" styleClass="combo-box" />
                           </children>
                         </VBox>
                         <HBox maxWidth="1.7976931348623157E308" prefHeight="70.0" prefWidth="540.0" spacing="40.0">
@@ -500,72 +480,72 @@
                               <children>
                                 <Label ellipsisString="***" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" text="Preferred Partner Age" textFill="#344054">
                                   <font>
-                                    <Font name="Trebuchet MS" size="14.0"/>
+                                    <Font name="Trebuchet MS" size="14.0" />
                                   </font>
                                   <VBox.margin>
-                                    <Insets bottom="6.0"/>
+                                    <Insets bottom="6.0" />
                                   </VBox.margin>
                                 </Label>
                                 <ComboBox fx:id="prefPartnerAgeComboBox" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick one" styleClass="combo-box">
                                   <items>
                                     <FXCollections fx:factory="observableArrayList">
-                                      <String fx:value="Any"/>
-                                      <String fx:value="18 - 25"/>
-                                      <String fx:value="25 - 30"/>
-                                      <String fx:value="30 - 35"/>
-                                      <String fx:value="35 - 40"/>
-                                      <String fx:value="40+"/>
+                                      <String fx:value="Any" />
+                                      <String fx:value="18 - 25" />
+                                      <String fx:value="25 - 30" />
+                                      <String fx:value="30 - 35" />
+                                      <String fx:value="35 - 40" />
+                                      <String fx:value="40+" />
                                     </FXCollections>
                                   </items>
                                 </ComboBox>
                               </children>
                               <HBox.margin>
-                                <Insets/>
+                                <Insets />
                               </HBox.margin>
                             </VBox>
                             <VBox layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" HBox.hgrow="ALWAYS">
                               <children>
                                 <Label ellipsisString="***" text="Preferred Location" textFill="#344054">
                                   <font>
-                                    <Font name="Trebuchet MS" size="14.0"/>
+                                    <Font name="Trebuchet MS" size="14.0" />
                                   </font>
                                   <VBox.margin>
-                                    <Insets bottom="6.0"/>
+                                    <Insets bottom="6.0" />
                                   </VBox.margin>
                                 </Label>
                                 <ComboBox fx:id="prefLocationComboBox" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick one" styleClass="combo-box">
                                   <items>
                                     <FXCollections fx:factory="observableArrayList">
-                                      <String fx:value="Any"/>
-                                      <String fx:value="Noakhali"/>
-                                      <String fx:value="Dhaka"/>
-                                      <String fx:value="Chittagong"/>
-                                      <String fx:value="Khulna"/>
-                                      <String fx:value="Rajshahi"/>
-                                      <String fx:value="Sylhet"/>
-                                      <String fx:value="Barisal"/>
-                                      <String fx:value="Rangpur"/>
-                                      <String fx:value="Comilla"/>
-                                      <String fx:value="Narayanganj"/>
-                                      <String fx:value="Gazipur"/>
-                                      <String fx:value="Narsingdi"/>
-                                      <String fx:value="Bogra"/>
-                                      <String fx:value="Jessore"/>
-                                      <String fx:value="Mymensingh"/>
-                                      <String fx:value="Tangail"/>
-                                      <String fx:value="Pabna"/>
-                                      <String fx:value="Cox's Bazar"/>
-                                      <String fx:value="Satkhira"/>
-                                      <String fx:value="Brahmanbaria"/>
-                                      <String fx:value="Patuakhali"/>
-                                      <String fx:value="Jamalpur"/>
-                                      <String fx:value="Dinajpur"/>
-                                      <String fx:value="Kushtia"/>
-                                      <String fx:value="Chuadanga"/>
-                                      <String fx:value="Naogaon"/>
-                                      <String fx:value="Pirojpur"/>
-                                      <String fx:value="Lalmonirhat"/>
-                                      <String fx:value="Sherpur"/>
+                                      <String fx:value="Any" />
+                                      <String fx:value="Noakhali" />
+                                      <String fx:value="Dhaka" />
+                                      <String fx:value="Chittagong" />
+                                      <String fx:value="Khulna" />
+                                      <String fx:value="Rajshahi" />
+                                      <String fx:value="Sylhet" />
+                                      <String fx:value="Barisal" />
+                                      <String fx:value="Rangpur" />
+                                      <String fx:value="Comilla" />
+                                      <String fx:value="Narayanganj" />
+                                      <String fx:value="Gazipur" />
+                                      <String fx:value="Narsingdi" />
+                                      <String fx:value="Bogra" />
+                                      <String fx:value="Jessore" />
+                                      <String fx:value="Mymensingh" />
+                                      <String fx:value="Tangail" />
+                                      <String fx:value="Pabna" />
+                                      <String fx:value="Cox's Bazar" />
+                                      <String fx:value="Satkhira" />
+                                      <String fx:value="Brahmanbaria" />
+                                      <String fx:value="Patuakhali" />
+                                      <String fx:value="Jamalpur" />
+                                      <String fx:value="Dinajpur" />
+                                      <String fx:value="Kushtia" />
+                                      <String fx:value="Chuadanga" />
+                                      <String fx:value="Naogaon" />
+                                      <String fx:value="Pirojpur" />
+                                      <String fx:value="Lalmonirhat" />
+                                      <String fx:value="Sherpur" />
                                     </FXCollections>
                                   </items>
                                 </ComboBox>
@@ -579,40 +559,40 @@
                               <children>
                                 <Label ellipsisString="***" text="Preferred Education/Profession" textFill="#344054">
                                   <font>
-                                    <Font name="Trebuchet MS" size="14.0"/>
+                                    <Font name="Trebuchet MS" size="14.0" />
                                   </font>
                                   <VBox.margin>
-                                    <Insets bottom="6.0"/>
+                                    <Insets bottom="6.0" />
                                   </VBox.margin>
                                 </Label>
                                 <ComboBox fx:id="prefProfessionComboBox" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick one" styleClass="combo-box">
                                   <items>
                                     <FXCollections fx:factory="observableArrayList">
-                                      <String fx:value="Any"/>
-                                      <String fx:value="Student"/>
-                                      <String fx:value="Service Holder"/>
-                                      <String fx:value="Business"/>
-                                      <String fx:value="Self-Employed"/>
-                                      <String fx:value="Freelancer"/>
-                                      <String fx:value="Others"/>
+                                      <String fx:value="Any" />
+                                      <String fx:value="Student" />
+                                      <String fx:value="Service Holder" />
+                                      <String fx:value="Business" />
+                                      <String fx:value="Self-Employed" />
+                                      <String fx:value="Freelancer" />
+                                      <String fx:value="Others" />
                                     </FXCollections>
                                   </items>
                                 </ComboBox>
                               </children>
                             </VBox>
-                            <VBox layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="70.0" prefWidth="250.0" HBox.hgrow="ALWAYS"/>
+                            <VBox layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="70.0" prefWidth="250.0" HBox.hgrow="ALWAYS" />
                           </children>
                         </HBox>
                       </children>
                     </VBox>
                   </children>
                   <padding>
-                    <Insets bottom="24.0" left="32.0" right="32.0" top="24.0"/>
+                    <Insets bottom="24.0" left="32.0" right="32.0" top="24.0" />
                   </padding>
                 </VBox>
               </children>
               <padding>
-                <Insets left="6.0" right="6.0"/>
+                <Insets left="6.0" right="6.0" />
               </padding>
             </VBox>
           </children>

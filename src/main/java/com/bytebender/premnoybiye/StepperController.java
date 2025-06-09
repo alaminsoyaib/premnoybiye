@@ -95,8 +95,7 @@ public class StepperController {
 				fileChooser.setTitle("Select Image");
 				fileChooser.getExtensionFilters().addAll(
 						new javafx.stage.FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg",
-								"*.jpeg", "*.gif",
-								"*.bmp"));
+								"*.jpeg", "*.gif"));
 
 				java.io.File selectedFile = fileChooser.showOpenDialog(img_inside_imgPicker.getScene().getWindow());
 
@@ -194,6 +193,7 @@ public class StepperController {
 			String gender = "";
 			String religion = "";
 			String city = "";
+			String image = "";
 			String education = "";
 			String profession = "";
 			String income = "";
@@ -212,6 +212,9 @@ public class StepperController {
 			}
 			if (cityComboBox.getValue() != null) {
 				city = cityComboBox.getValue().toString();
+			}
+			if (img_inside_imgPicker.getImage() != null) {
+				image = img_inside_imgPicker.getImage().getUrl();
 			}
 			if (highestEduComboBox.getValue() != null) {
 				education = highestEduComboBox.getValue().toString();
@@ -234,7 +237,7 @@ public class StepperController {
 			if (prefProfessionComboBox.getValue() != null) {
 				prefProfession = prefProfessionComboBox.getValue().toString();
 			}
-			userInfo user = new userInfo(name, email, password, dob, gender, religion, city, education, profession,
+			userInfo user = new userInfo(name, email, password, dob, gender, religion, city, image, education, profession,
 					income, bio, prefAge, prefLocation, prefProfession);
 
 			currentUser = user;

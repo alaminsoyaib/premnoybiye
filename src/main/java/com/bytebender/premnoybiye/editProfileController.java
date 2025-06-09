@@ -6,6 +6,8 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 
 public class editProfileController {
     @FXML
@@ -23,6 +25,9 @@ public class editProfileController {
     private ComboBox<?> religionComboBox;
     @FXML
     private ComboBox<?> cityComboBox;
+
+    @FXML
+    private ImageView demoProfileImg;
 
     @FXML
     private ComboBox<?> highestEduComboBox;
@@ -66,6 +71,17 @@ public class editProfileController {
             }
             if (user.getCity() != "") {
                 cityComboBox.setPromptText(user.getCity());
+            }
+            if (user.getImage() != "") {
+
+                Image image = new Image(user.getImage());
+
+                demoProfileImg.setImage(image);
+
+                // Set size to 80x80
+                demoProfileImg.setFitWidth(84);
+                demoProfileImg.setFitHeight(84);
+                demoProfileImg.setPreserveRatio(false);
             }
             if (user.getEducation() != "") {
                 highestEduComboBox.setPromptText(user.getEducation());

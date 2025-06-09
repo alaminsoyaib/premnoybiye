@@ -8,6 +8,7 @@ public class userInfo {
     private String gender = "";
     private String religion = "";
     private String city = "";
+    private String image = "";
     private String education = "";
     private String profession = "";
     private String income = "";
@@ -17,7 +18,7 @@ public class userInfo {
     private String prefProfession = "";
 
     public userInfo(String name, String email, String password, String dob, String gender, String religion,
-            String city, String education, String profession, String income, String bio, String prefAge,
+            String city, String image, String education, String profession, String income, String bio, String prefAge,
             String prefLocation, String prefProfession) {
         this.name = name;
         this.email = email;
@@ -26,6 +27,7 @@ public class userInfo {
         this.gender = gender;
         this.religion = religion;
         this.city = city;
+        this.image = image;
         this.education = education;
         this.profession = profession;
         this.income = income;
@@ -61,6 +63,10 @@ public class userInfo {
 
     public String getCity() {
         return city;
+    }
+
+    public String getImage() {
+        return image;
     }
 
     public String getEducation() {
@@ -117,6 +123,10 @@ public class userInfo {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public void setEducation(String education) {
