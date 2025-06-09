@@ -592,7 +592,7 @@
                                       <Insets bottom="6.0" />
                                     </VBox.margin>
                                   </Label>
-                                  <TextField fx:id="aboutYouTextField" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" promptText="A short bio" styleClass="combo-box" />
+                                  <TextField fx:id="aboutYouTextField" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" promptText="A short bio" style="-fx-cursor: text;" styleClass="combo-box" />
                                 </children>
                               </VBox>
                               <HBox maxWidth="1.7976931348623157E308" prefHeight="70.0" prefWidth="540.0" spacing="40.0">
