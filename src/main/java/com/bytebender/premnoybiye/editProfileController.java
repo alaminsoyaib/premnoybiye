@@ -28,6 +28,8 @@ public class editProfileController {
 
     @FXML
     private ImageView demoProfileImg;
+    @FXML
+    private ImageView demoProfileSubImg;
 
     @FXML
     private ComboBox<?> highestEduComboBox;
@@ -73,20 +75,19 @@ public class editProfileController {
                 cityComboBox.setPromptText(user.getCity());
             }
             if (user.getImage() != "") {
-
                 Image image = new Image(user.getImage());
 
                 demoProfileImg.setImage(image);
-
-                // Set size to 80x80
-                demoProfileImg.setFitWidth(84);
-                demoProfileImg.setFitHeight(84);
-                demoProfileImg.setPreserveRatio(false);
+                demoProfileSubImg.setImage(image);
 
                 javafx.scene.shape.Rectangle clip = new javafx.scene.shape.Rectangle(84, 84);
                 clip.setArcWidth(20);
                 clip.setArcHeight(20);
                 demoProfileImg.setClip(clip);
+                javafx.scene.shape.Rectangle clip2 = new javafx.scene.shape.Rectangle(40, 40);
+                clip2.setArcWidth(20);
+                clip2.setArcHeight(20);
+                demoProfileSubImg.setClip(clip2);
             }
             if (user.getEducation() != "") {
                 highestEduComboBox.setPromptText(user.getEducation());

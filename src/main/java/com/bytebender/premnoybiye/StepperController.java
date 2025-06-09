@@ -103,10 +103,10 @@ public class StepperController {
 					Image image = new Image(selectedFile.toURI().toString());
 					img_inside_imgPicker.setImage(image);
 
-					// Set size to 80x80
-					img_inside_imgPicker.setFitWidth(80);
-					img_inside_imgPicker.setFitHeight(80);
-					img_inside_imgPicker.setPreserveRatio(false);
+					// // Set size to 80x80
+					// img_inside_imgPicker.setFitWidth(80);
+					// img_inside_imgPicker.setFitHeight(80);
+					// img_inside_imgPicker.setPreserveRatio(false);
 
 					// Set rounded corners
 					javafx.scene.shape.Rectangle clip = new javafx.scene.shape.Rectangle(80, 80);
@@ -237,7 +237,8 @@ public class StepperController {
 			if (prefProfessionComboBox.getValue() != null) {
 				prefProfession = prefProfessionComboBox.getValue().toString();
 			}
-			userInfo user = new userInfo(name, email, password, dob, gender, religion, city, image, education, profession,
+			userInfo user = new userInfo(name, email, password, dob, gender, religion, city, image, education,
+					profession,
 					income, bio, prefAge, prefLocation, prefProfession);
 
 			currentUser = user;
