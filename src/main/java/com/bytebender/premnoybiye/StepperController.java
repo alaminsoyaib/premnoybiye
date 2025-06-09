@@ -104,9 +104,9 @@ public class StepperController {
 					img_inside_imgPicker.setImage(image);
 
 					// // Set size to 80x80
-					// img_inside_imgPicker.setFitWidth(80);
-					// img_inside_imgPicker.setFitHeight(80);
-					// img_inside_imgPicker.setPreserveRatio(false);
+					img_inside_imgPicker.setFitWidth(80);
+					img_inside_imgPicker.setFitHeight(80);
+					img_inside_imgPicker.setPreserveRatio(false);
 
 					// Set rounded corners
 					javafx.scene.shape.Rectangle clip = new javafx.scene.shape.Rectangle(80, 80);
