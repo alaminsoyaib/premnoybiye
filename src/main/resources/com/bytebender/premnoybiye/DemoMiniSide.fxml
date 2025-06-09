@@ -70,9 +70,9 @@
                 </VBox>
               </children>
             </HBox>
-            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefWidth="100.0">
+            <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefWidth="100.0" spacing="8.0">
               <children>
-                <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" spacing="12.0">
+                <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="48.0" spacing="12.0">
                   <padding>
                     <Insets bottom="12.0" top="12.0" />
                   </padding>
@@ -96,7 +96,7 @@
                     <Cursor fx:constant="HAND" />
                   </cursor>
                 </HBox>
-                <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" spacing="12.0">
+                <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="48.0" spacing="12.0">
                   <padding>
                     <Insets bottom="12.0" top="12.0" />
                   </padding>
@@ -120,7 +120,7 @@
                     <Cursor fx:constant="HAND" />
                   </cursor>
                 </HBox>
-                <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="70.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" spacing="12.0">
+                <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="70.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="48.0" spacing="12.0">
                   <padding>
                     <Insets bottom="12.0" top="12.0" />
                   </padding>
@@ -144,7 +144,7 @@
                     <Cursor fx:constant="HAND" />
                   </cursor>
                 </HBox>
-                <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" spacing="12.0">
+                <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="48.0" spacing="12.0">
                   <padding>
                     <Insets bottom="12.0" top="12.0" />
                   </padding>
@@ -175,7 +175,7 @@
             </VBox>
           </children>
         </VBox>
-    <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" spacing="12.0">
+    <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="48.0" spacing="12.0">
       <padding>
         <Insets bottom="12.0" top="12.0" />
       </padding>
@@ -250,6 +250,35 @@
                         </HBox>
                       </children>
                     </HBox>
+                              <VBox layoutX="16.0" layoutY="861.0" maxWidth="940.0" spacing="12.0" style="-fx-background-color: white;">
+                                 <children>
+                                    <Text fill="#6631c4" strokeType="OUTSIDE" strokeWidth="0.0" text="Bio">
+                                       <font>
+                                          <Font name="Trebuchet MS Bold" size="12.0" />
+                                       </font>
+                                    </Text>
+                                    <VBox spacing="24.0">
+                                       <children>
+                                          <VBox maxWidth="1.7976931348623157E308">
+                                             <children>
+                                                <Label ellipsisString="***" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" text="About you" textFill="#344054">
+                                                   <font>
+                                                      <Font name="Trebuchet MS" size="14.0" />
+                                                   </font>
+                                                   <VBox.margin>
+                                                      <Insets bottom="6.0" />
+                                                   </VBox.margin>
+                                                </Label>
+                                                <TextField fx:id="aboutYouTextField" accessibleRole="TEXT_AREA" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" promptText="A short bio" styleClass="combo-box" />
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </VBox>
+                                 </children>
+                                 <padding>
+                                    <Insets bottom="24.0" left="32.0" right="32.0" top="24.0" />
+                                 </padding>
+                              </VBox>
                     <VBox layoutX="16.0" layoutY="141.0" maxHeight="-Infinity" maxWidth="940.0" minHeight="-Infinity" minWidth="-Infinity" spacing="12.0" style="-fx-background-color: white;">
                       <children>
                         <Text fill="#6631c4" strokeType="OUTSIDE" strokeWidth="0.0" text="Settings">
@@ -261,23 +290,14 @@
                           <children>
                             <HBox maxWidth="1.7976931348623157E308" prefHeight="70.0" prefWidth="540.0" spacing="40.0">
                               <children>
-                                <VBox maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+                                <VBox maxWidth="1.7976931348623157E308" spacing="6.0" HBox.hgrow="ALWAYS">
                                   <children>
-                                    <Label id="login_email_label" stylesheets="@application.css" text="Name">
-                                      <opaqueInsets>
-                                        <Insets />
-                                      </opaqueInsets>
-                                      <font>
-                                        <Font name="Inter Regular" size="14.0" />
-                                      </font>
-                                      <VBox.margin>
-                                        <Insets />
-                                      </VBox.margin>
-                                      <padding>
-                                        <Insets bottom="6.0" />
-                                      </padding>
-                                    </Label>
-                                    <TextField fx:id="nameTextField" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Your Name">
+                                                      <Label ellipsisString="***" text="Name" textFill="#344054">
+                                                         <font>
+                                                            <Font name="Trebuchet MS" size="14.0" />
+                                                         </font>
+                                                      </Label>
+                                    <TextField fx:id="nameTextField" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Your Name" styleClass="combo-box">
                                       <font>
                                         <Font size="14.0" />
                                       </font>
@@ -296,23 +316,14 @@
                                     <Insets />
                                   </HBox.margin>
                                 </VBox>
-                                <VBox maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+                                <VBox maxWidth="1.7976931348623157E308" spacing="6.0" HBox.hgrow="ALWAYS">
                                   <children>
-                                    <Label id="login_email_label" stylesheets="@application.css" text="Email">
-                                      <opaqueInsets>
-                                        <Insets />
-                                      </opaqueInsets>
-                                      <font>
-                                        <Font name="Inter Regular" size="14.0" />
-                                      </font>
-                                      <VBox.margin>
-                                        <Insets />
-                                      </VBox.margin>
-                                      <padding>
-                                        <Insets bottom="6.0" />
-                                      </padding>
-                                    </Label>
-                                    <TextField fx:id="emailTextField" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="abc@gmail.com">
+                                                      <Label ellipsisString="***" text="Email" textFill="#344054">
+                                                         <font>
+                                                            <Font name="Trebuchet MS" size="14.0" />
+                                                         </font>
+                                                      </Label>
+                                    <TextField fx:id="emailTextField" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="abc@gmail.com" styleClass="combo-box">
                                       <font>
                                         <Font size="14.0" />
                                       </font>
@@ -332,23 +343,14 @@
                             </HBox>
                             <HBox maxWidth="1.7976931348623157E308" prefHeight="70.0" prefWidth="540.0" spacing="40.0">
                               <children>
-                                <VBox maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+                                <VBox maxWidth="1.7976931348623157E308" spacing="6.0" HBox.hgrow="ALWAYS">
                                   <children>
-                                    <Label id="login_email_label" stylesheets="@application.css" text="Password">
-                                      <opaqueInsets>
-                                        <Insets />
-                                      </opaqueInsets>
-                                      <font>
-                                        <Font name="Inter Regular" size="14.0" />
-                                      </font>
-                                      <padding>
-                                        <Insets bottom="6.0" />
-                                      </padding>
-                                      <VBox.margin>
-                                        <Insets />
-                                      </VBox.margin>
-                                    </Label>
-                                    <PasswordField fx:id="passwordTextField" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="**********">
+                                                      <Label ellipsisString="***" text="Password" textFill="#344054">
+                                                         <font>
+                                                            <Font name="Trebuchet MS" size="14.0" />
+                                                         </font>
+                                                      </Label>
+                                    <PasswordField fx:id="passwordTextField" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="**********" styleClass="combo-box">
                                       <font>
                                         <Font size="14.0" />
                                       </font>
@@ -613,19 +615,6 @@
                         </Text>
                         <VBox spacing="24.0">
                           <children>
-                            <VBox maxWidth="1.7976931348623157E308">
-                              <children>
-                                <Label ellipsisString="***" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" text="About you" textFill="#344054">
-                                  <font>
-                                    <Font name="Trebuchet MS" size="14.0" />
-                                  </font>
-                                  <VBox.margin>
-                                    <Insets bottom="6.0" />
-                                  </VBox.margin>
-                                </Label>
-                                <TextField fx:id="aboutYouTextField" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" promptText="A short bio" styleClass="combo-box" />
-                              </children>
-                            </VBox>
                             <HBox maxWidth="1.7976931348623157E308" prefHeight="70.0" prefWidth="540.0" spacing="40.0">
                               <children>
                                 <VBox maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
