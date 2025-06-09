@@ -360,6 +360,7 @@
                             <ComboBox fx:id="prefPartnerAgeComboBox" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick one" styleClass="combo-box">
                               <items>
                                 <FXCollections fx:factory="observableArrayList">
+                                  <String fx:value="Any"/>
                                   <String fx:value="18 - 25"/>
                                   <String fx:value="25 - 30"/>
                                   <String fx:value="30 - 35"/>
@@ -386,6 +387,7 @@
                             <ComboBox fx:id="prefLocationComboBox" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick one" styleClass="combo-box">
                               <items>
                                 <FXCollections fx:factory="observableArrayList">
+                                  <String fx:value="Any"/>
                                   <String fx:value="Noakhali"/>
                                   <String fx:value="Dhaka"/>
                                   <String fx:value="Chittagong"/>
@@ -437,6 +439,7 @@
                             <ComboBox fx:id="prefProfessionComboBox" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick one" styleClass="combo-box">
                               <items>
                                 <FXCollections fx:factory="observableArrayList">
+                                  <String fx:value="Any"/>
                                   <String fx:value="Student"/>
                                   <String fx:value="Service Holder"/>
                                   <String fx:value="Business"/>
