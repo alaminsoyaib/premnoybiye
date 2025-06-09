@@ -3,9 +3,12 @@ package com.bytebender.premnoybiye;
 import com.bytebender.premnoybiye.DBConnection.userInfo;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 public class test {
     int flag = 0;
@@ -13,11 +16,12 @@ public class test {
     @FXML
     private Label demoLabel;
     @FXML
-    private VBox sidebarCollapse;
+    private ImageView sidebarCollapse;
     @FXML
     private HBox demosidebarProfile;
     @FXML
-    private HBox demosidebarLogout;
+    private Text logoutLabel;
+
     @FXML
     private VBox Sidebar;
 
@@ -38,19 +42,21 @@ public class test {
     void sideCollapse(MouseEvent event) {
 
         if (flag == 0) {
-            // demosidebarProfile.visibleProperty().setValue(false);
+            sidebarCollapse.setImage(new Image(
+                    App.class.getResourceAsStream("/com/bytebender/premnoybiye/img/icon/open-drawer-icon.png")));
             demosidebarProfile.setVisible(false);
             demosidebarProfile.setManaged(false);
-            demosidebarLogout.setVisible(false);
-            demosidebarLogout.setManaged(false);
-            // Sidebar.setPrefWidth(flag == 0 ? 60 : 200);
+            logoutLabel.setVisible(false);
+            logoutLabel.setManaged(false);
             Sidebar.setPrefWidth(72);
             flag = 1;
         } else if (flag == 1) {
+            sidebarCollapse.setImage(new Image(
+                    App.class.getResourceAsStream("/com/bytebender/premnoybiye/img/icon/close-drawer-icon.png")));
             demosidebarProfile.setVisible(true);
             demosidebarProfile.setManaged(true);
-            demosidebarLogout.setVisible(true);
-            demosidebarLogout.setManaged(true);
+            logoutLabel.setVisible(true);
+            logoutLabel.setManaged(true);
             Sidebar.setPrefWidth(244);
             flag = 0;
         }
