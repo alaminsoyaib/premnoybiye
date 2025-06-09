@@ -1,15 +1,39 @@
 package com.bytebender.premnoybiye;
 
+import com.bytebender.premnoybiye.Component.sidebarToggle;
 import com.bytebender.premnoybiye.DBConnection.userInfo;
 import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 
 public class editProfileController {
+    int flag = 0;
+    private sidebarToggle sidebarComponent = new sidebarToggle();
+
+    @FXML
+    private ImageView sidebarCollapse;
+    @FXML
+    private HBox demosidebarProfile;
+    @FXML
+    private Text logoutLabel;
+
+    @FXML
+    private VBox Sidebar;
+
+    @FXML
+    private TextField nameTextField;
+    @FXML
+    private TextField emailTextField;
+
     @FXML
     private Label demoLabel;
     @FXML
@@ -55,9 +79,11 @@ public class editProfileController {
             if (name != "") {
                 demoLabel.setText(name);
                 demosub.setText(name);
+                nameTextField.setText(name);
             }
             if (user.getEmail() != "") {
                 emailLabel.setText(user.getEmail());
+                emailTextField.setText(user.getEmail());
             }
             if (user.getReligion() != "") {
                 religionComboBox.setPromptText(user.getReligion());
@@ -110,16 +136,12 @@ public class editProfileController {
             if (user.getPrefProfession() != "") {
                 prefProfessionComboBox.setPromptText(user.getPrefProfession());
             }
-
-            // demoLabel.setText("Date of Birth: " + user.getDob() + "\nGender: " +
-            // user.getGender() setPromptText​
-            // + "\nReligion: " + user.getReligion() + "\nCity: " + user.getCity()
-            // + "\nEducation: " + user.getEducation() + "\nProfession: " +
-            // user.getProfession()
-            // + "\nMonthly Income: " + user.getIncome() + "\nAbout You: " + user.getBio()
-            // + "\nPreferred Age: " + user.getPrefAge() + "\nPreferred Location: "
-            // + user.getPrefLocation() + "\nPreferred Profession: " +
-            // user.getPrefProfession());
         }
+    }
+
+    @FXML
+    void sideCollapse(MouseEvent event) {
+        // Calling toggling method of the sidebar component
+        flag = sidebarComponent.toggleSidebarState(sidebarCollapse, demosidebarProfile, logoutLabel, Sidebar, flag);
     }
 }

@@ -244,7 +244,8 @@ public class StepperController {
 			currentUser = user;
 
 			// App.setRoot("DemoTest");
-			App.setRoot("profile");
+			// App.setRoot("profile");
+			App.setRoot("DemoMiniSide");
 
 		}
 	}
