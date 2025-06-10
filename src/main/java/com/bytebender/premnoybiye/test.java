@@ -1,6 +1,6 @@
 package com.bytebender.premnoybiye;
 
-import com.bytebender.premnoybiye.Component.sidebarToggle;
+import com.bytebender.premnoybiye.Component.Component;
 import com.bytebender.premnoybiye.DBConnection.userInfo;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -12,7 +12,7 @@ import javafx.scene.layout.VBox;
 public class test {
     int flag = 0;
 
-    private sidebarToggle sidebarComponent = new sidebarToggle();
+    private Component sidebarComponent = new Component();
 
     @FXML
     private Label demoLabel;

@@ -7,7 +7,24 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
-public class sidebarToggle {
+public class Component {
+
+    public void setImage(String imagePath, ImageView element, double width, double height, boolean preserveRatio,
+            int arcSize) {
+        Image image = new Image(imagePath);
+
+        element.setImage(image);
+
+        element.setFitWidth(width);
+        element.setFitHeight(height);
+        element.setPreserveRatio(preserveRatio);
+
+        javafx.scene.shape.Rectangle clip = new javafx.scene.shape.Rectangle(width, height);
+        clip.setArcWidth(arcSize);
+        clip.setArcHeight(arcSize);
+        element.setClip(clip);
+    }
+
     public int toggleSidebarState(ImageView sidebarCollapse, HBox demosidebarProfile, Label discoverLabel,
             Label matchesLabel, Label profileLabel, Label msgLabel, Label logoutLabel, VBox Sidebar,
             int currentFlag) {
