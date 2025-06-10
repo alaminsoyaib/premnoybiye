@@ -13,7 +13,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 
 public class editProfileController {
     int flag = 0;
@@ -24,7 +23,15 @@ public class editProfileController {
     @FXML
     private HBox demosidebarProfile;
     @FXML
-    private Text logoutLabel;
+    private Label discoverLabel;
+    @FXML
+    private Label matchesLabel;
+    @FXML
+    private Label profileLabel;
+    @FXML
+    private Label msgLabel;
+    @FXML
+    private Label logoutLabel;
 
     @FXML
     private VBox Sidebar;
@@ -151,6 +158,6 @@ public class editProfileController {
     @FXML
     void sideCollapse(MouseEvent event) {
         // Calling toggling method of the sidebar component
-        flag = sidebarComponent.toggleSidebarState(sidebarCollapse, demosidebarProfile, logoutLabel, Sidebar, flag);
+        flag = sidebarComponent.toggleSidebarState(sidebarCollapse, demosidebarProfile, discoverLabel, matchesLabel, profileLabel, msgLabel, logoutLabel, Sidebar, flag);
     }
 }

@@ -158,3 +158,68 @@
   -fx-max-height: 0;
   -fx-background-color: transparent;
 }
+
+.search-box {
+  -fx-text-box-border: transparent;
+  -fx-background-color: -fx-control-inner-background;
+  -fx-background-insets: 0;
+  -fx-padding: 1 3 1 3;
+}
+
+.search-box:focused {
+  -fx-focus-color: transparent;
+  -fx-faint-focus-color: transparent;
+}
+
+.drawer-menu:hover {
+  -fx-background-color: #eee5fd;
+  -fx-background-radius: 8;
+}
+
+.selected {
+  -fx-background-color: #eee5fd;
+  -fx-text-fill: #6631c4;
+  -fx-background-radius: 8;
+}
+
+.selected .drawer-item-text {
+  -fx-text-fill: #6631c4;
+  -fx-visibility: hidden;
+}
+
+.selected .drawer-item-icon {
+  -fx-effect: innershadow(gaussian, #6631c4, 10, 0.5, 0, 0);
+}
+
+.transparent {
+  -fx-background-color: transparent;
+}
+
+.drawer-logout:hover {
+  -fx-background-color: #f3e2e3;
+  -fx-background-radius: 8;
+}
+
+.drawer-logout:hover .drawer-logout-text {
+  -fx-text-fill: #ea0000;
+}
+
+.drawer-logout:hover .drawer-logout-icon {
+  -fx-effect: innershadow(gaussian, #ea0000, 10, 0.5, 0, 0);
+}
+
+.search-box:focused {
+  -fx-border-color: transparent;
+  -fx-text-fill: #000000;
+}
+
+.search-box-holder {
+  -fx-border-color:#D0D5DD;
+  -fx-background-radius: 8;
+  -fx-border-radius: 8;
+}
+
+.search-box-holder:hover {
+  -fx-border-color: #6631c4;
+  -fx-background-color: #F6F3FF;
+}
