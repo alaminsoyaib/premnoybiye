@@ -110,21 +110,21 @@ public class editProfileController {
             if (user.getImage() != "") {
                 Image image = new Image(user.getImage());
 
-                demoProfileImg.setImage(image);
+                // demoProfileImg.setImage(image);
                 demoProfileSubImg.setImage(image);
 
-                demoProfileImg.setFitWidth(84);
-                demoProfileImg.setFitHeight(84);
-                demoProfileImg.setPreserveRatio(false);
+                // demoProfileImg.setFitWidth(84);
+                // demoProfileImg.setFitHeight(84);
+                // demoProfileImg.setPreserveRatio(false);
 
                 demoProfileSubImg.setFitWidth(40);
                 demoProfileSubImg.setFitHeight(40);
                 demoProfileSubImg.setPreserveRatio(false);
 
-                javafx.scene.shape.Rectangle clip = new javafx.scene.shape.Rectangle(84, 84);
-                clip.setArcWidth(20);
-                clip.setArcHeight(20);
-                demoProfileImg.setClip(clip);
+                // javafx.scene.shape.Rectangle clip = new javafx.scene.shape.Rectangle(84, 84);
+                // clip.setArcWidth(20);
+                // clip.setArcHeight(20);
+                // demoProfileImg.setClip(clip);
 
                 javafx.scene.shape.Rectangle clip2 = new javafx.scene.shape.Rectangle(40, 40);
                 clip2.setArcWidth(20);
