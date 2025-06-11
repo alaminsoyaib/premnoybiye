@@ -193,7 +193,7 @@
             <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
           </padding>
         </HBox>
-        <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="scrollBorderNoiseRemove" stylesheets="@application.css" VBox.vgrow="ALWAYS">
+        <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" stylesheets="@application.css" translateX="-1.0" VBox.vgrow="ALWAYS">
           <content>
             <VBox cache="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="16.0">
               <children>
@@ -357,6 +357,9 @@
               </padding>
             </VBox>
           </content>
+               <VBox.margin>
+                  <Insets bottom="1.0" left="1.0" top="1.0" />
+               </VBox.margin>
         </ScrollPane>
         <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" maxWidth="1.7976931348623157E308" prefWidth="756.0" spacing="16.0" style="-fx-background-color: white;">
           <children>
