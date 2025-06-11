@@ -72,6 +72,20 @@ public class App extends Application {
                     JsonObject writeResp = FirebaseRestClient.setData("demoTest", demoData, idToken);
                     System.out.println("Demo write response: " + writeResp);
                     System.out.println("Demo data saved to /demoTest");
+
+                    // Test image upload to Firebase Storage
+                    System.out.println("Testing image upload...");
+                    String imagePath = "src/main/resources/com/bytebender/premnoybiye/img/Main-Logo.png";
+                    String imageUrl = FirebaseRestClient.uploadImageToStorage(imagePath, "demo-user-123", idToken);
+                    System.out.println("Image uploaded, URL: " + imageUrl);
+
+                    // Store image URL in database
+                    JsonObject imageData = new JsonObject();
+                    imageData.addProperty("imageUrl", imageUrl);
+                    imageData.addProperty("uploadTime", System.currentTimeMillis());
+                    JsonObject imageResp = FirebaseRestClient.setData("userImages/demo-user-123", imageData, idToken);
+                    System.out.println("Image URL stored in database: " + imageResp);
+
                 } else {
                     System.err.println("Failed to get idToken from auth response: " + authResp);
                 }
