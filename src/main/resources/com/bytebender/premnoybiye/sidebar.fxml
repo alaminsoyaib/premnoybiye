@@ -65,7 +65,7 @@
             </HBox>
             <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefWidth="100.0" spacing="8.0">
               <children>
-                <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="48.0" spacing="12.0" styleClass="drawer-menu">
+                <HBox fx:id="discoverButton" alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#menuItemSwitch" prefHeight="48.0" spacing="12.0" styleClass="drawer-menu">
                   <padding>
                     <Insets bottom="12.0" top="12.0" />
                   </padding>
@@ -89,7 +89,7 @@
                     <Cursor fx:constant="HAND" />
                   </cursor>
                 </HBox>
-                <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="48.0" spacing="12.0" styleClass="drawer-menu">
+                <HBox fx:id="profileButton" alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#menuItemSwitch" prefHeight="48.0" spacing="12.0" styleClass="drawer-menu">
                   <padding>
                     <Insets bottom="12.0" top="12.0" />
                   </padding>
@@ -113,7 +113,7 @@
                     <Cursor fx:constant="HAND" />
                   </cursor>
                 </HBox>
-                <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="70.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="48.0" spacing="12.0">
+                <HBox fx:id="mymatchesButton" alignment="CENTER_LEFT" layoutX="10.0" layoutY="70.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#menuItemSwitch" prefHeight="48.0" spacing="12.0">
                   <padding>
                     <Insets bottom="12.0" top="12.0" />
                   </padding>
@@ -141,7 +141,7 @@
                     <String fx:value="selected" />
                   </styleClass>
                 </HBox>
-                <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="48.0" spacing="12.0" styleClass="drawer-menu">
+                <HBox fx:id="messageButton" alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#menuItemSwitch" prefHeight="48.0" spacing="12.0" styleClass="drawer-menu">
                   <padding>
                     <Insets bottom="12.0" top="12.0" />
                   </padding>
@@ -172,7 +172,7 @@
             </VBox>
           </children>
         </VBox>
-        <HBox fx:id="TemporarySwitchToStepper" alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#TemporarySwitchToStepper" prefHeight="48.0" spacing="12.0" styleClass="drawer-logout">
+        <HBox fx:id="logoutButton" alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" onMouseClicked="#menuItemSwitch" prefHeight="48.0" spacing="12.0" styleClass="drawer-logout">
           <padding>
             <Insets bottom="12.0" top="12.0" />
           </padding>

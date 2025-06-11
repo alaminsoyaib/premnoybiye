@@ -29,7 +29,7 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
 
         // scene = new Scene(loadFXML("splash-screen"), 1000, 600); // main code
-        scene = new Scene(loadFXML("signup"), 1000, 600); // demo code for test ,
+        scene = new Scene(loadFXML("sidebar"), 1000, 600); // demo code for signup ,sidebar
         // Stepper, profile, signup,
         // DemoMiniSide
         stage.setScene(scene);

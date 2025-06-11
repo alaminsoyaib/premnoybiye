@@ -40,22 +40,46 @@ public class SidebarController {
     private VBox Sidebar;
 
     @FXML
+    private HBox discoverButton;
+    @FXML
+    private HBox profileButton;
+    @FXML
+    private HBox mymatchesButton;
+    @FXML
+    private HBox messageButton;
+    @FXML
+    private HBox logoutButton;
+
+    @FXML
     private VBox container;
 
-    private void loadCardIntoContainer() {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("chatUI.fxml")); // card, chatUI
-            Parent cardContent = loader.load();
-            container.getChildren().clear();
-            container.getChildren().add(cardContent);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    private void loadCardIntoContainer(String fxml) throws IOException {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml + ".fxml")); // card, chatUI,
+        Parent cardContent = loader.load();
+        container.getChildren().clear();
+        container.getChildren().add(cardContent);
     }
 
     @FXML
-    private void TemporarySwitchToStepper() throws IOException {
-        App.setRoot("stepper");
+    void menuItemSwitch(MouseEvent event) throws IOException {
+
+        if (event.getSource() == discoverButton) {
+            loadCardIntoContainer("discover");
+
+        } else if (event.getSource() == profileButton) {
+            loadCardIntoContainer("editProfile");
+
+        } else if (event.getSource() == mymatchesButton) {
+            loadCardIntoContainer("mymatches");
+
+        } else if (event.getSource() == messageButton) {
+            loadCardIntoContainer("chatUI");
+
+        } else if (event.getSource() == logoutButton) {
+            App.setRoot("loginsignupchoice");
+
+        }
+
     }
 
     @FXML
@@ -65,9 +89,9 @@ public class SidebarController {
                 profileLabel, msgLabel, logoutLabel, Sidebar, flag);
     }
 
-    public void initialize() {
+    public void initialize() throws IOException {
         // Load the card.fxml into the container
-        loadCardIntoContainer();
+        loadCardIntoContainer("editProfile");
 
         // Access the user info
         userInfo user = StepperController.currentUser;
