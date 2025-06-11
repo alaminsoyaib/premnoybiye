@@ -214,12 +214,35 @@
 }
 
 .search-box-holder {
-  -fx-border-color:#D0D5DD;
+  -fx-border-color: #d0d5dd;
   -fx-background-radius: 8;
   -fx-border-radius: 8;
 }
 
 .search-box-holder:hover {
   -fx-border-color: #6631c4;
-  -fx-background-color: #F6F3FF;
+  -fx-background-color: #f6f3ff;
+}
+
+/* user card styling */
+.card {
+  -fx-background-radius: 16;
+  -fx-border-radius: 16;
+}
+
+.card-img {
+  -fx-background-radius: 8;
+  -fx-border-radius: 8;
+  -fx-background-image: url("img/icon/profile-image.png");
+  -fx-background-size: cover;
+  -fx-background-position: center center;
+  -fx-background-repeat: no-repeat;
+}
+
+.card-title {
+  -fx-text-fill: #1d2939;
+}
+
+.card-subtitle {
+  -fx-text-fill: #1d2939;
 }
