@@ -62,24 +62,37 @@ public class SidebarController {
 
     @FXML
     void menuItemSwitch(MouseEvent event) throws IOException {
+        // Remove selected class from all menu items
+        clearAllSelectedStates();
 
         if (event.getSource() == discoverButton) {
             loadCardIntoContainer("discover");
+            discoverButton.getStyleClass().add("selected");
 
         } else if (event.getSource() == profileButton) {
             loadCardIntoContainer("editProfile");
+            profileButton.getStyleClass().add("selected");
 
         } else if (event.getSource() == mymatchesButton) {
             loadCardIntoContainer("mymatches");
+            mymatchesButton.getStyleClass().add("selected");
 
         } else if (event.getSource() == messageButton) {
             loadCardIntoContainer("chatUI");
+            messageButton.getStyleClass().add("selected");
 
         } else if (event.getSource() == logoutButton) {
             App.setRoot("loginsignupchoice");
 
         }
 
+    }
+
+    private void clearAllSelectedStates() {
+        discoverButton.getStyleClass().remove("selected");
+        profileButton.getStyleClass().remove("selected");
+        mymatchesButton.getStyleClass().remove("selected");
+        messageButton.getStyleClass().remove("selected");
     }
 
     @FXML
@@ -92,6 +105,10 @@ public class SidebarController {
     public void initialize() throws IOException {
         // Load the card.fxml into the container
         loadCardIntoContainer("editProfile");
+
+        // Set initial selected state for profile button
+        clearAllSelectedStates();
+        profileButton.getStyleClass().add("selected");
 
         // Access the user info
         userInfo user = StepperController.currentUser;
