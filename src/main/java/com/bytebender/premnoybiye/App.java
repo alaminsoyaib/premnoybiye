@@ -47,7 +47,7 @@ public class App extends Application {
         // delay.play();
         // delay.setOnFinished(event -> { // Code to execute after the delay
         // try {
-        // App.setRoot("login_signup_choice");
+        // App.setRoot("loginsignupchoice");
         // } catch (IOException e) {
         // e.printStackTrace();
         // }

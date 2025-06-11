@@ -33,7 +33,7 @@ public class Signin_upController {
         String email = emailTextField.getText();
         String password = passwordTextField.getText();
         NewUser = new userInfo(name, email, password, "", "", "", "", "", "", "", "", "", "", "", "");
-        App.setRoot("Stepper");
+        App.setRoot("stepper");
     }
 
 }

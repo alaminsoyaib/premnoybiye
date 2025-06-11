@@ -81,81 +81,85 @@ public class editProfileController {
     public void initialize() {
         // Access the user info
         userInfo user = StepperController.currentUser;
-        if (user != null) {
-            String name = user.getName();
-            if (name != "") {
-                demoLabel.setText(name);
-                demosub.setText(name);
-                nameTextField.setText(name);
-            }
-            if (user.getEmail() != "") {
-                emailLabel.setText(user.getEmail());
-                emailTextField.setText(user.getEmail());
-            }
-            if (user.getReligion() != "") {
-                religionComboBox.setPromptText(user.getReligion());
-            }
-            if (user.getDob() != "") {
-                dobComboBox.setPromptText(user.getDob());
-            }
-            if (user.getGender() != "") {
-                genderComboBox.setPromptText(user.getGender());
-            }
-            if (user.getReligion() != "") {
-                religionComboBox.setPromptText(user.getReligion());
-            }
-            if (user.getCity() != "") {
-                cityComboBox.setPromptText(user.getCity());
-            }
-            if (user.getImage() != "") {
-                // Image image = new Image(user.getImage());
+        try {
+            if (user != null) {
+                String name = user.getName();
+                if (name != "") {
+                    demoLabel.setText(name);
+                    demosub.setText(name);
+                    nameTextField.setText(name);
+                }
+                if (user.getEmail() != "") {
+                    emailLabel.setText(user.getEmail());
+                    emailTextField.setText(user.getEmail());
+                }
+                if (user.getReligion() != "") {
+                    religionComboBox.setPromptText(user.getReligion());
+                }
+                if (user.getDob() != "") {
+                    dobComboBox.setPromptText(user.getDob());
+                }
+                if (user.getGender() != "") {
+                    genderComboBox.setPromptText(user.getGender());
+                }
+                if (user.getReligion() != "") {
+                    religionComboBox.setPromptText(user.getReligion());
+                }
+                if (user.getCity() != "") {
+                    cityComboBox.setPromptText(user.getCity());
+                }
+                if (user.getImage() != "") {
+                    // Image image = new Image(user.getImage());
 
-                // // demoProfileImg.setImage(image);
-                // demoProfileSubImg.setImage(image);
+                    // // demoProfileImg.setImage(image);
+                    // demoProfileSubImg.setImage(image);
 
-                // // demoProfileImg.setFitWidth(84);
-                // // demoProfileImg.setFitHeight(84);
-                // // demoProfileImg.setPreserveRatio(false);
+                    // // demoProfileImg.setFitWidth(84);
+                    // // demoProfileImg.setFitHeight(84);
+                    // // demoProfileImg.setPreserveRatio(false);
 
-                // demoProfileSubImg.setFitWidth(40);
-                // demoProfileSubImg.setFitHeight(40);
-                // demoProfileSubImg.setPreserveRatio(false);
+                    // demoProfileSubImg.setFitWidth(40);
+                    // demoProfileSubImg.setFitHeight(40);
+                    // demoProfileSubImg.setPreserveRatio(false);
 
-                // // javafx.scene.shape.Rectangle clip = new javafx.scene.shape.Rectangle(84,
-                // 84);
-                // // clip.setArcWidth(20);
-                // // clip.setArcHeight(20);
-                // // demoProfileImg.setClip(clip);
+                    // // javafx.scene.shape.Rectangle clip = new javafx.scene.shape.Rectangle(84,
+                    // 84);
+                    // // clip.setArcWidth(20);
+                    // // clip.setArcHeight(20);
+                    // // demoProfileImg.setClip(clip);
 
-                // javafx.scene.shape.Rectangle clip2 = new javafx.scene.shape.Rectangle(40,
-                // 40);
-                // clip2.setArcWidth(20);
-                // clip2.setArcHeight(20);
-                // demoProfileSubImg.setClip(clip2);
+                    // javafx.scene.shape.Rectangle clip2 = new javafx.scene.shape.Rectangle(40,
+                    // 40);
+                    // clip2.setArcWidth(20);
+                    // clip2.setArcHeight(20);
+                    // demoProfileSubImg.setClip(clip2);
 
-                component.setImage(user.getImage(), demoProfileSubImg, 40, 40, false, 20);
+                    component.setImage(user.getImage(), demoProfileSubImg, 40, 40, false, 20);
+                }
+                if (user.getEducation() != "") {
+                    highestEduComboBox.setPromptText(user.getEducation());
+                }
+                if (user.getProfession() != "") {
+                    professionComboBox.setPromptText(user.getProfession());
+                }
+                if (user.getIncome() != "") {
+                    monthlyIncomeComboBox.setPromptText(user.getIncome());
+                }
+                if (user.getBio() != "") {
+                    aboutYouTextField.setText(user.getBio());
+                }
+                if (user.getPrefAge() != "") {
+                    prefPartnerAgeComboBox.setPromptText(user.getPrefAge());
+                }
+                if (user.getPrefLocation() != "") {
+                    prefLocationComboBox.setPromptText(user.getPrefLocation());
+                }
+                if (user.getPrefProfession() != "") {
+                    prefProfessionComboBox.setPromptText(user.getPrefProfession());
+                }
             }
-            if (user.getEducation() != "") {
-                highestEduComboBox.setPromptText(user.getEducation());
-            }
-            if (user.getProfession() != "") {
-                professionComboBox.setPromptText(user.getProfession());
-            }
-            if (user.getIncome() != "") {
-                monthlyIncomeComboBox.setPromptText(user.getIncome());
-            }
-            if (user.getBio() != "") {
-                aboutYouTextField.setText(user.getBio());
-            }
-            if (user.getPrefAge() != "") {
-                prefPartnerAgeComboBox.setPromptText(user.getPrefAge());
-            }
-            if (user.getPrefLocation() != "") {
-                prefLocationComboBox.setPromptText(user.getPrefLocation());
-            }
-            if (user.getPrefProfession() != "") {
-                prefProfessionComboBox.setPromptText(user.getPrefProfession());
-            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
