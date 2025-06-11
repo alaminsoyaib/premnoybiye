@@ -103,23 +103,19 @@ public class SidebarController {
     }
 
     public void initialize() throws IOException {
-        // Load the card.fxml into the container
-        loadCardIntoContainer("editProfile");
+        loadCardIntoContainer("discover");
 
-        // Set initial selected state for profile button
         clearAllSelectedStates();
-        profileButton.getStyleClass().add("selected");
+        discoverButton.getStyleClass().add("selected");
 
-        // Access the user info
-        userInfo user = StepperController.currentUser;
         try {
-            if (user != null) {
-                if (user.getName() != "") {
-                    sidebarUserName.setText(user.getName());
+            if (AuthController.CurrentUser != null) {
+                if (AuthController.CurrentUser.getName() != "") {
+                    sidebarUserName.setText(AuthController.CurrentUser.getName());
                 }
-                if (user.getImage() != "") {
+                if (AuthController.CurrentUser.getImage() != "") {
                     // component.setImage(user.getImage(), demoProfileImg, 84, 84, false, 20);
-                    component.setImage(user.getImage(), sidebarProfileImage, 40, 40, false, 20);
+                    component.setImage(AuthController.CurrentUser.getImage(), sidebarProfileImage, 40, 40, false, 20);
                 }
             }
         } catch (Exception e) {

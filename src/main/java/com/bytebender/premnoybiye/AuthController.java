@@ -7,8 +7,8 @@ import com.bytebender.premnoybiye.DBConnection.userInfo;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
-public class Signin_upController {
-    static userInfo NewUser;
+public class AuthController {
+    static userInfo CurrentUser;
 
     @FXML
     private TextField emailTextField;
@@ -32,7 +32,7 @@ public class Signin_upController {
         String name = nameTextField.getText();
         String email = emailTextField.getText();
         String password = passwordTextField.getText();
-        NewUser = new userInfo(name, email, password, "", "", "", "", "", "", "", "", "", "", "", "");
+        CurrentUser = new userInfo(name, email, password, "", "", "", "", "", "", "", "", "", "", "", "");
         App.setRoot("stepper");
     }
 

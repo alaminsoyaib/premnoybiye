@@ -51,7 +51,8 @@ public class editProfileController {
     private ComboBox<?> editPrefProfessionComboBox;
 
     public void initialize() {
-        userInfo user = StepperController.currentUser;
+        // userInfo user = StepperController.currentUser;
+        userInfo user = AuthController.CurrentUser;
         try {
             if (user != null) {
                 if (user.getName() != "") {

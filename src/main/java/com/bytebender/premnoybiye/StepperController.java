@@ -17,8 +17,6 @@ import javafx.scene.input.MouseEvent;
 public class StepperController {
 	int flag = 0;
 
-	static userInfo currentUser;
-
 	@FXML
 	private VBox Stepper1;
 	@FXML
@@ -185,63 +183,42 @@ public class StepperController {
 			prevButton.setOpacity(1);
 			flag = 2;
 		} else if (flag == 2) {
-			userInfo tempuser = Signin_upController.NewUser;
-			String name = tempuser.getName();
-			String email = tempuser.getEmail();
-			String password = tempuser.getPassword();
-			String dob = "";
-			String gender = "";
-			String religion = "";
-			String city = "";
-			String image = "";
-			String education = "";
-			String profession = "";
-			String income = "";
-			String bio = "";
-			String prefAge = "";
-			String prefLocation = "";
-			String prefProfession = "";
 			if (dobComboBox.getValue() != null) {
-				dob = dobComboBox.getValue().toString();
+				AuthController.CurrentUser.setDob(dobComboBox.getValue().toString());
 			}
 			if (genderComboBox.getValue() != null) {
-				gender = genderComboBox.getValue().toString();
+				AuthController.CurrentUser.setGender(genderComboBox.getValue().toString());
 			}
 			if (religionComboBox.getValue() != null) {
-				religion = religionComboBox.getValue().toString();
+				AuthController.CurrentUser.setReligion(religionComboBox.getValue().toString());
 			}
 			if (cityComboBox.getValue() != null) {
-				city = cityComboBox.getValue().toString();
+				AuthController.CurrentUser.setCity(cityComboBox.getValue().toString());
 			}
 			if (img_inside_imgPicker.getImage() != null) {
-				image = img_inside_imgPicker.getImage().getUrl();
+				AuthController.CurrentUser.setImage(img_inside_imgPicker.getImage().getUrl());
 			}
 			if (highestEduComboBox.getValue() != null) {
-				education = highestEduComboBox.getValue().toString();
+				AuthController.CurrentUser.setEducation(highestEduComboBox.getValue().toString());
 			}
 			if (professionComboBox.getValue() != null) {
-				profession = professionComboBox.getValue().toString();
+				AuthController.CurrentUser.setProfession(professionComboBox.getValue().toString());
 			}
 			if (monthlyIncomeComboBox.getValue() != null) {
-				income = monthlyIncomeComboBox.getValue().toString();
+				AuthController.CurrentUser.setIncome(monthlyIncomeComboBox.getValue().toString());
 			}
 			if (aboutYouTextField.getText() != null) {
-				bio = aboutYouTextField.getText();
+				AuthController.CurrentUser.setBio(aboutYouTextField.getText());
 			}
 			if (prefPartnerAgeComboBox.getValue() != null) {
-				prefAge = prefPartnerAgeComboBox.getValue().toString();
+				AuthController.CurrentUser.setPrefAge(prefPartnerAgeComboBox.getValue().toString());
 			}
 			if (prefLocationComboBox.getValue() != null) {
-				prefLocation = prefLocationComboBox.getValue().toString();
+				AuthController.CurrentUser.setPrefLocation(prefLocationComboBox.getValue().toString());
 			}
 			if (prefProfessionComboBox.getValue() != null) {
-				prefProfession = prefProfessionComboBox.getValue().toString();
+				AuthController.CurrentUser.setPrefProfession(prefProfessionComboBox.getValue().toString());
 			}
-			userInfo user = new userInfo(name, email, password, dob, gender, religion, city, image, education,
-					profession,
-					income, bio, prefAge, prefLocation, prefProfession);
-
-			currentUser = user;
 
 			App.setRoot("sidebar");
 			// App.setRoot("editProfile");
