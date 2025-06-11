@@ -210,7 +210,7 @@
       </VBox>
     <VBox alignment="TOP_CENTER" HBox.hgrow="ALWAYS">
       <children>
-        <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #E7E6ED; -fx-border-color: #E7E6ED;" VBox.vgrow="ALWAYS">
+        <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" styleClass="scrollBorderNoiseRemove" stylesheets="@application.css" VBox.vgrow="ALWAYS">
           <content>
             <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="756.0" style="-fx-background-color: white;">
               <children>

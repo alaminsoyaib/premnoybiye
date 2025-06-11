@@ -43,8 +43,8 @@ public class SidebarController {
     private VBox container;
 
     private void loadCardIntoContainer() {
-        try { // Fxml inside Fxml
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("card.fxml"));
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("chatUI.fxml")); // card, chatUI
             Parent cardContent = loader.load();
             container.getChildren().clear();
             container.getChildren().add(cardContent);

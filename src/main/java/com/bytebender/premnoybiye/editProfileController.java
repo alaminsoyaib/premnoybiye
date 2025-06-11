@@ -92,7 +92,6 @@ public class editProfileController {
             container.getChildren().add(cardContent);
         } catch (IOException e) {
             e.printStackTrace();
-            // Stepper
         }
     }
 

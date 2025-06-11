@@ -139,6 +139,11 @@
   -fx-background-color: #667085;
 }
 
+.scrollBorderNoiseRemove {
+  -fx-background-color: transparent;
+  -fx-border-color: transparent;
+}
+
 .scroll-pane .viewport {
   -fx-background-color: transparent;
 }
