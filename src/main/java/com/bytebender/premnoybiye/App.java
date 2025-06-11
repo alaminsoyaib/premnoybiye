@@ -28,8 +28,8 @@ public class App extends Application {
     @Override
     public void start(Stage stage) throws IOException {
 
-        scene = new Scene(loadFXML("splash-screen"), 1000, 600); // main code
-        // scene = new Scene(loadFXML("signup"), 1000, 600); // demo code for test ,
+        // scene = new Scene(loadFXML("splash-screen"), 1000, 600); // main code
+        scene = new Scene(loadFXML("signup"), 1000, 600); // demo code for test ,
         // Stepper, profile, signup,
         // DemoMiniSide
         stage.setScene(scene);
@@ -42,17 +42,17 @@ public class App extends Application {
         Image icon = new Image(App.class.getResourceAsStream("/com/bytebender/premnoybiye/img/Main-Logo.png"));
         stage.getIcons().add(icon);
 
-        // Triggering delay to switch Splash Screen
-        PauseTransition delay = new PauseTransition(Duration.seconds(1));
-        // default timing 6second decided
-        delay.play();
-        delay.setOnFinished(event -> { // Code to execute after the delay
-            try {
-                App.setRoot("loginsignupchoice");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        });
+        // // Triggering delay to switch Splash Screen
+        // PauseTransition delay = new PauseTransition(Duration.seconds(1));
+        // // default timing 6second decided
+        // delay.play();
+        // delay.setOnFinished(event -> { // Code to execute after the delay
+        // try {
+        // App.setRoot("loginsignupchoice");
+        // } catch (IOException e) {
+        // e.printStackTrace();
+        // }
+        // });
     }
 
     public static void main(String[] args) {
