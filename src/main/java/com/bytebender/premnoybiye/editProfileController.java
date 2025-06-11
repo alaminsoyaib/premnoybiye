@@ -3,6 +3,8 @@ package com.bytebender.premnoybiye;
 import com.bytebender.premnoybiye.Component.Component;
 import com.bytebender.premnoybiye.DBConnection.userInfo;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
@@ -13,6 +15,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import java.io.IOException;
 
 public class editProfileController {
     int flag = 0;
@@ -35,6 +38,9 @@ public class editProfileController {
 
     @FXML
     private VBox Sidebar;
+
+    @FXML
+    private VBox container;
 
     @FXML
     private TextField nameTextField;
@@ -78,7 +84,27 @@ public class editProfileController {
     @FXML
     private ComboBox<?> prefProfessionComboBox;
 
+    private void loadCardIntoContainer() {
+        try { // Fxml inside Fxml
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("card.fxml"));
+            Parent cardContent = loader.load();
+            container.getChildren().clear();
+            container.getChildren().add(cardContent);
+        } catch (IOException e) {
+            e.printStackTrace();
+            // Stepper
+        }
+    }
+
+    @FXML
+    private void TemporarySwitchToStepper() throws IOException {
+        App.setRoot("stepper");
+    }
+
     public void initialize() {
+        // Load the card.fxml into the container
+        loadCardIntoContainer();
+
         // Access the user info
         userInfo user = StepperController.currentUser;
         try {
@@ -109,31 +135,7 @@ public class editProfileController {
                     cityComboBox.setPromptText(user.getCity());
                 }
                 if (user.getImage() != "") {
-                    // Image image = new Image(user.getImage());
-
-                    // // demoProfileImg.setImage(image);
-                    // demoProfileSubImg.setImage(image);
-
-                    // // demoProfileImg.setFitWidth(84);
-                    // // demoProfileImg.setFitHeight(84);
-                    // // demoProfileImg.setPreserveRatio(false);
-
-                    // demoProfileSubImg.setFitWidth(40);
-                    // demoProfileSubImg.setFitHeight(40);
-                    // demoProfileSubImg.setPreserveRatio(false);
-
-                    // // javafx.scene.shape.Rectangle clip = new javafx.scene.shape.Rectangle(84,
-                    // 84);
-                    // // clip.setArcWidth(20);
-                    // // clip.setArcHeight(20);
-                    // // demoProfileImg.setClip(clip);
-
-                    // javafx.scene.shape.Rectangle clip2 = new javafx.scene.shape.Rectangle(40,
-                    // 40);
-                    // clip2.setArcWidth(20);
-                    // clip2.setArcHeight(20);
-                    // demoProfileSubImg.setClip(clip2);
-
+                    // component.setImage(user.getImage(), demoProfileImg, 84, 84, false, 20);
                     component.setImage(user.getImage(), demoProfileSubImg, 40, 40, false, 20);
                 }
                 if (user.getEducation() != "") {
