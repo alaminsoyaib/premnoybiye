@@ -30,7 +30,7 @@ public class App extends Application {
 
         // scene = new Scene(loadFXML("splash-screen"), 1000, 600); // main code
         scene = new Scene(loadFXML("signup"), 1000, 600); // demo code for test , Stepper, profile, signup,
-                                                             // DemoMiniSide
+                                                          // DemoMiniSide
         stage.setScene(scene);
         stage.setTitle("Prem Noy Biye");
         stage.show();
