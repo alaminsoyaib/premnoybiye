@@ -19,7 +19,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="756.0" style="-fx-background-color: #E7E6ED;" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="756.0" style="-fx-background-color: #E7E6ED;" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bytebender.premnoybiye.editProfileController">
   <children>
     <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #E7E6ED; -fx-border-color: #E7E6ED;" stylesheets="@application.css" translateY="-1.0" VBox.vgrow="ALWAYS">
       <content>
@@ -34,19 +34,19 @@
                   <children>
                     <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" spacing="12.0" HBox.hgrow="ALWAYS">
                       <children>
-                        <ImageView fx:id="demoProfileImg" fitHeight="84.0" fitWidth="84.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fx:id="editProfileImg" fitHeight="84.0" fitWidth="84.0" pickOnBounds="true" preserveRatio="true">
                           <image>
                             <Image url="@img/icon/profile-image.png" />
                           </image>
                         </ImageView>
                         <VBox alignment="CENTER_LEFT" spacing="6.0" HBox.hgrow="ALWAYS">
                           <children>
-                            <Label fx:id="demoLabel" prefWidth="300.0" text="Loading..." textFill="#262626">
+                            <Label fx:id="editProfileName" prefWidth="300.0" text="Loading..." textFill="#262626">
                               <font>
                                 <Font name="Trebuchet MS Bold" size="20.0" />
                               </font>
                             </Label>
-                            <Label fx:id="emailLabel" layoutX="10.0" layoutY="26.0" opacity="0.5" text="Loading...">
+                            <Label fx:id="editEmailLabel" layoutX="10.0" layoutY="26.0" opacity="0.5" text="Loading...">
                               <font>
                                 <Font name="Trebuchet MS" size="17.0" />
                               </font>
@@ -84,7 +84,7 @@
                                 <Insets bottom="6.0" />
                               </VBox.margin>
                             </Label>
-                            <TextField fx:id="aboutYouTextField" accessibleRole="TEXT_AREA" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" promptText="A short bio" styleClass="combo-box" />
+                            <TextField fx:id="editAboutYouTextField" accessibleRole="TEXT_AREA" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" promptText="A short bio" styleClass="combo-box" />
                           </children>
                         </VBox>
                       </children>
@@ -112,7 +112,7 @@
                                     <Font name="Trebuchet MS" size="14.0" />
                                   </font>
                                 </Label>
-                                <TextField fx:id="nameTextField" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Your Name" styleClass="combo-box">
+                                <TextField fx:id="editNameTextField" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Your Name" styleClass="combo-box">
                                   <font>
                                     <Font size="14.0" />
                                   </font>
@@ -138,7 +138,7 @@
                                     <Font name="Trebuchet MS" size="14.0" />
                                   </font>
                                 </Label>
-                                <TextField fx:id="emailTextField" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="abc@gmail.com" styleClass="combo-box">
+                                <TextField fx:id="editEmailTextField" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="abc@gmail.com" styleClass="combo-box">
                                   <font>
                                     <Font size="14.0" />
                                   </font>
@@ -206,7 +206,7 @@
                                     <Insets bottom="6.0" />
                                   </VBox.margin>
                                 </Label>
-                                <DatePicker fx:id="dobComboBox" focusTraversable="false" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Select a date" />
+                                <DatePicker fx:id="editDobComboBox" focusTraversable="false" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Select a date" />
                               </children>
                               <HBox.margin>
                                 <Insets />
@@ -222,7 +222,7 @@
                                     <Insets bottom="6.0" />
                                   </VBox.margin>
                                 </Label>
-                                <ComboBox fx:id="genderComboBox" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick one" styleClass="combo-box">
+                                <ComboBox fx:id="editGenderComboBox" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick one" styleClass="combo-box">
                                   <items>
                                     <FXCollections fx:factory="observableArrayList">
                                       <String fx:value="Male" />
@@ -247,7 +247,7 @@
                                     <Insets bottom="6.0" />
                                   </VBox.margin>
                                 </Label>
-                                <ComboBox fx:id="religionComboBox" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick one" styleClass="combo-box">
+                                <ComboBox fx:id="editReligionComboBox" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick one" styleClass="combo-box">
                                   <items>
                                     <FXCollections fx:factory="observableArrayList">
                                       <String fx:value="Islam" />
@@ -273,7 +273,7 @@
                                     <Insets bottom="6.0" />
                                   </VBox.margin>
                                 </Label>
-                                <ComboBox fx:id="cityComboBox" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick one" styleClass="combo-box">
+                                <ComboBox fx:id="editCityComboBox" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick one" styleClass="combo-box">
                                   <items>
                                     <FXCollections fx:factory="observableArrayList">
                                       <String fx:value="Noakhali" />
@@ -340,7 +340,7 @@
                                     <Insets bottom="6.0" />
                                   </VBox.margin>
                                 </Label>
-                                <ComboBox fx:id="highestEduComboBox" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick one" styleClass="combo-box">
+                                <ComboBox fx:id="editHighestEduComboBox" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick one" styleClass="combo-box">
                                   <items>
                                     <FXCollections fx:factory="observableArrayList">
                                       <String fx:value="SSC/Equivalent" />
@@ -367,7 +367,7 @@
                                     <Insets bottom="6.0" />
                                   </VBox.margin>
                                 </Label>
-                                <ComboBox fx:id="professionComboBox" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick one" styleClass="combo-box">
+                                <ComboBox fx:id="editProfessionComboBox" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick one" styleClass="combo-box">
                                   <items>
                                     <FXCollections fx:factory="observableArrayList">
                                       <String fx:value="Student" />
@@ -395,7 +395,7 @@
                                     <Insets bottom="6.0" />
                                   </VBox.margin>
                                 </Label>
-                                <ComboBox fx:id="monthlyIncomeComboBox" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick one" styleClass="combo-box">
+                                <ComboBox fx:id="editMonthlyIncomeComboBox" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick one" styleClass="combo-box">
                                   <items>
                                     <FXCollections fx:factory="observableArrayList">
                                       <String fx:value="0 - 20,000" />
@@ -442,7 +442,7 @@
                                     <Insets bottom="6.0" />
                                   </VBox.margin>
                                 </Label>
-                                <ComboBox fx:id="prefPartnerAgeComboBox" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick one" styleClass="combo-box">
+                                <ComboBox fx:id="editPrefPartnerAgeComboBox" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick one" styleClass="combo-box">
                                   <items>
                                     <FXCollections fx:factory="observableArrayList">
                                       <String fx:value="Any" />
@@ -469,7 +469,7 @@
                                     <Insets bottom="6.0" />
                                   </VBox.margin>
                                 </Label>
-                                <ComboBox fx:id="prefLocationComboBox" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick one" styleClass="combo-box">
+                                <ComboBox fx:id="editPrefLocationComboBox" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick one" styleClass="combo-box">
                                   <items>
                                     <FXCollections fx:factory="observableArrayList">
                                       <String fx:value="Any" />
@@ -521,7 +521,7 @@
                                     <Insets bottom="6.0" />
                                   </VBox.margin>
                                 </Label>
-                                <ComboBox fx:id="prefProfessionComboBox" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick one" styleClass="combo-box">
+                                <ComboBox fx:id="editPrefProfessionComboBox" maxHeight="-Infinity" maxWidth="450.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="Pick one" styleClass="combo-box">
                                   <items>
                                     <FXCollections fx:factory="observableArrayList">
                                       <String fx:value="Any" />
@@ -554,9 +554,9 @@
           </children>
         </AnchorPane>
       </content>
-         <VBox.margin>
-            <Insets left="12.0" />
-         </VBox.margin>
+      <VBox.margin>
+        <Insets left="12.0" />
+      </VBox.margin>
     </ScrollPane>
     <HBox alignment="CENTER_RIGHT" maxWidth="940.0" prefWidth="756.0" style="-fx-background-color: #E7E6ED;">
       <children>
