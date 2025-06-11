@@ -39,7 +39,7 @@
                 </VBox>
                 <VBox spacing="2.0">
                   <children>
-                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Kuddus Alamin">
+                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Kuddus Begum">
                       <font>
                         <Font name="Trebuchet MS" size="16.0"/>
                       </font>
@@ -72,7 +72,7 @@
                 </VBox>
                 <VBox spacing="2.0">
                   <children>
-                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Kuddus Alamin">
+                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Kuddus Begum">
                       <font>
                         <Font name="Trebuchet MS" size="16.0"/>
                       </font>
@@ -105,7 +105,7 @@
                 </VBox>
                 <VBox spacing="2.0">
                   <children>
-                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Kuddus Alamin">
+                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Kuddus Begum">
                       <font>
                         <Font name="Trebuchet MS" size="16.0"/>
                       </font>
@@ -138,7 +138,7 @@
                 </VBox>
                 <VBox spacing="2.0">
                   <children>
-                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Kuddus Alamin">
+                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Kuddus Begum">
                       <font>
                         <Font name="Trebuchet MS" size="16.0"/>
                       </font>
@@ -168,7 +168,7 @@
           <children>
             <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" spacing="2.0" HBox.hgrow="ALWAYS">
               <children>
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Kuddus Alamin">
+                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Kuddus Begum">
                   <font>
                     <Font name="Trebuchet MS" size="16.0"/>
                   </font>
