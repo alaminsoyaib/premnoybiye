@@ -9,8 +9,6 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import java.io.IOException;
 import javafx.util.Duration;
-import com.bytebender.premnoybiye.DBConnection.FirebaseRestClient;
-import com.google.gson.JsonObject;
 /*  JavaFX App */
 
 public class App extends Application {
@@ -28,72 +26,19 @@ public class App extends Application {
     }
 
     @Override
-    public void start(Stage stage) throws IOException {
-
-        // scene = new Scene(loadFXML("splash-screen"), 1000, 600); // main code
-        scene = new Scene(loadFXML("loginsignupchoice"), 1000, 600); // demo code for signup ,sidebar
-        // Stepper, profile, signup, loginsignupchoice, login, sidebar, splash-screen,
-        // DemoMiniSide
+    public void start(Stage stage) throws IOException { // scene = new Scene(loadFXML("splash-screen"), 1000, 600); //
+                                                        // main code
+        scene = new Scene(loadFXML("loginsignupchoice"), 1000, 600);
+        // Available scenes: splash-screen, loginsignupchoice, signup, login, sidebar,
+        // stepper, profile
         stage.setScene(scene);
         stage.setTitle("Prem Noy Biye");
         stage.show();
 
         String css = this.getClass().getResource("application.css").toExternalForm();
         scene.getStylesheets().add(css);
-
         Image icon = new Image(App.class.getResourceAsStream("/com/bytebender/premnoybiye/img/Main-Logo.png"));
-        stage.getIcons().add(icon); // Demo: store sample data in Realtime Database
-        new Thread(() -> {
-            try {
-                System.out.println("Starting Firebase demo test...");
-
-                // Sign up a demo user (or replace with existing credentials)
-                System.out.println("Attempting to sign up demo user...");
-                JsonObject authResp = FirebaseRestClient.signUp("demo@demo.com", "demo123");
-                System.out.println("Initial auth response: " + authResp);
-
-                // If user already exists, fallback to signIn
-                if (authResp.has("error")) {
-                    System.err.println("SignUp error, trying signIn: " + authResp);
-                    authResp = FirebaseRestClient.signIn("demo@demo.com", "demo123");
-                    System.out.println("SignIn response: " + authResp);
-                }
-
-                if (authResp.has("idToken")) {
-                    String idToken = authResp.get("idToken").getAsString();
-                    System.out.println("Got idToken: " + idToken.substring(0, 20) + "...");
-
-                    // Write demo node
-                    JsonObject demoData = new JsonObject();
-                    demoData.addProperty("message", "Hello from JavaFX demo");
-                    demoData.addProperty("timestamp", System.currentTimeMillis());
-
-                    System.out.println("Writing demo data...");
-                    JsonObject writeResp = FirebaseRestClient.setData("demoTest", demoData, idToken);
-                    System.out.println("Demo write response: " + writeResp);
-                    System.out.println("Demo data saved to /demoTest");
-
-                    // Test image upload to Firebase Storage
-                    System.out.println("Testing image upload...");
-                    String imagePath = "src/main/resources/com/bytebender/premnoybiye/img/Main-Logo.png";
-                    String imageUrl = FirebaseRestClient.uploadImageToStorage(imagePath, "demo-user-123", idToken);
-                    System.out.println("Image uploaded, URL: " + imageUrl);
-
-                    // Store image URL in database
-                    JsonObject imageData = new JsonObject();
-                    imageData.addProperty("imageUrl", imageUrl);
-                    imageData.addProperty("uploadTime", System.currentTimeMillis());
-                    JsonObject imageResp = FirebaseRestClient.setData("userImages/demo-user-123", imageData, idToken);
-                    System.out.println("Image URL stored in database: " + imageResp);
-
-                } else {
-                    System.err.println("Failed to get idToken from auth response: " + authResp);
-                }
-            } catch (Exception e) {
-                System.err.println("Exception in demo thread:");
-                e.printStackTrace();
-            }
-        }).start();
+        stage.getIcons().add(icon);
 
         // // Triggering delay to switch Splash Screen
         // PauseTransition delay = new PauseTransition(Duration.seconds(1));
