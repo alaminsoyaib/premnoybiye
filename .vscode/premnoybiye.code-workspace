@@ -7,6 +7,7 @@
   "settings": {
     "cSpell.enabledFileTypes": {
       "css": false
-    }
+    },
+    "java.configuration.updateBuildConfiguration": "automatic"
   }
 }
