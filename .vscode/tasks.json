@@ -2,16 +2,47 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Run JavaFX App",
+      "label": "Run JavaFX App (Module System)",
+      "type": "shell",
+      "command": "mvn",
+      "args": ["clean", "javafx:run"],
+      "group": "build",
+      "isBackground": false,
+      "problemMatcher": []
+    },
+    {
+      "label": "Compile with Module System",
+      "type": "shell",
+      "command": "mvn",
+      "args": ["clean", "compile"],
+      "group": "build",
+      "isBackground": false,
+      "problemMatcher": []
+    },
+    {
+      "label": "Copy Dependencies",
+      "type": "shell",
+      "command": "mvn",
+      "args": [
+        "dependency:copy-dependencies",
+        "-DoutputDirectory=target/dependency"
+      ],
+      "group": "build",
+      "isBackground": false,
+      "problemMatcher": []
+    },
+    {
+      "label": "Run JavaFX App (Classpath fallback)",
       "type": "shell",
       "command": "java",
       "args": [
         "--module-path",
-        "target/classes",
+        "target/dependency",
         "--add-modules",
         "javafx.controls,javafx.fxml",
-        "--module",
-        "com.bytebender.premnoybiye/com.bytebender.premnoybiye.App"
+        "-cp",
+        "target/classes;target/dependency/*",
+        "com.bytebender.premnoybiye.App"
       ],
       "group": "build",
       "isBackground": false,
