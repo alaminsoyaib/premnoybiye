@@ -9,7 +9,7 @@
 <?import javafx.scene.text.Font?>
 
 
-<VBox spacing="16.0" styleClass="card" stylesheets="@application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox maxWidth="-Infinity" prefWidth="200.0" spacing="16.0" styleClass="card" stylesheets="@application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox>
          <children>

@@ -228,6 +228,7 @@
 .card {
   -fx-background-radius: 16;
   -fx-border-radius: 16;
+  -fx-effect: dropshadow(gaussian, #25242d, 22, 0.15, 4, 0);
 }
 
 .card-img {
@@ -245,4 +246,13 @@
 
 .card-subtitle {
   -fx-text-fill: #1d2939;
+}
+
+/* for discover page card stack */
+.card-stack {
+  -fx-background-image: url("img/card-stack-bg.png");
+  -fx-background-size: cover;
+  -fx-background-position: center center;
+  -fx-background-repeat: no-repeat;
+  -fx-background-radius: 16;
 }
