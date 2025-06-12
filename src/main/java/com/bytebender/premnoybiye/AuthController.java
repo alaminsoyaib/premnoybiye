@@ -52,15 +52,15 @@ public class AuthController {
         String email = emailTextField.getText();
         String password = passwordTextField.getText();
 
-        // Use Firebase connection to register user (similar to Component.setImage
-        // pattern)
-        boolean registrationSuccess = firebaseConnection.registerUser(name, email, password);
+        // Use Firebase connection to register user and get the userId
+        String userId = firebaseConnection.registerUser(name, email, password);
 
-        if (registrationSuccess) {
-            CurrentUser = new userInfo(name, email, password, "", "", "", "", "", "", "", "", "", "", "", "");
+        if (userId != null) {
+            // Create CurrentUser with the userId from registration
+            CurrentUser = new userInfo(name, email, password, "", "", "", "", "", "", "", "", "", "", "", "", userId);
             App.setRoot("stepper");
         } else {
-            // Handle registration failure (you might want to show an error message)
+            // Handle registration failure (Firebase connection already shows error alerts)
             System.err.println("Registration failed. Please try again.");
         }
     }

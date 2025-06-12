@@ -78,20 +78,20 @@ public class FirebaseConnection {
      * @param name     User's name
      * @param email    User's email
      * @param password User's password
-     * @return boolean indicating success or failure
+     * @return String userId if successful, null if failed
      */
-    public boolean registerUser(String name, String email, String password) {
+    public String registerUser(String name, String email, String password) {
         try {
             if (name.trim().isEmpty() || email.trim().isEmpty() || password.trim().isEmpty()) {
                 showErrorAlert("Registration Error", "Name, email, and password must not be empty");
-                return false;
+                return null;
             }
 
             // Check if email is already registered
             if (isEmailAlreadyRegistered(email)) {
                 showErrorAlert("Registration Error",
                         "An account with this email address already exists. Please use a different email or try logging in.");
-                return false;
+                return null;
             }
 
             // Extract first name only (up to first space or full name if no space)
@@ -135,36 +135,196 @@ public class FirebaseConnection {
 
                 if (emailIndexSuccess) {
                     System.out.println(
-                            "User registered successfully in Firebase with email index: " + name + " (" + email + ")");
+                            "User registered successfully in Firebase with email index: " + name + " (" + email
+                                    + ") userId: " + userId);
                 } else {
                     System.out.println("User registered successfully in Firebase, but email index failed: " + name
-                            + " (" + email + ")");
+                            + " (" + email + ") userId: " + userId);
                 }
-                return true;
+                return userId; // Return the userId instead of boolean
             } else {
                 showErrorAlert("Registration Failed",
                         "Failed to register user. Please check your internet connection and try again.");
                 System.err.println("Firebase registration failed. Status: " + response.statusCode());
                 System.err.println("Response: " + response.body());
-                return false;
+                return null;
             }
 
         } catch (Exception e) {
             showErrorAlert("Registration Error", "An unexpected error occurred during registration. Please try again.");
             System.err.println("Error registering user in Firebase: " + e.getMessage());
             e.printStackTrace();
-            return false;
+            return null;
         }
     }
 
     /**
      * Updates user profile information in Firebase
      * 
+     * @param userInfo     Complete user information object
+     * @param currentEmail The current email (before any changes) for lookup
+     * @return boolean indicating success or failure
+     */
+    public boolean updateUserProfile(userInfo user, String currentEmail) {
+        try {
+            // Use current email to find the userId
+            String targetUserId = getUserIdByEmail(currentEmail);
+
+            if (targetUserId != null) {
+                // Get current user data to check if email is changing
+                String getCurrentUrl = databaseUrl + "/Users/" + targetUserId + ".json?auth=" + apiKey;
+
+                HttpRequest getCurrentRequest = HttpRequest.newBuilder()
+                        .uri(URI.create(getCurrentUrl))
+                        .GET()
+                        .build();
+
+                HttpResponse<String> getCurrentResponse = httpClient.send(getCurrentRequest,
+                        HttpResponse.BodyHandlers.ofString());
+
+                String oldEmail = currentEmail;
+                String newEmail = user.getEmail();
+                boolean emailChanged = false;
+
+                if (getCurrentResponse.statusCode() == 200) {
+                    JsonNode currentUserNode = objectMapper.readTree(getCurrentResponse.body());
+                    if (currentUserNode != null && !currentUserNode.isNull()) {
+                        oldEmail = currentUserNode.get("email").asText("");
+                        emailChanged = !oldEmail.equals(newEmail);
+                    }
+                }
+
+                // Create updated user data map
+                Map<String, Object> userData = new HashMap<>();
+                userData.put("name", user.getName());
+                userData.put("email", user.getEmail());
+                userData.put("dob", user.getDob());
+                userData.put("gender", user.getGender());
+                userData.put("religion", user.getReligion());
+                userData.put("city", user.getCity());
+                userData.put("image", user.getImage());
+                userData.put("education", user.getEducation());
+                userData.put("profession", user.getProfession());
+                userData.put("income", user.getIncome());
+                userData.put("bio", user.getBio());
+                userData.put("prefAge", user.getPrefAge());
+                userData.put("prefLocation", user.getPrefLocation());
+                userData.put("prefProfession", user.getPrefProfession());
+                userData.put("userId", targetUserId); // Ensure userId is maintained
+
+                // Convert to JSON
+                String jsonData = objectMapper.writeValueAsString(userData);
+
+                // Update user data using the found userId
+                String updateUrl = databaseUrl + "/Users/" + targetUserId + ".json?auth=" + apiKey;
+
+                System.out.println("Updating user profile with ID: " + targetUserId);
+                System.out.println("Update URL: " + updateUrl);
+                if (emailChanged) {
+                    System.out.println("Email changing from: " + oldEmail + " to: " + newEmail);
+                }
+
+                HttpRequest updateRequest = HttpRequest.newBuilder()
+                        .uri(URI.create(updateUrl))
+                        .header("Content-Type", "application/json")
+                        .method("PATCH", HttpRequest.BodyPublishers.ofString(jsonData))
+                        .build();
+
+                HttpResponse<String> updateResponse = httpClient.send(updateRequest,
+                        HttpResponse.BodyHandlers.ofString());
+
+                System.out.println("Update response status: " + updateResponse.statusCode());
+                System.out.println("Update response body: " + updateResponse.body());
+
+                if (updateResponse.statusCode() == 200) {
+                    // If email changed, update the email index
+                    if (emailChanged) {
+                        System.out.println("Email changed, updating email index...");
+
+                        // Remove old email index
+                        boolean oldIndexRemoved = removeEmailFromIndex(oldEmail);
+
+                        // Add new email index
+                        boolean newIndexAdded = addEmailToIndex(newEmail, targetUserId);
+
+                        if (oldIndexRemoved && newIndexAdded) {
+                            System.out.println("Email index updated successfully");
+                        } else {
+                            System.err.println("Warning: Email index update may have failed");
+                            System.err.println(
+                                    "Old index removed: " + oldIndexRemoved + ", New index added: " + newIndexAdded);
+                        }
+                    }
+
+                    System.out.println("User profile updated successfully in Firebase: " + user.getName());
+                    return true;
+                } else {
+                    System.err.println("Firebase profile update failed. Status: " + updateResponse.statusCode());
+                    return false;
+                }
+            } else {
+                System.err.println("User not found in email index for email: " + currentEmail);
+                return false;
+            }
+
+        } catch (Exception e) {
+            System.err.println("Error updating user profile in Firebase: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * Updates user profile information in Firebase (overloaded method for backward
+     * compatibility)
+     * Uses the userId from the user object if available, otherwise falls back to
+     * email lookup
+     * 
      * @param userInfo Complete user information object
      * @return boolean indicating success or failure
      */
     public boolean updateUserProfile(userInfo user) {
+        // If user has userId, use it directly instead of email lookup
+        if (user.getUserId() != null && !user.getUserId().trim().isEmpty()) {
+            return updateUserProfileByUserId(user, user.getUserId());
+        }
+
+        // Fall back to email-based lookup
+        return updateUserProfile(user, user.getEmail());
+    }
+
+    /**
+     * Updates user profile using userId directly (most efficient method)
+     * 
+     * @param user   The user information object
+     * @param userId The userId to update
+     * @return boolean indicating success or failure
+     */
+    private boolean updateUserProfileByUserId(userInfo user, String userId) {
         try {
+            // Get current user data to check if email is changing
+            String getCurrentUrl = databaseUrl + "/Users/" + userId + ".json?auth=" + apiKey;
+
+            HttpRequest getCurrentRequest = HttpRequest.newBuilder()
+                    .uri(URI.create(getCurrentUrl))
+                    .GET()
+                    .build();
+
+            HttpResponse<String> getCurrentResponse = httpClient.send(getCurrentRequest,
+                    HttpResponse.BodyHandlers.ofString());
+
+            String oldEmail = "";
+            String newEmail = user.getEmail();
+            boolean emailChanged = false;
+
+            if (getCurrentResponse.statusCode() == 200) {
+                JsonNode currentUserNode = objectMapper.readTree(getCurrentResponse.body());
+                if (currentUserNode != null && !currentUserNode.isNull()) {
+                    oldEmail = currentUserNode.get("email").asText("");
+                    emailChanged = !oldEmail.equals(newEmail);
+                }
+            }
+
             // Create updated user data map
             Map<String, Object> userData = new HashMap<>();
             userData.put("name", user.getName());
@@ -181,41 +341,52 @@ public class FirebaseConnection {
             userData.put("prefAge", user.getPrefAge());
             userData.put("prefLocation", user.getPrefLocation());
             userData.put("prefProfession", user.getPrefProfession());
+            userData.put("userId", userId); // Ensure userId is maintained
 
             // Convert to JSON
             String jsonData = objectMapper.writeValueAsString(userData);
 
-            // Use email index for fast lookup
-            String targetUserId = getUserIdByEmail(user.getEmail());
+            // Update user data using the userId
+            String updateUrl = databaseUrl + "/Users/" + userId + ".json?auth=" + apiKey;
 
-            if (targetUserId != null) {
-                // Update user data using the found userId
-                String updateUrl = databaseUrl + "/Users/" + targetUserId + ".json?auth=" + apiKey;
+            System.out.println("Updating user profile with ID: " + userId);
+            System.out.println("Update URL: " + updateUrl);
+            if (emailChanged) {
+                System.out.println("Email changing from: " + oldEmail + " to: " + newEmail);
+            }
 
-                System.out.println("Updating user profile with ID: " + targetUserId);
-                System.out.println("Update URL: " + updateUrl);
+            HttpRequest updateRequest = HttpRequest.newBuilder()
+                    .uri(URI.create(updateUrl))
+                    .header("Content-Type", "application/json")
+                    .method("PATCH", HttpRequest.BodyPublishers.ofString(jsonData))
+                    .build();
 
-                HttpRequest updateRequest = HttpRequest.newBuilder()
-                        .uri(URI.create(updateUrl))
-                        .header("Content-Type", "application/json")
-                        .method("PATCH", HttpRequest.BodyPublishers.ofString(jsonData))
-                        .build();
+            HttpResponse<String> updateResponse = httpClient.send(updateRequest,
+                    HttpResponse.BodyHandlers.ofString());
 
-                HttpResponse<String> updateResponse = httpClient.send(updateRequest,
-                        HttpResponse.BodyHandlers.ofString());
+            System.out.println("Update response status: " + updateResponse.statusCode());
+            System.out.println("Update response body: " + updateResponse.body());
 
-                System.out.println("Update response status: " + updateResponse.statusCode());
-                System.out.println("Update response body: " + updateResponse.body());
+            if (updateResponse.statusCode() == 200) {
+                // If email changed, update the email index
+                if (emailChanged) {
+                    System.out.println("Email changed, updating email index...");
 
-                if (updateResponse.statusCode() == 200) {
-                    System.out.println("User profile updated successfully in Firebase: " + user.getName());
-                    return true;
-                } else {
-                    System.err.println("Firebase profile update failed. Status: " + updateResponse.statusCode());
-                    return false;
+                    // Remove old email index if it exists
+                    if (!oldEmail.isEmpty()) {
+                        boolean oldIndexRemoved = removeEmailFromIndex(oldEmail);
+                        System.out.println("Old email index removed: " + oldIndexRemoved);
+                    }
+
+                    // Add new email index
+                    boolean newIndexAdded = addEmailToIndex(newEmail, userId);
+                    System.out.println("New email index added: " + newIndexAdded);
                 }
+
+                System.out.println("User profile updated successfully in Firebase: " + user.getName());
+                return true;
             } else {
-                System.err.println("User not found in email index for email: " + user.getEmail());
+                System.err.println("Firebase profile update failed. Status: " + updateResponse.statusCode());
                 return false;
             }
 
@@ -262,8 +433,8 @@ public class FirebaseConnection {
                         // Check password (Note: In production, use proper password hashing)
                         String storedPassword = userNode.get("password").asText();
 
-                        if (password.equals(storedPassword)) {
-                            // Create and return userInfo object with retrieved data
+                        if (password.equals(storedPassword)) { // Create and return userInfo object with retrieved data
+                                                               // including userId
                             userInfo user = new userInfo(
                                     userNode.get("name").asText(""),
                                     userNode.get("email").asText(""),
@@ -279,9 +450,10 @@ public class FirebaseConnection {
                                     userNode.get("bio").asText(""),
                                     userNode.get("prefAge").asText(""),
                                     userNode.get("prefLocation").asText(""),
-                                    userNode.get("prefProfession").asText(""));
+                                    userNode.get("prefProfession").asText(""),
+                                    userId); // Pass the userId as the last parameter
 
-                            System.out.println("User login successful: " + email);
+                            System.out.println("User login successful: " + email + " (userId: " + userId + ")");
                             return user;
                         } else {
                             showErrorAlert("Login Failed",
@@ -436,6 +608,23 @@ public class FirebaseConnection {
     }
 
     /**
+     * Get userId directly from the userInfo object if it exists
+     * Falls back to email lookup if userId is not available
+     * 
+     * @param user The user object
+     * @return userId if found, null otherwise
+     */
+    public String getUserId(userInfo user) {
+        // First, try to get userId from the user object itself
+        if (user.getUserId() != null && !user.getUserId().trim().isEmpty()) {
+            return user.getUserId();
+        }
+
+        // Fall back to email lookup
+        return getUserIdByEmail(user.getEmail());
+    }
+
+    /**
      * Upload an image to Firebase Storage and return the download URL
      * 
      * @param imageFile The image file to upload
@@ -521,6 +710,45 @@ public class FirebaseConnection {
             return "image/gif";
         } else {
             return "application/octet-stream";
+        }
+    }
+
+    /**
+     * Removes email from index when email is changed or user is deleted
+     * 
+     * @param email The email to remove from index
+     * @return true if successful, false otherwise
+     */
+    private boolean removeEmailFromIndex(String email) {
+        try {
+            String emailKey = email.replace(".", "_DOT_").replace("@", "_AT_");
+            String indexUrl = databaseUrl + "/AllEmails/" + emailKey + ".json?auth=" + apiKey;
+
+            System.out.println("Removing email from index: " + email);
+            System.out.println("Index removal URL: " + indexUrl);
+
+            HttpRequest deleteRequest = HttpRequest.newBuilder()
+                    .uri(URI.create(indexUrl))
+                    .DELETE()
+                    .build();
+
+            HttpResponse<String> deleteResponse = httpClient.send(deleteRequest, HttpResponse.BodyHandlers.ofString());
+
+            System.out.println("Email index removal response status: " + deleteResponse.statusCode());
+            System.out.println("Email index removal response body: " + deleteResponse.body());
+
+            if (deleteResponse.statusCode() == 200) {
+                System.out.println("Email index removed successfully for: " + email);
+                return true;
+            } else {
+                System.err.println("Failed to remove email index. Status: " + deleteResponse.statusCode());
+                return false;
+            }
+
+        } catch (Exception e) {
+            System.err.println("Error removing email index: " + e.getMessage());
+            e.printStackTrace();
+            return false;
         }
     }
 }

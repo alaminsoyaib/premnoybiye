@@ -16,6 +16,7 @@ public class userInfo {
     private String prefAge = "";
     private String prefLocation = "";
     private String prefProfession = "";
+    private String userId = ""; // Added userId field as primary key
 
     public userInfo(String name, String email, String password, String dob, String gender, String religion,
             String city, String image, String education, String profession, String income, String bio, String prefAge,
@@ -35,6 +36,29 @@ public class userInfo {
         this.prefAge = prefAge;
         this.prefLocation = prefLocation;
         this.prefProfession = prefProfession;
+        this.userId = ""; // Initialize as empty, will be set during login or registration
+    }
+
+    // Constructor with userId
+    public userInfo(String name, String email, String password, String dob, String gender, String religion,
+            String city, String image, String education, String profession, String income, String bio, String prefAge,
+            String prefLocation, String prefProfession, String userId) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+        this.dob = dob;
+        this.gender = gender;
+        this.religion = religion;
+        this.city = city;
+        this.image = image;
+        this.education = education;
+        this.profession = profession;
+        this.income = income;
+        this.bio = bio;
+        this.prefAge = prefAge;
+        this.prefLocation = prefLocation;
+        this.prefProfession = prefProfession;
+        this.userId = userId;
     }
 
     public String getName() {
@@ -155,5 +179,13 @@ public class userInfo {
 
     public void setPrefProfession(String prefProfession) {
         this.prefProfession = prefProfession;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 }

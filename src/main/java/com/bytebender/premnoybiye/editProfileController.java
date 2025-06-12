@@ -162,8 +162,8 @@ public class editProfileController {
                 if (selectedImageFile != null) {
                     System.out.println("Uploading image to Firebase Storage...");
 
-                    // Get the actual userId from email
-                    String userId = firebaseConnection.getUserIdFromEmail(user.getEmail());
+                    // Get the actual userId from the user object (which now includes userId)
+                    String userId = firebaseConnection.getUserId(user);
 
                     if (userId != null) {
                         String imageUrl = firebaseConnection.uploadImageToStorage(selectedImageFile, userId);
@@ -186,7 +186,7 @@ public class editProfileController {
                             });
                         }
                     } else {
-                        System.err.println("Could not find userId for email: " + user.getEmail());
+                        System.err.println("Could not find userId for user: " + user.getEmail());
                         javafx.application.Platform.runLater(() -> {
                             javafx.scene.control.Alert alert = new javafx.scene.control.Alert(
                                     javafx.scene.control.Alert.AlertType.WARNING);

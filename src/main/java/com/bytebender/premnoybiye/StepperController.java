@@ -205,8 +205,8 @@ public class StepperController {
 			if (selectedImageFile != null) {
 				System.out.println("Uploading image to Firebase Storage...");
 
-				// Get the actual userId from email
-				String userId = firebaseConnection.getUserIdFromEmail(AuthController.CurrentUser.getEmail());
+				// Get the actual userId from the user object (which now includes userId)
+				String userId = firebaseConnection.getUserId(AuthController.CurrentUser);
 
 				if (userId != null) {
 					String imageUrl = firebaseConnection.uploadImageToStorage(selectedImageFile, userId);
@@ -221,7 +221,7 @@ public class StepperController {
 						// Continue with profile update even if image upload fails
 					}
 				} else {
-					System.err.println("Could not find userId for email: " + AuthController.CurrentUser.getEmail());
+					System.err.println("Could not find userId for user: " + AuthController.CurrentUser.getEmail());
 					// Continue with profile update even if image upload fails
 				}
 			}
