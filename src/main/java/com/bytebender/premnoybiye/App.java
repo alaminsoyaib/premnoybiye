@@ -1,6 +1,6 @@
 package com.bytebender.premnoybiye;
 
-import javafx.animation.PauseTransition;
+// import javafx.animation.PauseTransition; 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -8,7 +8,7 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import java.io.IOException;
-import javafx.util.Duration;
+// import javafx.util.Duration; 
 /*  JavaFX App */
 
 public class App extends Application {
@@ -29,7 +29,9 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
 
         // scene = new Scene(loadFXML("splash-screen"), 1000, 600); // main code
-        scene = new Scene(loadFXML("Stepper"), 1000, 600); // demo code for test
+        scene = new Scene(loadFXML("sidebar"), 1000, 600); // demo code for signup ,sidebar
+        // Stepper, profile, signup,
+        // DemoMiniSide
         stage.setScene(scene);
         stage.setTitle("Prem Noy Biye");
         stage.show();
@@ -40,13 +42,13 @@ public class App extends Application {
         Image icon = new Image(App.class.getResourceAsStream("/com/bytebender/premnoybiye/img/Main-Logo.png"));
         stage.getIcons().add(icon);
 
-        // Triggering delay to switch Splash Screen
-        // PauseTransition delay = new PauseTransition(Duration.seconds(0.2));
+        // // Triggering delay to switch Splash Screen
+        // PauseTransition delay = new PauseTransition(Duration.seconds(1));
         // // default timing 6second decided
         // delay.play();
         // delay.setOnFinished(event -> { // Code to execute after the delay
         // try {
-        // App.setRoot("login_signup_choice");
+        // App.setRoot("loginsignupchoice");
         // } catch (IOException e) {
         // e.printStackTrace();
         // }

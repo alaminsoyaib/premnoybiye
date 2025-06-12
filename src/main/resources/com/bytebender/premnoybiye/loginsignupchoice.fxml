@@ -6,7 +6,7 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox id="splash_background" alignment="CENTER" prefHeight="600.0" prefWidth="1000.0" spacing="20.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bytebender.premnoybiye.Signin_upController">
+<VBox id="splash_background" alignment="CENTER" prefHeight="600.0" prefWidth="1000.0" spacing="20.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bytebender.premnoybiye.AuthController">
   <children>
     <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="440.0" style="-fx-background-color: #FAF3FF; -fx-background-radius: 16;">
       <children>

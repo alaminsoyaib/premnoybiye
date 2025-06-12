@@ -2,7 +2,12 @@ package com.bytebender.premnoybiye;
 
 import javafx.fxml.FXML;
 import java.io.IOException;
+
+// import com.bytebender.premnoybiye.DBConnection.userInfo;
+
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.DatePicker;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -19,6 +24,8 @@ public class StepperController {
 	@FXML
 	private VBox Stepper3;
 
+	@FXML
+	private VBox imagePicker;
 	@FXML
 	private ImageView img_inside_imgPicker;
 
@@ -45,6 +52,31 @@ public class StepperController {
 	private HBox prevButton;
 
 	@FXML
+	private DatePicker dobComboBox;
+	@FXML
+	private ComboBox<?> genderComboBox;
+	@FXML
+	private ComboBox<?> religionComboBox;
+	@FXML
+	private ComboBox<?> cityComboBox;
+
+	@FXML
+	private ComboBox<?> highestEduComboBox;
+	@FXML
+	private ComboBox<?> professionComboBox;
+	@FXML
+	private ComboBox<?> monthlyIncomeComboBox;
+
+	@FXML
+	private TextField aboutYouTextField;
+	@FXML
+	private ComboBox<?> prefPartnerAgeComboBox;
+	@FXML
+	private ComboBox<?> prefLocationComboBox;
+	@FXML
+	private ComboBox<?> prefProfessionComboBox;
+
+	@FXML
 	private void initialize() {
 		// Initialize: Show Stepper1, hide Stepper2
 		Stepper1.setVisible(true);
@@ -61,8 +93,7 @@ public class StepperController {
 				fileChooser.setTitle("Select Image");
 				fileChooser.getExtensionFilters().addAll(
 						new javafx.stage.FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg",
-								"*.jpeg", "*.gif",
-								"*.bmp"));
+								"*.jpeg", "*.gif"));
 
 				java.io.File selectedFile = fileChooser.showOpenDialog(img_inside_imgPicker.getScene().getWindow());
 
@@ -70,7 +101,7 @@ public class StepperController {
 					Image image = new Image(selectedFile.toURI().toString());
 					img_inside_imgPicker.setImage(image);
 
-					// Set size to 80x80
+					// // Set size to 80x80
 					img_inside_imgPicker.setFitWidth(80);
 					img_inside_imgPicker.setFitHeight(80);
 					img_inside_imgPicker.setPreserveRatio(false);
@@ -150,8 +181,49 @@ public class StepperController {
 			stepperIcon_3.scaleYProperty().set(1.27);
 
 			prevButton.setOpacity(1);
-			nextButton.setOpacity(0.3);
 			flag = 2;
+		} else if (flag == 2) {
+			if (dobComboBox.getValue() != null) {
+				AuthController.CurrentUser.setDob(dobComboBox.getValue().toString());
+			}
+			if (genderComboBox.getValue() != null) {
+				AuthController.CurrentUser.setGender(genderComboBox.getValue().toString());
+			}
+			if (religionComboBox.getValue() != null) {
+				AuthController.CurrentUser.setReligion(religionComboBox.getValue().toString());
+			}
+			if (cityComboBox.getValue() != null) {
+				AuthController.CurrentUser.setCity(cityComboBox.getValue().toString());
+			}
+			if (img_inside_imgPicker.getImage() != null) {
+				AuthController.CurrentUser.setImage(img_inside_imgPicker.getImage().getUrl());
+			}
+			if (highestEduComboBox.getValue() != null) {
+				AuthController.CurrentUser.setEducation(highestEduComboBox.getValue().toString());
+			}
+			if (professionComboBox.getValue() != null) {
+				AuthController.CurrentUser.setProfession(professionComboBox.getValue().toString());
+			}
+			if (monthlyIncomeComboBox.getValue() != null) {
+				AuthController.CurrentUser.setIncome(monthlyIncomeComboBox.getValue().toString());
+			}
+			if (aboutYouTextField.getText() != null) {
+				AuthController.CurrentUser.setBio(aboutYouTextField.getText());
+			}
+			if (prefPartnerAgeComboBox.getValue() != null) {
+				AuthController.CurrentUser.setPrefAge(prefPartnerAgeComboBox.getValue().toString());
+			}
+			if (prefLocationComboBox.getValue() != null) {
+				AuthController.CurrentUser.setPrefLocation(prefLocationComboBox.getValue().toString());
+			}
+			if (prefProfessionComboBox.getValue() != null) {
+				AuthController.CurrentUser.setPrefProfession(prefProfessionComboBox.getValue().toString());
+			}
+
+			App.setRoot("sidebar");
+			// App.setRoot("editProfile");
+			// App.setRoot("mymatches");
+
 		}
 	}
 
@@ -211,8 +283,6 @@ public class StepperController {
 			stepperIcon_3.scaleYProperty().set(1.0);
 			stepperIcon_2.scaleXProperty().set(1.27);
 			stepperIcon_2.scaleYProperty().set(1.27);
-
-			nextButton.setOpacity(1);
 
 			flag = 1;
 		}

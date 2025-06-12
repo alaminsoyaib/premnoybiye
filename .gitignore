@@ -23,7 +23,8 @@ hs_err_pid*
 replay_pid*
 
 # Maven
-target/
+target/        # Ignore all target directories
+**/target/     # Ignore target directories at any level
 pom.xml.tag
 pom.xml.releaseBackup
 pom.xml.versionsBackup
@@ -109,5 +110,11 @@ Thumbs.db
 .idea/**/dynamic.xml
 .idea/**/uiDesigner.xml
 .idea/**/dbnavigator.xml
+*.class
+/target/classes/com/bytebender/premnoybiye
+/target/classes/com/bytebender
+/target/classes/com
+/target/classes
+/target
 
 target/
