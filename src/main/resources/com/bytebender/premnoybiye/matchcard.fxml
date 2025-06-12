@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox maxWidth="-Infinity" prefWidth="200.0" spacing="12.0" styleClass="card" stylesheets="@application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <VBox>
+         <children>
+            <VBox alignment="CENTER" maxHeight="358.0" maxWidth="258.0" minHeight="300.0" minWidth="200.0" prefHeight="300.0" prefWidth="200.0" styleClass="card-img" />
+            <VBox spacing="12.0">
+               <VBox.margin>
+                  <Insets bottom="7.0" left="14.0" right="14.0" top="14.0" />
+               </VBox.margin>
+               <children>
+                  <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" spacing="4.0">
+                     <children>
+                        <Label styleClass="card-title" text="Label">
+                           <font>
+                              <Font name="Trebuchet MS Bold" size="20.0" />
+                           </font>
+                        </Label>
+                        <Label maxWidth="300.0" minWidth="200.0" opacity="0.5" prefWidth="200.0" styleClass="card-subtitle" text="Lorem ipsum dolor sit amet consectetur. Odio posuere risus ac lacus tellus at. Quis donec viverra dictumst etiam purus." textOverrun="CLIP" wrapText="true">
+                           <font>
+                              <Font name="Trebuchet MS" size="12.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <HBox maxWidth="1.7976931348623157E308" spacing="24.0">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" spacing="6.0">
+                           <children>
+                              <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@img/icon/location-icon.png" />
+                                 </image>
+                              </ImageView>
+                              <Label text="Noakhali">
+                                 <font>
+                                    <Font name="Trebuchet MS" size="12.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" spacing="6.0">
+                           <children>
+                              <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@img/icon/baby-icon.png" />
+                                 </image>
+                              </ImageView>
+                              <Label text="24">
+                                 <font>
+                                    <Font name="Trebuchet MS" size="12.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="32.0" layoutY="11.0" text="24">
+                                 <font>
+                                    <Font name="Trebuchet MS" size="12.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="52.0" layoutY="11.0" text="24">
+                                 <font>
+                                    <Font name="Trebuchet MS" size="12.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </VBox>
+      <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" spacing="24.0">
+         <children>
+            <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@img/icon/card-reject.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@img/icon/card-love.png" />
+               </image>
+            </ImageView>
+            <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="180.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@img/icon/card-message.png" />
+               </image>
+            </ImageView>
+         </children>
+         <VBox.margin>
+            <Insets left="14.0" right="14.0" />
+         </VBox.margin>
+      </HBox>
+   </children>
+   <padding>
+      <Insets bottom="14.0" left="8.0" right="8.0" top="8.0" />
+   </padding>
+</VBox>

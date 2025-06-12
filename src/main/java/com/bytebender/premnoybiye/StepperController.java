@@ -3,7 +3,7 @@ package com.bytebender.premnoybiye;
 import javafx.fxml.FXML;
 import java.io.IOException;
 
-import com.bytebender.premnoybiye.DBConnection.userInfo;
+// import com.bytebender.premnoybiye.DBConnection.userInfo;
 
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
