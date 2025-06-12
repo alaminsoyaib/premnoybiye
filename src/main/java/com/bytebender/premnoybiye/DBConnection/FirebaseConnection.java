@@ -8,8 +8,6 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -55,12 +53,6 @@ public class FirebaseConnection {
         }
     }
 
-    private String generateCustomTimestamp() {
-        LocalDateTime now = LocalDateTime.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yy_h:mm:ssa");
-        return now.format(formatter).toLowerCase();
-    }
-
     private void showErrorAlert(String title, String message) {
         Platform.runLater(() -> {
             DialogUtils.showErrorAlert(title, message);
@@ -68,7 +60,7 @@ public class FirebaseConnection {
     }
 
     /**
-     * Registers a new user in Firebase with basic information
+     * Registers a new user in Firebase with Firebase Authentication
      * 
      * @param name     User's name
      * @param email    User's email
@@ -82,22 +74,19 @@ public class FirebaseConnection {
                 return null;
             }
 
-            // Check if email is already registered
-            if (isEmailAlreadyRegistered(email)) {
-                showErrorAlert("Registration Error",
-                        "An account with this email address already exists. Please use a different email or try logging in.");
-                return null;
+            // Step 1: Create user with Firebase Authentication
+            String authUserId = createFirebaseAuthUser(email, password);
+            if (authUserId == null) {
+                return null; // Error already shown in createFirebaseAuthUser
             }
 
-            // Extract first name only (up to first space or full name if no space)
-            String firstName = name.trim().split(" ")[0];
-            String userId = firstName + "__" + generateCustomTimestamp();
-
-            // Create user data map
+            // Step 2: Create user profile in Realtime Database using authUserId as primary
+            // key
+            // Create user data map (no password stored here - handled by Firebase Auth)
             Map<String, Object> userData = new HashMap<>();
             userData.put("name", name);
             userData.put("email", email);
-            userData.put("password", password); // Note: In production, hash this password
+            userData.put("authUserId", authUserId); // Firebase Auth UID
             userData.put("dob", "");
             userData.put("gender", "");
             userData.put("religion", "");
@@ -110,38 +99,42 @@ public class FirebaseConnection {
             userData.put("prefAge", "");
             userData.put("prefLocation", "");
             userData.put("prefProfession", "");
-            userData.put("userId", userId);
+            userData.put("userId", authUserId); // Use authUserId as the primary key
 
             // Convert to JSON
             String jsonData = objectMapper.writeValueAsString(userData);
 
             // Create HTTP PUT request to Firebase Realtime Database
-            String url = databaseUrl + "/Users/" + userId + ".json?auth=" + apiKey;
-
+            String url = databaseUrl + "/Users/" + authUserId + ".json?auth=" + apiKey;
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(url))
                     .header("Content-Type", "application/json")
                     .PUT(HttpRequest.BodyPublishers.ofString(jsonData))
-                    .build(); // Send request to create user
+                    .build();
+
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() == 200) {
-                // User created successfully, now add email to index for faster lookups
-                boolean emailIndexSuccess = addEmailToIndex(email, userId);
+                // User profile created successfully, now add email to index for faster lookups
+                boolean emailIndexSuccess = addEmailToIndex(email, authUserId);
 
                 if (emailIndexSuccess) {
                     System.out.println(
                             "User registered successfully in Firebase with email index: " + name + " (" + email
-                                    + ") userId: " + userId);
+                                    + ") userId: " + authUserId + " authUserId: " + authUserId);
                 } else {
                     System.out.println("User registered successfully in Firebase, but email index failed: " + name
-                            + " (" + email + ") userId: " + userId);
+                            + " (" + email + ") userId: " + authUserId);
                 }
-                return userId; // Return the userId instead of boolean
+                return authUserId; // Return the authUserId as the primary userId
             } else {
                 showErrorAlert("Registration Failed",
-                        "Failed to register user. Please check your internet connection and try again.");
-                System.err.println("Firebase registration failed. Status: " + response.statusCode());
+                        "Failed to create user profile. Please check your internet connection and try again.");
+                System.err.println("Firebase user profile creation failed. Status: " + response.statusCode());
                 System.err.println("Response: " + response.body());
+
+                // Note: We could delete the Firebase Auth user here, but we'd need the ID token
+                // For now, just log the issue - the user can try registering again
+                System.err.println("Warning: Firebase Auth user created but profile creation failed for: " + email);
                 return null;
             }
 
@@ -392,7 +385,7 @@ public class FirebaseConnection {
     }
 
     /**
-     * Authenticates user login with Firebase
+     * Authenticates user login with Firebase Authentication
      * 
      * @param email    User's email
      * @param password User's password
@@ -400,7 +393,13 @@ public class FirebaseConnection {
      */
     public userInfo loginUser(String email, String password) {
         try {
-            // Use email index for fast lookup
+            // Step 1: Authenticate with Firebase Authentication
+            String authUserId = authenticateFirebaseUser(email, password);
+            if (authUserId == null) {
+                return null; // Error already shown in authenticateFirebaseUser
+            }
+
+            // Step 2: Get user profile from Realtime Database using email index
             String userId = getUserIdByEmail(email);
 
             if (userId != null) {
@@ -424,50 +423,42 @@ public class FirebaseConnection {
                     JsonNode userNode = objectMapper.readTree(getResponse.body());
 
                     if (userNode != null && !userNode.isNull()) {
-                        // Check password (Note: In production, use proper password hashing)
-                        String storedPassword = userNode.get("password").asText();
+                        // Create and return userInfo object with retrieved data including userId
+                        userInfo user = new userInfo(
+                                userNode.get("name").asText(""),
+                                userNode.get("email").asText(""),
+                                "", // No password stored in database anymore
+                                userNode.get("dob").asText(""),
+                                userNode.get("gender").asText(""),
+                                userNode.get("religion").asText(""),
+                                userNode.get("city").asText(""),
+                                userNode.get("image").asText(""),
+                                userNode.get("education").asText(""),
+                                userNode.get("profession").asText(""),
+                                userNode.get("income").asText(""),
+                                userNode.get("bio").asText(""),
+                                userNode.get("prefAge").asText(""),
+                                userNode.get("prefLocation").asText(""),
+                                userNode.get("prefProfession").asText(""),
+                                userId); // Pass the userId as the last parameter
 
-                        if (password.equals(storedPassword)) { // Create and return userInfo object with retrieved data
-                                                               // including userId
-                            userInfo user = new userInfo(
-                                    userNode.get("name").asText(""),
-                                    userNode.get("email").asText(""),
-                                    userNode.get("password").asText(""),
-                                    userNode.get("dob").asText(""),
-                                    userNode.get("gender").asText(""),
-                                    userNode.get("religion").asText(""),
-                                    userNode.get("city").asText(""),
-                                    userNode.get("image").asText(""),
-                                    userNode.get("education").asText(""),
-                                    userNode.get("profession").asText(""),
-                                    userNode.get("income").asText(""),
-                                    userNode.get("bio").asText(""),
-                                    userNode.get("prefAge").asText(""),
-                                    userNode.get("prefLocation").asText(""),
-                                    userNode.get("prefProfession").asText(""),
-                                    userId); // Pass the userId as the last parameter
-
-                            System.out.println("User login successful: " + email + " (userId: " + userId + ")");
-                            return user;
-                        } else {
-                            showErrorAlert("Login Failed",
-                                    "Invalid password. Please check your password and try again.");
-                            System.err.println("Invalid password for user: " + email);
-                            return null;
-                        }
+                        System.out.println("User login successful: " + email + " (userId: " + userId + " authUserId: "
+                                + authUserId + ")");
+                        return user;
                     } else {
-                        showErrorAlert("Login Failed", "User data not found. Please try again.");
+                        showErrorAlert("Login Failed", "User profile not found. Please contact support.");
                         System.err.println("User data is null for userId: " + userId);
                         return null;
                     }
                 } else {
-                    showErrorAlert("Login Failed", "Unable to fetch user data. Please check your internet connection.");
+                    showErrorAlert("Login Failed",
+                            "Unable to fetch user profile. Please check your internet connection.");
                     System.err.println("Firebase user data fetch failed. Status: " + getResponse.statusCode());
                     return null;
                 }
             } else {
                 showErrorAlert("Login Failed",
-                        "No account found with this email address. Please check your email or register first.");
+                        "User profile not found. Please contact support or try registering again.");
                 System.err.println("User not found in email index: " + email);
                 return null;
             }
@@ -480,22 +471,27 @@ public class FirebaseConnection {
     }
 
     /**
-     * Checks if an email is already registered in the system
+     * Checks if an email is already registered in Firebase Authentication
      * 
      * @param email The email to check
      * @return true if email is already registered, false otherwise
      */
     public boolean isEmailAlreadyRegistered(String email) {
         try {
-            // Use email index for fast lookup
-            String userId = getUserIdByEmail(email);
+            // Try to create a temporary user with Firebase Auth to check if email exists
+            // This will fail if email is already in use
+            String tempPassword = "tempPassword123!";
+            String tempUserId = createFirebaseAuthUser(email, tempPassword);
 
-            if (userId != null) {
-                System.out.println("Email already registered: " + email + " (userId: " + userId + ")");
-                return true;
-            } else {
+            if (tempUserId != null) {
+                // Email is not registered, delete the temporary user we just created
+                deleteFirebaseAuthUser(tempUserId);
                 System.out.println("Email not registered: " + email);
                 return false;
+            } else {
+                // Creation failed, likely because email is already registered
+                System.out.println("Email already registered: " + email);
+                return true;
             }
 
         } catch (Exception e) {
@@ -747,7 +743,8 @@ public class FirebaseConnection {
     }
 
     /**
-     * Changes user password using userId as primary key
+     * Changes user password using userId as primary key with Firebase
+     * Authentication
      * 
      * @param userId          The user's ID
      * @param currentPassword The current password for verification
@@ -771,7 +768,7 @@ public class FirebaseConnection {
                 return false;
             }
 
-            // Get current user data to verify current password
+            // Get user email from database to authenticate with Firebase Auth
             String getUserUrl = databaseUrl + "/Users/" + userId + ".json?auth=" + apiKey;
 
             HttpRequest getRequest = HttpRequest.newBuilder()
@@ -785,43 +782,22 @@ public class FirebaseConnection {
                 JsonNode userNode = objectMapper.readTree(getResponse.body());
 
                 if (userNode != null && !userNode.isNull()) {
-                    String storedPassword = userNode.get("password").asText();
+                    String email = userNode.get("email").asText();
 
-                    // Verify current password
-                    if (!currentPassword.equals(storedPassword)) {
-                        showErrorAlert("Password Change Failed", "Current password is incorrect");
-                        System.err.println("Password verification failed for userId: " + userId);
-                        return false;
+                    // Step 1: Authenticate with current password using Firebase Auth
+                    String idToken = getFirebaseIdToken(email, currentPassword);
+                    if (idToken == null) {
+                        return false; // Error already shown in getFirebaseIdToken
                     }
 
-                    // Update only the password field
-                    Map<String, Object> passwordUpdate = new HashMap<>();
-                    passwordUpdate.put("password", newPassword);
+                    // Step 2: Change password with Firebase Auth
+                    boolean success = changeFirebaseAuthPassword(idToken, newPassword);
 
-                    String jsonData = objectMapper.writeValueAsString(passwordUpdate);
-
-                    // Update password using PATCH request
-                    String updateUrl = databaseUrl + "/Users/" + userId + ".json?auth=" + apiKey;
-
-                    HttpRequest updateRequest = HttpRequest.newBuilder()
-                            .uri(URI.create(updateUrl))
-                            .header("Content-Type", "application/json")
-                            .method("PATCH", HttpRequest.BodyPublishers.ofString(jsonData))
-                            .build();
-
-                    HttpResponse<String> updateResponse = httpClient.send(updateRequest,
-                            HttpResponse.BodyHandlers.ofString());
-
-                    System.out.println("Password update response status: " + updateResponse.statusCode());
-                    System.out.println("Password update response body: " + updateResponse.body());
-
-                    if (updateResponse.statusCode() == 200) {
+                    if (success) {
                         System.out.println("Password updated successfully for userId: " + userId);
                         return true;
                     } else {
-                        showErrorAlert("Password Change Failed", "Failed to update password. Please try again.");
-                        System.err.println("Firebase password update failed. Status: " + updateResponse.statusCode());
-                        return false;
+                        return false; // Error already shown in changeFirebaseAuthPassword
                     }
                 } else {
                     showErrorAlert("Password Change Failed", "User data not found");
@@ -829,7 +805,7 @@ public class FirebaseConnection {
                     return false;
                 }
             } else {
-                showErrorAlert("Password Change Failed", "Unable to verify current password");
+                showErrorAlert("Password Change Failed", "Unable to fetch user data");
                 System.err
                         .println("Failed to fetch user data for password change. Status: " + getResponse.statusCode());
                 return false;
@@ -869,7 +845,8 @@ public class FirebaseConnection {
     }
 
     /**
-     * Verifies that a password change was successful by attempting login
+     * Verifies that a password change was successful by attempting Firebase Auth
+     * login
      * This is useful for testing password change functionality
      * 
      * @param email       User's email
@@ -878,35 +855,16 @@ public class FirebaseConnection {
      */
     public boolean verifyPasswordChange(String email, String newPassword) {
         try {
-            // Attempt login with new password (without updating CurrentUser)
-            String userId = getUserIdByEmail(email);
+            // Attempt authentication with Firebase Auth using new password
+            String authUserId = authenticateFirebaseUser(email, newPassword);
 
-            if (userId != null) {
-                String getUserUrl = databaseUrl + "/Users/" + userId + ".json?auth=" + apiKey;
-
-                HttpRequest getRequest = HttpRequest.newBuilder()
-                        .uri(URI.create(getUserUrl))
-                        .GET()
-                        .build();
-
-                HttpResponse<String> getResponse = httpClient.send(getRequest, HttpResponse.BodyHandlers.ofString());
-
-                if (getResponse.statusCode() == 200) {
-                    JsonNode userNode = objectMapper.readTree(getResponse.body());
-
-                    if (userNode != null && !userNode.isNull()) {
-                        String storedPassword = userNode.get("password").asText();
-                        boolean passwordMatches = newPassword.equals(storedPassword);
-
-                        System.out.println("Password verification for " + email + ": " +
-                                (passwordMatches ? "SUCCESS" : "FAILED"));
-                        return passwordMatches;
-                    }
-                }
+            if (authUserId != null) {
+                System.out.println("Password verification for " + email + ": SUCCESS");
+                return true;
+            } else {
+                System.out.println("Password verification for " + email + ": FAILED");
+                return false;
             }
-
-            System.out.println("Password verification failed - user not found: " + email);
-            return false;
 
         } catch (Exception e) {
             System.err.println("Error verifying password change: " + e.getMessage());
@@ -916,7 +874,8 @@ public class FirebaseConnection {
 
     /**
      * Permanently deletes a user account and all associated data
-     * This includes user data, email index, and Firebase Storage images
+     * This includes user data, email index, Firebase Storage images, and Firebase
+     * Auth account
      * 
      * @param user     The user object to delete
      * @param password The user's password for verification
@@ -942,7 +901,16 @@ public class FirebaseConnection {
 
             System.out.println("Starting account deletion process for userId: " + userId);
 
-            // Step 1: Verify password before deletion
+            // Step 1: Verify password with Firebase Authentication
+            String email = user.getEmail();
+            String idToken = getFirebaseIdToken(email, password);
+            if (idToken == null) {
+                return false; // Error already shown in getFirebaseIdToken
+            }
+
+            System.out.println("Password verified with Firebase Auth. Proceeding with account deletion...");
+
+            // Step 2: Get user data to check for image
             String getUserUrl = databaseUrl + "/Users/" + userId + ".json?auth=" + apiKey;
 
             HttpRequest getRequest = HttpRequest.newBuilder()
@@ -952,44 +920,26 @@ public class FirebaseConnection {
 
             HttpResponse<String> getResponse = httpClient.send(getRequest, HttpResponse.BodyHandlers.ofString());
 
-            if (getResponse.statusCode() != 200) {
-                showErrorAlert("Delete Account Failed", "Unable to verify user data");
-                System.err.println("Failed to fetch user data for deletion. Status: " + getResponse.statusCode());
-                return false;
+            JsonNode userNode = null;
+            if (getResponse.statusCode() == 200) {
+                userNode = objectMapper.readTree(getResponse.body());
             }
 
-            JsonNode userNode = objectMapper.readTree(getResponse.body());
-            if (userNode == null || userNode.isNull()) {
-                showErrorAlert("Delete Account Failed", "User data not found");
-                System.err.println("User data is null for userId: " + userId);
-                return false;
-            }
-
-            String storedPassword = userNode.get("password").asText();
-
-            // Verify current password
-            if (!password.equals(storedPassword)) {
-                showErrorAlert("Delete Account Failed", "Incorrect password. Account deletion cancelled.");
-                System.err.println("Password verification failed for account deletion. UserId: " + userId);
-                return false;
-            }
-
-            System.out.println("Password verified. Proceeding with account deletion...");
-
-            // Step 2: Delete user image from Firebase Storage (if exists)
-            String imageUrl = userNode.has("image") ? userNode.get("image").asText("") : "";
-            if (!imageUrl.isEmpty()) {
-                boolean imageDeleted = deleteImageFromStorage(userId);
-                if (imageDeleted) {
-                    System.out.println("User image deleted from Firebase Storage");
-                } else {
-                    System.err.println("Warning: Failed to delete user image from Firebase Storage");
-                    // Continue with deletion even if image deletion fails
+            // Step 3: Delete user image from Firebase Storage (if exists)
+            if (userNode != null && userNode.has("image")) {
+                String imageUrl = userNode.get("image").asText("");
+                if (!imageUrl.isEmpty()) {
+                    boolean imageDeleted = deleteImageFromStorage(userId);
+                    if (imageDeleted) {
+                        System.out.println("User image deleted from Firebase Storage");
+                    } else {
+                        System.err.println("Warning: Failed to delete user image from Firebase Storage");
+                        // Continue with deletion even if image deletion fails
+                    }
                 }
             }
 
-            // Step 3: Remove email from index
-            String email = user.getEmail();
+            // Step 4: Remove email from index
             boolean emailIndexRemoved = removeEmailFromIndex(email);
             if (emailIndexRemoved) {
                 System.out.println("Email index removed successfully for: " + email);
@@ -998,7 +948,7 @@ public class FirebaseConnection {
                 // Continue with deletion even if email index removal fails
             }
 
-            // Step 4: Delete user data from Firebase Realtime Database
+            // Step 5: Delete user data from Firebase Realtime Database
             String deleteUserUrl = databaseUrl + "/Users/" + userId + ".json?auth=" + apiKey;
 
             HttpRequest deleteUserRequest = HttpRequest.newBuilder()
@@ -1012,14 +962,23 @@ public class FirebaseConnection {
             System.out.println("User data deletion response status: " + deleteUserResponse.statusCode());
             System.out.println("User data deletion response body: " + deleteUserResponse.body());
 
-            if (deleteUserResponse.statusCode() == 200) {
-                System.out.println("User account deleted successfully: " + email + " (userId: " + userId + ")");
-                return true;
-            } else {
+            if (deleteUserResponse.statusCode() != 200) {
                 showErrorAlert("Delete Account Failed", "Failed to delete user data. Please try again.");
                 System.err.println("Firebase user data deletion failed. Status: " + deleteUserResponse.statusCode());
                 return false;
             }
+
+            // Step 6: Delete Firebase Authentication user
+            boolean authUserDeleted = deleteFirebaseAuthUserWithToken(idToken);
+            if (authUserDeleted) {
+                System.out.println("Firebase Auth user deleted successfully");
+            } else {
+                System.err.println("Warning: Failed to delete Firebase Auth user");
+                // Continue as user data is already deleted
+            }
+
+            System.out.println("User account deleted successfully: " + email + " (userId: " + userId + ")");
+            return true;
 
         } catch (Exception e) {
             showErrorAlert("Delete Account Error",
@@ -1072,12 +1031,375 @@ public class FirebaseConnection {
                     // Continue checking other extensions
                 }
             }
-
             System.out.println("No user image found to delete for userId: " + userId);
             return true; // Return true since no image to delete is not an error
 
         } catch (Exception e) {
             System.err.println("Error deleting image from Firebase Storage: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // ========== Firebase Authentication Helper Methods ==========
+
+    /**
+     * Creates a new user with Firebase Authentication
+     * 
+     * @param email    User's email
+     * @param password User's password
+     * @return Firebase Auth UID if successful, null if failed
+     */
+    private String createFirebaseAuthUser(String email, String password) {
+        try {
+            String authUrl = "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=" + apiKey;
+
+            Map<String, Object> authData = new HashMap<>();
+            authData.put("email", email);
+            authData.put("password", password);
+            authData.put("returnSecureToken", true);
+
+            String jsonData = objectMapper.writeValueAsString(authData);
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(authUrl))
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(jsonData))
+                    .build();
+
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            System.out.println("Firebase Auth registration response status: " + response.statusCode());
+            System.out.println("Firebase Auth registration response body: " + response.body());
+
+            if (response.statusCode() == 200) {
+                JsonNode responseNode = objectMapper.readTree(response.body());
+                String localId = responseNode.get("localId").asText();
+                System.out.println("Firebase Auth user created successfully with UID: " + localId);
+                return localId;
+            } else {
+                // Parse error response
+                try {
+                    JsonNode errorNode = objectMapper.readTree(response.body());
+                    if (errorNode.has("error")) {
+                        JsonNode errorDetails = errorNode.get("error");
+                        String message = errorDetails.get("message").asText();
+
+                        if (message.contains("EMAIL_EXISTS")) {
+                            showErrorAlert("Registration Error",
+                                    "An account with this email address already exists. Please use a different email or try logging in.");
+                        } else if (message.contains("WEAK_PASSWORD")) {
+                            showErrorAlert("Registration Error",
+                                    "Password should be at least 6 characters long.");
+                        } else if (message.contains("INVALID_EMAIL")) {
+                            showErrorAlert("Registration Error",
+                                    "Please enter a valid email address.");
+                        } else {
+                            showErrorAlert("Registration Error",
+                                    "Registration failed: " + message);
+                        }
+                    }
+                } catch (Exception e) {
+                    showErrorAlert("Registration Error",
+                            "Registration failed. Please check your internet connection and try again.");
+                }
+                return null;
+            }
+
+        } catch (Exception e) {
+            showErrorAlert("Registration Error",
+                    "An unexpected error occurred during registration. Please try again.");
+            System.err.println("Error creating Firebase Auth user: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * Authenticates user with Firebase Authentication
+     * 
+     * @param email    User's email
+     * @param password User's password
+     * @return Firebase Auth UID if successful, null if failed
+     */
+    private String authenticateFirebaseUser(String email, String password) {
+        try {
+            String authUrl = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=" + apiKey;
+
+            Map<String, Object> authData = new HashMap<>();
+            authData.put("email", email);
+            authData.put("password", password);
+            authData.put("returnSecureToken", true);
+
+            String jsonData = objectMapper.writeValueAsString(authData);
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(authUrl))
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(jsonData))
+                    .build();
+
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            System.out.println("Firebase Auth login response status: " + response.statusCode());
+            System.out.println("Firebase Auth login response body: " + response.body());
+
+            if (response.statusCode() == 200) {
+                JsonNode responseNode = objectMapper.readTree(response.body());
+                String localId = responseNode.get("localId").asText();
+                System.out.println("Firebase Auth login successful with UID: " + localId);
+                return localId;
+            } else {
+                // Parse error response
+                try {
+                    JsonNode errorNode = objectMapper.readTree(response.body());
+                    if (errorNode.has("error")) {
+                        JsonNode errorDetails = errorNode.get("error");
+                        String message = errorDetails.get("message").asText();
+
+                        if (message.contains("EMAIL_NOT_FOUND")) {
+                            showErrorAlert("Login Failed",
+                                    "No account found with this email address. Please check your email or register first.");
+                        } else if (message.contains("INVALID_PASSWORD")) {
+                            showErrorAlert("Login Failed",
+                                    "Invalid password. Please check your password and try again.");
+                        } else if (message.contains("USER_DISABLED")) {
+                            showErrorAlert("Login Failed",
+                                    "This account has been disabled. Please contact support.");
+                        } else {
+                            showErrorAlert("Login Failed",
+                                    "Login failed: " + message);
+                        }
+                    }
+                } catch (Exception e) {
+                    showErrorAlert("Login Error",
+                            "Login failed. Please check your internet connection and try again.");
+                }
+                return null;
+            }
+
+        } catch (Exception e) {
+            showErrorAlert("Login Error",
+                    "An unexpected error occurred during login. Please try again.");
+            System.err.println("Error authenticating with Firebase Auth: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * Deletes a Firebase Authentication user
+     * 
+     * @param authUserId The Firebase Auth UID
+     * @return true if successful, false if failed
+     */
+    private boolean deleteFirebaseAuthUser(String authUserId) {
+        try {
+            // First, we need to get an ID token for the user to delete them
+            // This is a simplified version - in production you'd handle this more securely
+            String deleteUrl = "https://identitytoolkit.googleapis.com/v1/accounts:delete?key=" + apiKey;
+
+            Map<String, Object> deleteData = new HashMap<>();
+            deleteData.put("localId", authUserId);
+
+            String jsonData = objectMapper.writeValueAsString(deleteData);
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(deleteUrl))
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(jsonData))
+                    .build();
+
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            System.out.println("Firebase Auth user deletion response status: " + response.statusCode());
+            System.out.println("Firebase Auth user deletion response body: " + response.body());
+
+            if (response.statusCode() == 200) {
+                System.out.println("Firebase Auth user deleted successfully: " + authUserId);
+                return true;
+            } else {
+                System.err.println("Failed to delete Firebase Auth user: " + authUserId);
+                return false;
+            }
+        } catch (Exception e) {
+            System.err.println("Error deleting Firebase Auth user: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * Gets Firebase ID token for authenticated user
+     * 
+     * @param email    User's email
+     * @param password User's password
+     * @return ID token if successful, null if failed
+     */
+    private String getFirebaseIdToken(String email, String password) {
+        try {
+            String authUrl = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=" + apiKey;
+
+            Map<String, Object> authData = new HashMap<>();
+            authData.put("email", email);
+            authData.put("password", password);
+            authData.put("returnSecureToken", true);
+
+            String jsonData = objectMapper.writeValueAsString(authData);
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(authUrl))
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(jsonData))
+                    .build();
+
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            System.out.println("Firebase Auth token request response status: " + response.statusCode());
+
+            if (response.statusCode() == 200) {
+                JsonNode responseNode = objectMapper.readTree(response.body());
+                String idToken = responseNode.get("idToken").asText();
+                System.out.println("Firebase ID token retrieved successfully");
+                return idToken;
+            } else {
+                // Parse error response
+                try {
+                    JsonNode errorNode = objectMapper.readTree(response.body());
+                    if (errorNode.has("error")) {
+                        JsonNode errorDetails = errorNode.get("error");
+                        String message = errorDetails.get("message").asText();
+
+                        if (message.contains("INVALID_PASSWORD")) {
+                            showErrorAlert("Password Change Failed",
+                                    "Current password is incorrect. Please try again.");
+                        } else if (message.contains("EMAIL_NOT_FOUND")) {
+                            showErrorAlert("Password Change Failed",
+                                    "Account not found. Please contact support.");
+                        } else {
+                            showErrorAlert("Password Change Failed",
+                                    "Authentication failed: " + message);
+                        }
+                    }
+                } catch (Exception e) {
+                    showErrorAlert("Password Change Error",
+                            "Authentication failed. Please check your current password and try again.");
+                }
+                return null;
+            }
+
+        } catch (Exception e) {
+            showErrorAlert("Password Change Error",
+                    "An unexpected error occurred during authentication. Please try again.");
+            System.err.println("Error getting Firebase ID token: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * Changes password using Firebase Authentication
+     * 
+     * @param idToken     Firebase ID token for authentication
+     * @param newPassword The new password to set
+     * @return true if successful, false if failed
+     */
+    private boolean changeFirebaseAuthPassword(String idToken, String newPassword) {
+        try {
+            String changePasswordUrl = "https://identitytoolkit.googleapis.com/v1/accounts:update?key=" + apiKey;
+
+            Map<String, Object> changeData = new HashMap<>();
+            changeData.put("idToken", idToken);
+            changeData.put("password", newPassword);
+            changeData.put("returnSecureToken", true);
+
+            String jsonData = objectMapper.writeValueAsString(changeData);
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(changePasswordUrl))
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(jsonData))
+                    .build();
+
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            System.out.println("Firebase Auth password change response status: " + response.statusCode());
+            System.out.println("Firebase Auth password change response body: " + response.body());
+
+            if (response.statusCode() == 200) {
+                System.out.println("Firebase Auth password changed successfully");
+                return true;
+            } else {
+                // Parse error response
+                try {
+                    JsonNode errorNode = objectMapper.readTree(response.body());
+                    if (errorNode.has("error")) {
+                        JsonNode errorDetails = errorNode.get("error");
+                        String message = errorDetails.get("message").asText();
+
+                        if (message.contains("WEAK_PASSWORD")) {
+                            showErrorAlert("Password Change Failed",
+                                    "New password should be at least 6 characters long.");
+                        } else if (message.contains("INVALID_ID_TOKEN")) {
+                            showErrorAlert("Password Change Failed",
+                                    "Authentication expired. Please try again.");
+                        } else {
+                            showErrorAlert("Password Change Failed",
+                                    "Password change failed: " + message);
+                        }
+                    }
+                } catch (Exception e) {
+                    showErrorAlert("Password Change Error",
+                            "Password change failed. Please try again.");
+                }
+                return false;
+            }
+
+        } catch (Exception e) {
+            showErrorAlert("Password Change Error",
+                    "An unexpected error occurred during password change. Please try again.");
+            System.err.println("Error changing Firebase Auth password: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * Deletes Firebase Authentication user using ID token
+     * 
+     * @param idToken Firebase ID token for authentication
+     * @return true if successful, false if failed
+     */
+    private boolean deleteFirebaseAuthUserWithToken(String idToken) {
+        try {
+            String deleteUrl = "https://identitytoolkit.googleapis.com/v1/accounts:delete?key=" + apiKey;
+
+            Map<String, Object> deleteData = new HashMap<>();
+            deleteData.put("idToken", idToken);
+
+            String jsonData = objectMapper.writeValueAsString(deleteData);
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(deleteUrl))
+                    .header("Content-Type", "application/json")
+                    .POST(HttpRequest.BodyPublishers.ofString(jsonData))
+                    .build();
+
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            System.out.println("Firebase Auth user deletion response status: " + response.statusCode());
+            System.out.println("Firebase Auth user deletion response body: " + response.body());
+
+            if (response.statusCode() == 200) {
+                System.out.println("Firebase Auth user deleted successfully");
+                return true;
+            } else {
+                System.err.println("Failed to delete Firebase Auth user. Status: " + response.statusCode());
+                return false;
+            }
+
+        } catch (Exception e) {
+            System.err.println("Error deleting Firebase Auth user: " + e.getMessage());
             e.printStackTrace();
             return false;
         }

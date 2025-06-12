@@ -54,10 +54,10 @@ public class AuthController {
 
         // Use Firebase connection to register user and get the userId
         String userId = firebaseConnection.registerUser(name, email, password);
-
         if (userId != null) {
-            // Create CurrentUser with the userId from registration
-            CurrentUser = new userInfo(name, email, password, "", "", "", "", "", "", "", "", "", "", "", "", userId);
+            // Create CurrentUser with the userId from registration (no password needed
+            // since Firebase Auth handles it)
+            CurrentUser = new userInfo(name, email, "", "", "", "", "", "", "", "", "", "", "", "", userId);
             App.setRoot("stepper");
         } else {
             // Handle registration failure (Firebase connection already shows error alerts)
