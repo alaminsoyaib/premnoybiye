@@ -427,9 +427,6 @@ public class editProfileController {
         } catch (Exception e) {
             System.err.println("Error opening password change dialog: " + e.getMessage());
             e.printStackTrace();
-            javafx.application.Platform.runLater(() -> {
-                DialogUtils.showErrorAlert("Error", "Failed to open password change dialog. Please try again.");
-            });
         }
     }
 
