@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -13,101 +14,101 @@
     <Insets bottom="24.0" left="24.0" right="24.0" top="24.0" />
   </padding>
   <children>
-    <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="534.0" prefWidth="321.0" styleClass="card-stack">
-      <padding>
-        <Insets bottom="44.52" left="22.0" right="21.05" top="20.0" />
-      </padding>
-      <children>
-        <VBox maxWidth="1.7976931348623157E308" prefHeight="474.0" prefWidth="278.0" spacing="16.0" stylesheets="@application.css">
-          <children>
-            <VBox>
-              <children>
-                <VBox alignment="CENTER" maxHeight="358.0" maxWidth="265.0" minHeight="265.0" minWidth="200.0" prefHeight="265.0" prefWidth="262.0" style="-fx-background-color: #e6e6e6; -fx-background-radius: 8;" />
-                <VBox prefWidth="234.0" spacing="12.0">
-                  <VBox.margin>
-                    <Insets bottom="7.0" left="14.0" right="14.0" top="14.0" />
-                  </VBox.margin>
-                  <children>
-                    <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" spacing="4.0">
-                      <children>
-                        <Label styleClass="card-title" text="Label">
-                          <font>
-                            <Font name="Trebuchet MS Bold" size="20.0" />
-                          </font>
-                        </Label>
-                        <Label maxWidth="1.7976931348623157E308" opacity="0.5" prefWidth="234.0" styleClass="card-subtitle" text="Lorem ipsum dolor sit amet consectetur. Odio posuere risus ac lacus tellus at. Quis donec viverra dictumst etiam purus.Lorem ipsum dolor sit amet consectetur. Odio posuere risus ac lacus tellus at. Quis donec viverra dictumst etiam purus.Lorem ipsum dolor sit amet consectetur. Odio posuere risus ac lacus tellus at. Quis donec viverra dictumst etiam purus." wrapText="true">
-                          <font>
-                            <Font name="Trebuchet MS" size="12.0" />
-                          </font>
-                        </Label>
-                      </children>
-                    </VBox>
-                    <HBox maxWidth="1.7976931348623157E308" spacing="24.0">
-                      <children>
-                        <HBox alignment="CENTER_LEFT" spacing="6.0">
-                          <children>
-                            <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
-                              <image>
-                                <Image url="@img/icon/location-icon.png" />
-                              </image>
-                            </ImageView>
-                            <Label text="Noakhali">
-                              <font>
-                                <Font name="Trebuchet MS" size="12.0" />
-                              </font>
-                            </Label>
-                          </children>
-                        </HBox>
-                        <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" spacing="6.0">
-                          <children>
-                            <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
-                              <image>
-                                <Image url="@img/icon/baby-icon.png" />
-                              </image>
-                            </ImageView>
-                            <Label text="24">
-                              <font>
-                                <Font name="Trebuchet MS" size="12.0" />
-                              </font>
-                            </Label>
-                          </children>
-                        </HBox>
-                      </children>
-                    </HBox>
-                  </children>
-                </VBox>
-                        <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308">
-                           <children>
-                              <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@img/icon/card-reject.png" />
-                                 </image>
-                              </ImageView>
-                              <HBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
-                              <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@img/icon/card-love.png" />
-                                 </image>
-                              </ImageView>
-                              <HBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS" />
-                              <ImageView fitHeight="50.0" fitWidth="50.0" layoutX="180.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@img/icon/card-message.png" />
-                                 </image>
-                              </ImageView>
-                           </children>
-                           <VBox.margin>
-                              <Insets left="14.0" right="14.0" top="7.0" />
-                           </VBox.margin>
-                        </HBox>
-              </children>
+      <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="8.0">
+         <children>
+            <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="20.0" HBox.hgrow="NEVER">
+               <children>
+                  <ImageView fx:id="cardReject" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@img/icon/card-reject.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+                  <HBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" />
+                  <ImageView fx:id="cardLove" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@img/icon/card-love.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+                  <HBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" />
+                  <ImageView fx:id="cardInfo" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@img/icon/card-info.png" />
+                     </image>
+                     <cursor>
+                        <Cursor fx:constant="HAND" />
+                     </cursor>
+                  </ImageView>
+               </children>
             </VBox>
-          </children>
-          <padding>
-            <Insets bottom="14.0" left="8.0" right="8.0" top="8.0" />
-          </padding>
-        </VBox>
-      </children>
-    </VBox>
+          <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="534.0" prefWidth="321.0" styleClass="card-stack">
+            <padding>
+              <Insets bottom="44.52" left="22.0" right="21.05" top="20.0" />
+            </padding>
+            <children>
+              <VBox fx:id="card" alignment="CENTER" maxWidth="1.7976931348623157E308" prefHeight="572.0" prefWidth="311.0" spacing="16.0" stylesheets="@application.css">
+                <children>
+                  <VBox alignment="TOP_CENTER">
+                    <children>
+                              <ImageView fx:id="cardImg" fitHeight="358.0" fitWidth="258.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@img/icon/card-img.png" />
+                                 </image>
+                              </ImageView>
+                      <VBox prefWidth="234.0" spacing="12.0">
+                        <VBox.margin>
+                          <Insets bottom="7.0" left="14.0" right="14.0" top="14.0" />
+                        </VBox.margin>
+                        <children>
+                          <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" spacing="4.0">
+                            <children>
+                              <Label fx:id="cardName" styleClass="card-title" text="Username">
+                                <font>
+                                  <Font name="Trebuchet MS Bold" size="20.0" />
+                                </font>
+                              </Label>
+                              <Label fx:id="cardBio" maxWidth="1.7976931348623157E308" opacity="0.5" prefWidth="234.0" styleClass="card-subtitle" text="This is a bio" wrapText="true">
+                                <font>
+                                  <Font name="Trebuchet MS" size="12.0" />
+                                </font>
+                              </Label>
+                            </children>
+                          </VBox>
+                          <HBox maxWidth="1.7976931348623157E308" spacing="24.0">
+                            <children>
+                              <HBox alignment="CENTER_LEFT" spacing="6.0">
+                                <children>
+                                  <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                    <image>
+                                      <Image url="@img/icon/location-icon.png" />
+                                    </image>
+                                  </ImageView>
+                                  <Label fx:id="cardLocation" text="Earth">
+                                    <font>
+                                      <Font name="Trebuchet MS" size="12.0" />
+                                    </font>
+                                  </Label>
+                                </children>
+                              </HBox>
+                            </children>
+                          </HBox>
+                        </children>
+                      </VBox>
+                    </children>
+                  </VBox>
+                </children>
+                <padding>
+                  <Insets bottom="14.0" left="8.0" right="8.0" top="8.0" />
+                </padding>
+              </VBox>
+            </children>
+          </VBox>
+         </children>
+      </HBox>
   </children>
 </VBox>

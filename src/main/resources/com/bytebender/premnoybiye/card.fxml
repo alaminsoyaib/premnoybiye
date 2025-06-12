@@ -12,7 +12,11 @@
    <children>
       <VBox>
          <children>
-            <VBox alignment="CENTER" maxHeight="358.0" maxWidth="258.0" minHeight="300.0" minWidth="200.0" prefHeight="300.0" prefWidth="200.0" styleClass="card-img" />
+            <ImageView fitHeight="358.0" fitWidth="258.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@img/icon/card-img.png" />
+               </image>
+            </ImageView>
             <VBox spacing="12.0">
                <VBox.margin>
                   <Insets bottom="7.0" left="14.0" right="14.0" top="14.0" />
