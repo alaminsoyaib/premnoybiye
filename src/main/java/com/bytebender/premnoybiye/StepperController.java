@@ -17,6 +17,7 @@ import javafx.scene.input.MouseEvent;
 public class StepperController {
 	int flag = 0;
 	private FirebaseConnection firebaseConnection = new FirebaseConnection();
+	private java.io.File selectedImageFile = null; // Store the selected image file for upload
 
 	@FXML
 	private VBox Stepper1;
@@ -86,7 +87,6 @@ public class StepperController {
 		Stepper2.setManaged(false);
 		Stepper3.setVisible(false);
 		Stepper3.setManaged(false);
-
 		// image picker starts
 		img_inside_imgPicker.setOnMouseClicked((MouseEvent event) -> {
 			try {
@@ -99,10 +99,14 @@ public class StepperController {
 				java.io.File selectedFile = fileChooser.showOpenDialog(img_inside_imgPicker.getScene().getWindow());
 
 				if (selectedFile != null) {
+					// Store the selected file for later upload
+					this.selectedImageFile = selectedFile;
+
+					// Display the image in the UI
 					Image image = new Image(selectedFile.toURI().toString());
 					img_inside_imgPicker.setImage(image);
 
-					// // Set size to 80x80
+					// Set size to 80x80
 					img_inside_imgPicker.setFitWidth(80);
 					img_inside_imgPicker.setFitHeight(80);
 					img_inside_imgPicker.setPreserveRatio(false);
@@ -112,6 +116,8 @@ public class StepperController {
 					clip.setArcWidth(20);
 					clip.setArcHeight(20);
 					img_inside_imgPicker.setClip(clip);
+
+					System.out.println("Image selected for upload: " + selectedFile.getName());
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -195,10 +201,31 @@ public class StepperController {
 			}
 			if (cityComboBox.getValue() != null) {
 				AuthController.CurrentUser.setCity(cityComboBox.getValue().toString());
+			} // Handle image upload if a new image was selected
+			if (selectedImageFile != null) {
+				System.out.println("Uploading image to Firebase Storage...");
+
+				// Get the actual userId from email
+				String userId = firebaseConnection.getUserIdFromEmail(AuthController.CurrentUser.getEmail());
+
+				if (userId != null) {
+					String imageUrl = firebaseConnection.uploadImageToStorage(selectedImageFile, userId);
+
+					if (imageUrl != null) {
+						AuthController.CurrentUser.setImage(imageUrl);
+						System.out.println("Image uploaded successfully. URL: " + imageUrl);
+						// Clear the selected file after successful upload
+						selectedImageFile = null;
+					} else {
+						System.err.println("Failed to upload image to Firebase Storage");
+						// Continue with profile update even if image upload fails
+					}
+				} else {
+					System.err.println("Could not find userId for email: " + AuthController.CurrentUser.getEmail());
+					// Continue with profile update even if image upload fails
+				}
 			}
-			if (img_inside_imgPicker.getImage() != null) {
-				AuthController.CurrentUser.setImage(img_inside_imgPicker.getImage().getUrl());
-			}
+
 			if (highestEduComboBox.getValue() != null) {
 				AuthController.CurrentUser.setEducation(highestEduComboBox.getValue().toString());
 			}

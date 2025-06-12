@@ -1,5 +1,7 @@
 package com.bytebender.premnoybiye.DBConnection;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
@@ -21,6 +23,7 @@ import javafx.scene.control.Alert.AlertType;
 public class FirebaseConnection {
     private String apiKey;
     private String databaseUrl;
+    private String storageBucket;
     private ObjectMapper objectMapper;
     private HttpClient httpClient;
 
@@ -42,9 +45,11 @@ public class FirebaseConnection {
 
             this.apiKey = properties.getProperty("apiKey");
             this.databaseUrl = properties.getProperty("databaseUrl");
+            this.storageBucket = properties.getProperty("storageBucket");
 
             System.out.println("Firebase config loaded successfully");
             System.out.println("Database URL: " + this.databaseUrl);
+            System.out.println("Storage Bucket: " + this.storageBucket);
 
         } catch (IOException e) {
             System.err.println("Error loading Firebase config: " + e.getMessage());
@@ -411,13 +416,111 @@ public class FirebaseConnection {
                     return userId;
                 }
             }
-
             System.out.println("No userId found in index for email: " + email);
             return null;
 
         } catch (Exception e) {
             System.err.println("Error looking up userId by email: " + e.getMessage());
             return null;
+        }
+    }
+
+    /**
+     * Public method to get userId by email for use by controllers
+     * 
+     * @param email The user's email
+     * @return userId if found, null otherwise
+     */
+    public String getUserIdFromEmail(String email) {
+        return getUserIdByEmail(email);
+    }
+
+    /**
+     * Upload an image to Firebase Storage and return the download URL
+     * 
+     * @param imageFile The image file to upload
+     * @param userId    The user ID for renaming the file
+     * @return String download URL if successful, null if failed
+     */
+    public String uploadImageToStorage(File imageFile, String userId) {
+        try {
+            if (imageFile == null || !imageFile.exists()) {
+                System.err.println("Image file does not exist");
+                return null;
+            }
+
+            // Get file extension from original file
+            String originalName = imageFile.getName();
+            String extension = "";
+            int lastDotIndex = originalName.lastIndexOf('.');
+            if (lastDotIndex > 0) {
+                extension = originalName.substring(lastDotIndex);
+            } // Create new filename with userId inside Prem-Noy-Biye folder
+            String newFileName = "Prem-Noy-Biye/" + userId + extension;
+            String contentType = getContentType(originalName);
+
+            System.out.println("Uploading image to Firebase Storage");
+            System.out.println("Original filename: " + originalName);
+            System.out.println("New filename: " + newFileName);
+            System.out.println("Content type: " + contentType);
+
+            // Read file as bytes
+            byte[] fileBytes;
+            try (FileInputStream fis = new FileInputStream(imageFile)) {
+                fileBytes = fis.readAllBytes();
+            }
+
+            // Upload to Firebase Storage (encode the full path including folder)
+            String uploadUrl = "https://firebasestorage.googleapis.com/v0/b/" + storageBucket +
+                    "/o/" + java.net.URLEncoder.encode(newFileName, "UTF-8");
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(uploadUrl))
+                    .header("Content-Type", contentType)
+                    .POST(HttpRequest.BodyPublishers.ofByteArray(fileBytes))
+                    .build();
+
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == 200) {
+                // Parse response to get download token
+                JsonNode responseJson = objectMapper.readTree(response.body());
+                String downloadToken = responseJson.get("downloadTokens").asText();
+
+                // Construct download URL
+                String downloadUrl = "https://firebasestorage.googleapis.com/v0/b/" + storageBucket +
+                        "/o/" + java.net.URLEncoder.encode(newFileName, "UTF-8") +
+                        "?alt=media&token=" + downloadToken;
+
+                System.out.println("Image uploaded successfully");
+                System.out.println("Download URL: " + downloadUrl);
+                return downloadUrl;
+            } else {
+                System.err.println("Failed to upload image. Status code: " + response.statusCode());
+                System.err.println("Response body: " + response.body());
+                return null;
+            }
+
+        } catch (Exception e) {
+            System.err.println("Error uploading image to Firebase Storage: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * Helper method to determine content type based on file extension
+     */
+    private String getContentType(String fileName) {
+        String lowerCaseFileName = fileName.toLowerCase();
+        if (lowerCaseFileName.endsWith(".jpg") || lowerCaseFileName.endsWith(".jpeg")) {
+            return "image/jpeg";
+        } else if (lowerCaseFileName.endsWith(".png")) {
+            return "image/png";
+        } else if (lowerCaseFileName.endsWith(".gif")) {
+            return "image/gif";
+        } else {
+            return "application/octet-stream";
         }
     }
 }

@@ -15,6 +15,7 @@ import javafx.scene.image.ImageView;
 public class editProfileController {
     private Component component = new Component();
     private FirebaseConnection firebaseConnection = new FirebaseConnection();
+    private java.io.File selectedImageFile = null; // Store the selected image file for upload
     @FXML
     private ImageView editProfileImg;
     @FXML
@@ -126,10 +127,14 @@ public class editProfileController {
             java.io.File selectedFile = fileChooser.showOpenDialog(editProfileImg.getScene().getWindow());
 
             if (selectedFile != null) {
+                // Store the selected file for later upload
+                this.selectedImageFile = selectedFile;
+
+                // Display the image in the UI
                 Image image = new Image(selectedFile.toURI().toString());
                 editProfileImg.setImage(image);
 
-                // // Set size to 80x80
+                // Set size to 80x80
                 editProfileImg.setFitWidth(80);
                 editProfileImg.setFitHeight(80);
                 editProfileImg.setPreserveRatio(false);
@@ -139,6 +144,8 @@ public class editProfileController {
                 clip.setArcWidth(20);
                 clip.setArcHeight(20);
                 editProfileImg.setClip(clip);
+
+                System.out.println("Image selected for upload: " + selectedFile.getName());
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -151,8 +158,48 @@ public class editProfileController {
             // Get current user from AuthController
             userInfo user = AuthController.CurrentUser;
 
-            if (user != null) {
-                user.setImage(editProfileImg.getImage().getUrl());
+            if (user != null) { // Handle image upload if a new image was selected
+                if (selectedImageFile != null) {
+                    System.out.println("Uploading image to Firebase Storage...");
+
+                    // Get the actual userId from email
+                    String userId = firebaseConnection.getUserIdFromEmail(user.getEmail());
+
+                    if (userId != null) {
+                        String imageUrl = firebaseConnection.uploadImageToStorage(selectedImageFile, userId);
+
+                        if (imageUrl != null) {
+                            user.setImage(imageUrl);
+                            System.out.println("Image uploaded successfully. URL: " + imageUrl);
+                            // Clear the selected file after successful upload
+                            selectedImageFile = null;
+                        } else {
+                            System.err.println("Failed to upload image to Firebase Storage");
+                            javafx.application.Platform.runLater(() -> {
+                                javafx.scene.control.Alert alert = new javafx.scene.control.Alert(
+                                        javafx.scene.control.Alert.AlertType.WARNING);
+                                alert.setTitle("Image Upload Failed");
+                                alert.setHeaderText(null);
+                                alert.setContentText(
+                                        "Failed to upload the image. Your profile will be saved without the new image.");
+                                alert.showAndWait();
+                            });
+                        }
+                    } else {
+                        System.err.println("Could not find userId for email: " + user.getEmail());
+                        javafx.application.Platform.runLater(() -> {
+                            javafx.scene.control.Alert alert = new javafx.scene.control.Alert(
+                                    javafx.scene.control.Alert.AlertType.WARNING);
+                            alert.setTitle("Image Upload Failed");
+                            alert.setHeaderText(null);
+                            alert.setContentText(
+                                    "Could not identify user for image upload. Your profile will be saved without the new image.");
+                            alert.showAndWait();
+                        });
+                    }
+                }
+
+                // Update other user data
                 if (editNameTextField.getText() != null && !editNameTextField.getText().trim().isEmpty()) {
                     user.setName(editNameTextField.getText().trim());
                 }
