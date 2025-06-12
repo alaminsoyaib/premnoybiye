@@ -36,12 +36,8 @@ public class editProfileController {
     @FXML
     private Label editProfileName;
     @FXML
-    private Label editEmailLabel;
-
-    @FXML
+    private Label editEmailLabel;    @FXML
     private TextField editNameTextField;
-    @FXML
-    private TextField editEmailTextField;
 
     @FXML
     private DatePicker editDobComboBox;
@@ -76,10 +72,8 @@ public class editProfileController {
                 if (user.getName() != "") {
                     editProfileName.setText(user.getName());
                     editNameTextField.setText(user.getName());
-                }
-                if (user.getEmail() != "") {
+                }                if (user.getEmail() != "") {
                     editEmailLabel.setText(user.getEmail());
-                    editEmailTextField.setText(user.getEmail());
                 }
                 if (user.getReligion() != "") {
                     editReligionComboBox.setPromptText(user.getReligion());
@@ -204,9 +198,7 @@ public class editProfileController {
                 if (editNameTextField.getText() != null && !editNameTextField.getText().trim().isEmpty()) {
                     user.setName(editNameTextField.getText().trim());
                 }
-                if (editEmailTextField.getText() != null && !editEmailTextField.getText().trim().isEmpty()) {
-                    user.setEmail(editEmailTextField.getText().trim());
-                }
+                // Email is not editable in the UI - using current email from user object
                 if (editDobComboBox.getValue() != null) {
                     user.setDob(editDobComboBox.getValue().toString());
                 }

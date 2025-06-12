@@ -72,21 +72,17 @@ public class FirebaseConnection {
             if (name.trim().isEmpty() || email.trim().isEmpty() || password.trim().isEmpty()) {
                 showErrorAlert("Registration Error", "Name, email, and password must not be empty");
                 return null;
-            }
-
-            // Step 1: Create user with Firebase Authentication
-            String authUserId = createFirebaseAuthUser(email, password);
-            if (authUserId == null) {
+            } // Step 1: Create user with Firebase Authentication
+            String userId = createFirebaseAuthUser(email, password);
+            if (userId == null) {
                 return null; // Error already shown in createFirebaseAuthUser
             }
 
-            // Step 2: Create user profile in Realtime Database using authUserId as primary
-            // key
-            // Create user data map (no password stored here - handled by Firebase Auth)
+            // Step 2: Create user profile in Realtime Database using Firebase Auth UID as
+            // primary key
             Map<String, Object> userData = new HashMap<>();
             userData.put("name", name);
             userData.put("email", email);
-            userData.put("authUserId", authUserId); // Firebase Auth UID
             userData.put("dob", "");
             userData.put("gender", "");
             userData.put("religion", "");
@@ -99,13 +95,11 @@ public class FirebaseConnection {
             userData.put("prefAge", "");
             userData.put("prefLocation", "");
             userData.put("prefProfession", "");
-            userData.put("userId", authUserId); // Use authUserId as the primary key
-
-            // Convert to JSON
+            userData.put("userId", userId); // Firebase Auth UID used as primary key // Convert to JSON
             String jsonData = objectMapper.writeValueAsString(userData);
 
             // Create HTTP PUT request to Firebase Realtime Database
-            String url = databaseUrl + "/Users/" + authUserId + ".json?auth=" + apiKey;
+            String url = databaseUrl + "/Users/" + userId + ".json?auth=" + apiKey;
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(url))
                     .header("Content-Type", "application/json")
@@ -115,17 +109,17 @@ public class FirebaseConnection {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() == 200) {
                 // User profile created successfully, now add email to index for faster lookups
-                boolean emailIndexSuccess = addEmailToIndex(email, authUserId);
+                boolean emailIndexSuccess = addEmailToIndex(email, userId);
 
                 if (emailIndexSuccess) {
                     System.out.println(
                             "User registered successfully in Firebase with email index: " + name + " (" + email
-                                    + ") userId: " + authUserId + " authUserId: " + authUserId);
+                                    + ") userId: " + userId);
                 } else {
                     System.out.println("User registered successfully in Firebase, but email index failed: " + name
-                            + " (" + email + ") userId: " + authUserId);
+                            + " (" + email + ") userId: " + userId);
                 }
-                return authUserId; // Return the authUserId as the primary userId
+                return userId; // Return the Firebase Auth UID as primary key
             } else {
                 showErrorAlert("Registration Failed",
                         "Failed to create user profile. Please check your internet connection and try again.");
@@ -394,71 +388,59 @@ public class FirebaseConnection {
     public userInfo loginUser(String email, String password) {
         try {
             // Step 1: Authenticate with Firebase Authentication
-            String authUserId = authenticateFirebaseUser(email, password);
-            if (authUserId == null) {
+            String userId = authenticateFirebaseUser(email, password);
+            if (userId == null) {
                 return null; // Error already shown in authenticateFirebaseUser
             }
 
-            // Step 2: Get user profile from Realtime Database using email index
-            String userId = getUserIdByEmail(email);
+            // Step 2: Get user profile from Realtime Database using userId
+            String getUserUrl = databaseUrl + "/Users/" + userId + ".json?auth=" + apiKey;
 
-            if (userId != null) {
-                // Get user data directly using the userId
-                String getUserUrl = databaseUrl + "/Users/" + userId + ".json?auth=" + apiKey;
+            System.out.println("Fetching user data for login: " + userId);
+            System.out.println("User data URL: " + getUserUrl);
 
-                System.out.println("Fetching user data for login: " + userId);
-                System.out.println("User data URL: " + getUserUrl);
+            HttpRequest getRequest = HttpRequest.newBuilder()
+                    .uri(URI.create(getUserUrl))
+                    .GET()
+                    .build();
 
-                HttpRequest getRequest = HttpRequest.newBuilder()
-                        .uri(URI.create(getUserUrl))
-                        .GET()
-                        .build();
+            HttpResponse<String> getResponse = httpClient.send(getRequest, HttpResponse.BodyHandlers.ofString());
 
-                HttpResponse<String> getResponse = httpClient.send(getRequest, HttpResponse.BodyHandlers.ofString());
+            System.out.println("User data response status: " + getResponse.statusCode());
 
-                System.out.println("User data response status: " + getResponse.statusCode());
-                System.out.println("User data response body: " + getResponse.body());
+            if (getResponse.statusCode() == 200) {
+                JsonNode userNode = objectMapper.readTree(getResponse.body());
 
-                if (getResponse.statusCode() == 200) {
-                    JsonNode userNode = objectMapper.readTree(getResponse.body());
+                if (userNode != null && !userNode.isNull()) {
+                    // Create userInfo object with retrieved data
+                    userInfo user = new userInfo(
+                            userNode.get("name").asText(""),
+                            userNode.get("email").asText(""),
+                            userNode.get("dob").asText(""),
+                            userNode.get("gender").asText(""),
+                            userNode.get("religion").asText(""),
+                            userNode.get("city").asText(""),
+                            userNode.get("image").asText(""),
+                            userNode.get("education").asText(""),
+                            userNode.get("profession").asText(""),
+                            userNode.get("income").asText(""),
+                            userNode.get("bio").asText(""),
+                            userNode.get("prefAge").asText(""),
+                            userNode.get("prefLocation").asText(""),
+                            userNode.get("prefProfession").asText(""),
+                            userId);
 
-                    if (userNode != null && !userNode.isNull()) { // Create and return userInfo object with retrieved
-                                                                  // data including userId
-                        userInfo user = new userInfo(
-                                userNode.get("name").asText(""),
-                                userNode.get("email").asText(""),
-                                userNode.get("dob").asText(""),
-                                userNode.get("gender").asText(""),
-                                userNode.get("religion").asText(""),
-                                userNode.get("city").asText(""),
-                                userNode.get("image").asText(""),
-                                userNode.get("education").asText(""),
-                                userNode.get("profession").asText(""),
-                                userNode.get("income").asText(""),
-                                userNode.get("bio").asText(""),
-                                userNode.get("prefAge").asText(""),
-                                userNode.get("prefLocation").asText(""),
-                                userNode.get("prefProfession").asText(""),
-                                userId); // Pass the userId as the last parameter
-
-                        System.out.println("User login successful: " + email + " (userId: " + userId + " authUserId: "
-                                + authUserId + ")");
-                        return user;
-                    } else {
-                        showErrorAlert("Login Failed", "User profile not found. Please contact support.");
-                        System.err.println("User data is null for userId: " + userId);
-                        return null;
-                    }
+                    System.out.println("User login successful: " + email + " (userId: " + userId + ")");
+                    return user;
                 } else {
-                    showErrorAlert("Login Failed",
-                            "Unable to fetch user profile. Please check your internet connection.");
-                    System.err.println("Firebase user data fetch failed. Status: " + getResponse.statusCode());
+                    showErrorAlert("Login Failed", "User profile not found. Please contact support.");
+                    System.err.println("User data is null for userId: " + userId);
                     return null;
                 }
             } else {
                 showErrorAlert("Login Failed",
-                        "User profile not found. Please contact support or try registering again.");
-                System.err.println("User not found in email index: " + email);
+                        "Unable to fetch user profile. Please check your internet connection.");
+                System.err.println("Firebase user data fetch failed. Status: " + getResponse.statusCode());
                 return null;
             }
         } catch (Exception e) {
@@ -832,12 +814,7 @@ public class FirebaseConnection {
             showErrorAlert("Password Change Error", "Unable to identify user for password change");
             return false;
         }
-        boolean success = changePassword(userId, currentPassword, newPassword);
-
-        // Password change handled by Firebase Auth - no need to update userInfo object
-        // since password is no longer stored locally
-
-        return success;
+        return changePassword(userId, currentPassword, newPassword);
     }
 
     /**
@@ -852,9 +829,9 @@ public class FirebaseConnection {
     public boolean verifyPasswordChange(String email, String newPassword) {
         try {
             // Attempt authentication with Firebase Auth using new password
-            String authUserId = authenticateFirebaseUser(email, newPassword);
+            String userId = authenticateFirebaseUser(email, newPassword);
 
-            if (authUserId != null) {
+            if (userId != null) {
                 System.out.println("Password verification for " + email + ": SUCCESS");
                 return true;
             } else {
@@ -1186,17 +1163,16 @@ public class FirebaseConnection {
     /**
      * Deletes a Firebase Authentication user
      * 
-     * @param authUserId The Firebase Auth UID
+     * @param userId The Firebase Auth UID
      * @return true if successful, false if failed
      */
-    private boolean deleteFirebaseAuthUser(String authUserId) {
+    private boolean deleteFirebaseAuthUser(String userId) {
         try {
-            // First, we need to get an ID token for the user to delete them
-            // This is a simplified version - in production you'd handle this more securely
+            // Delete the Firebase Authentication user account
             String deleteUrl = "https://identitytoolkit.googleapis.com/v1/accounts:delete?key=" + apiKey;
 
             Map<String, Object> deleteData = new HashMap<>();
-            deleteData.put("localId", authUserId);
+            deleteData.put("localId", userId);
 
             String jsonData = objectMapper.writeValueAsString(deleteData);
 
@@ -1210,12 +1186,11 @@ public class FirebaseConnection {
 
             System.out.println("Firebase Auth user deletion response status: " + response.statusCode());
             System.out.println("Firebase Auth user deletion response body: " + response.body());
-
             if (response.statusCode() == 200) {
-                System.out.println("Firebase Auth user deleted successfully: " + authUserId);
+                System.out.println("Firebase Auth user deleted successfully: " + userId);
                 return true;
             } else {
-                System.err.println("Failed to delete Firebase Auth user: " + authUserId);
+                System.err.println("Failed to delete Firebase Auth user: " + userId);
                 return false;
             }
         } catch (Exception e) {

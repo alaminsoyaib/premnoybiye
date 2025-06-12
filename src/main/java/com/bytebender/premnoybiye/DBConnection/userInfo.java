@@ -15,7 +15,7 @@ public class userInfo {
     private String prefAge = "";
     private String prefLocation = "";
     private String prefProfession = "";
-    private String userId = ""; // Added userId field as primary key
+    private String userId = ""; // Firebase Authentication UID used as primary key
 
     public userInfo(String name, String email, String dob, String gender, String religion,
             String city, String image, String education, String profession, String income, String bio, String prefAge,
@@ -34,7 +34,7 @@ public class userInfo {
         this.prefAge = prefAge;
         this.prefLocation = prefLocation;
         this.prefProfession = prefProfession;
-        this.userId = ""; // Initialize as empty, will be set during login or registration
+        this.userId = ""; // Will be set to Firebase Authentication UID during login or registration
     }
 
     // Constructor with userId
