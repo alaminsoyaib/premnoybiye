@@ -3,7 +3,7 @@ package com.bytebender.premnoybiye;
 import javafx.fxml.FXML;
 import java.io.IOException;
 
-// import com.bytebender.premnoybiye.DBConnection.userInfo;
+import com.bytebender.premnoybiye.DBConnection.FirebaseConnection;
 
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
@@ -16,6 +16,7 @@ import javafx.scene.input.MouseEvent;
 
 public class StepperController {
 	int flag = 0;
+	private FirebaseConnection firebaseConnection = new FirebaseConnection();
 
 	@FXML
 	private VBox Stepper1;
@@ -220,7 +221,16 @@ public class StepperController {
 				AuthController.CurrentUser.setPrefProfession(prefProfessionComboBox.getValue().toString());
 			}
 
-			App.setRoot("sidebar");
+			// Update user profile in Firebase with all collected data
+			boolean updateSuccess = firebaseConnection.updateUserProfile(AuthController.CurrentUser);
+
+			if (updateSuccess) {
+				System.out.println("User profile updated successfully in Firebase!");
+				App.setRoot("sidebar");
+			} else {
+				System.err.println("Failed to update user profile in Firebase, but proceeding to sidebar");
+				App.setRoot("sidebar"); // Still proceed even if Firebase update fails
+			}
 			// App.setRoot("editProfile");
 			// App.setRoot("mymatches");
 

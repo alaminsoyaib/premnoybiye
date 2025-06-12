@@ -53,7 +53,7 @@
                             </Label>
                           </children>
                         </VBox>
-                        <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="36.0" prefWidth="130.0" style="-fx-border-color: #6631C4; -fx-border-radius: 8; -fx-border-width: 2; -fx-background-radius: 8; -fx-background-color: transparent; -fx-text-fill: #6631C4;" text="Change Picture" textAlignment="CENTER">
+                        <Button fx:id="changePicture" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#changePictureClicked" prefHeight="36.0" prefWidth="130.0" style="-fx-border-color: #6631C4; -fx-border-radius: 8; -fx-border-width: 2; -fx-background-radius: 8; -fx-background-color: transparent; -fx-text-fill: #6631C4;" text="Change Picture" textAlignment="CENTER">
                           <font>
                             <Font name="Trebuchet MS" size="12.0" />
                           </font>
@@ -560,7 +560,7 @@
     </ScrollPane>
     <HBox alignment="CENTER_RIGHT" maxWidth="940.0" prefWidth="756.0" style="-fx-background-color: #E7E6ED;">
       <children>
-        <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="44.0" prefWidth="130.0" style="-fx-background-radius: 8; -fx-background-color: #6631C4; -fx-text-fill: white;" text="Save" textAlignment="CENTER">
+        <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#saveClicked" prefHeight="44.0" prefWidth="130.0" style="-fx-background-radius: 8; -fx-background-color: #6631C4; -fx-text-fill: white;" text="Save" textAlignment="CENTER">
           <font>
             <Font name="Trebuchet MS" size="12.0" />
           </font>

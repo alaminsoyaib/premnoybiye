@@ -29,8 +29,8 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
 
         // scene = new Scene(loadFXML("splash-screen"), 1000, 600); // main code
-        scene = new Scene(loadFXML("sidebar"), 1000, 600);
-        // Stepper, profile, signup, sidebar
+        scene = new Scene(loadFXML("loginsignupchoice"), 1000, 600);
+        // Stepper, profile, signup, sidebar, loginsignupchoice,
         stage.setScene(scene);
         stage.setTitle("Prem Noy Biye");
         stage.show();

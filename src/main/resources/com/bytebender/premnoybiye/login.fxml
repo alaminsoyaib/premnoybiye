@@ -62,7 +62,7 @@
                               <Insets bottom="6.0" />
                            </padding>
                         </Label>
-                        <TextField maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="341.0" promptText="abc@gmail.com">
+                        <TextField fx:id="emailTextField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="341.0" promptText="abc@gmail.com">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -94,7 +94,7 @@
                               <Insets />
                            </VBox.margin>
                         </Label>
-                        <TextField maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="341.0" promptText="**********">
+                        <TextField fx:id="passwordTextField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="341.0" promptText="**********">
                            <font>
                               <Font size="14.0" />
                            </font>
@@ -112,7 +112,7 @@
                   </VBox>
                   <VBox maxWidth="-Infinity" minWidth="-Infinity" prefWidth="341.0">
                      <children>
-                        <Button id="cta_button" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="50.0" prefWidth="341.0" stylesheets="@application.css" text="Login" textAlignment="CENTER" />
+                        <Button id="cta_button" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#switchToSidebar" prefHeight="50.0" prefWidth="341.0" stylesheets="@application.css" text="Login" textAlignment="CENTER" />
                      </children>
                   </VBox>
                   <HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="341.0">
