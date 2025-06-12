@@ -118,4 +118,7 @@ Thumbs.db
 /target
 
 target/
+
+# Firebase configuration (contains sensitive API keys)
 firebase.properties
+src/main/resources/firebase.properties
