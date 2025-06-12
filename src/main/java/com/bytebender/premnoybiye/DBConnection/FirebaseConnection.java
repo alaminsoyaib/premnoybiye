@@ -16,9 +16,8 @@ import java.util.Properties;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.bytebender.premnoybiye.Component.DialogUtils;
 import javafx.application.Platform;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Alert.AlertType;
 
 public class FirebaseConnection {
     private String apiKey;
@@ -64,11 +63,7 @@ public class FirebaseConnection {
 
     private void showErrorAlert(String title, String message) {
         Platform.runLater(() -> {
-            Alert alert = new Alert(AlertType.ERROR);
-            alert.setTitle(title);
-            alert.setHeaderText(null);
-            alert.setContentText(message);
-            alert.showAndWait();
+            DialogUtils.showErrorAlert(title, message);
         });
     }
 

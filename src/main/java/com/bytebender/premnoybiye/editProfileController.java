@@ -1,6 +1,7 @@
 package com.bytebender.premnoybiye;
 
 import com.bytebender.premnoybiye.Component.Component;
+import com.bytebender.premnoybiye.Component.DialogUtils;
 import com.bytebender.premnoybiye.DBConnection.userInfo;
 import com.bytebender.premnoybiye.DBConnection.FirebaseConnection;
 import javafx.fxml.FXML;
@@ -13,7 +14,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
-import javafx.geometry.Insets;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -187,25 +187,15 @@ public class editProfileController {
                         } else {
                             System.err.println("Failed to upload image to Firebase Storage");
                             javafx.application.Platform.runLater(() -> {
-                                javafx.scene.control.Alert alert = new javafx.scene.control.Alert(
-                                        javafx.scene.control.Alert.AlertType.WARNING);
-                                alert.setTitle("Image Upload Failed");
-                                alert.setHeaderText(null);
-                                alert.setContentText(
+                                DialogUtils.showWarningAlert("Image Upload Failed",
                                         "Failed to upload the image. Your profile will be saved without the new image.");
-                                alert.showAndWait();
                             });
                         }
                     } else {
                         System.err.println("Could not find userId for user: " + user.getEmail());
                         javafx.application.Platform.runLater(() -> {
-                            javafx.scene.control.Alert alert = new javafx.scene.control.Alert(
-                                    javafx.scene.control.Alert.AlertType.WARNING);
-                            alert.setTitle("Image Upload Failed");
-                            alert.setHeaderText(null);
-                            alert.setContentText(
+                            DialogUtils.showWarningAlert("Image Upload Failed",
                                     "Could not identify user for image upload. Your profile will be saved without the new image.");
-                            alert.showAndWait();
                         });
                     }
                 }
@@ -254,17 +244,11 @@ public class editProfileController {
                 // Update user profile in Firebase with all collected data (same pattern as
                 // StepperController)
                 boolean updateSuccess = firebaseConnection.updateUserProfile(user);
-
                 if (updateSuccess) {
                     System.out.println("User profile updated successfully in Firebase!");
                     // You can add a success alert here if needed
                     javafx.application.Platform.runLater(() -> {
-                        javafx.scene.control.Alert alert = new javafx.scene.control.Alert(
-                                javafx.scene.control.Alert.AlertType.INFORMATION);
-                        alert.setTitle("Profile Updated");
-                        alert.setHeaderText(null);
-                        alert.setContentText("Your profile has been updated successfully!");
-                        alert.showAndWait();
+                        DialogUtils.showInfoAlert("Profile Updated", "Your profile has been updated successfully!");
                         // reloading the sidebar to reflect changes
                         try {
                             App.setRoot("sidebar");
@@ -279,24 +263,15 @@ public class editProfileController {
             } else {
                 System.err.println("No current user found to update");
                 javafx.application.Platform.runLater(() -> {
-                    javafx.scene.control.Alert alert = new javafx.scene.control.Alert(
-                            javafx.scene.control.Alert.AlertType.ERROR);
-                    alert.setTitle("Update Failed");
-                    alert.setHeaderText(null);
-                    alert.setContentText("No user session found. Please log in again.");
-                    alert.showAndWait();
+                    DialogUtils.showErrorAlert("Update Failed", "No user session found. Please log in again.");
                 });
             }
         } catch (Exception e) {
             System.err.println("Error updating profile: " + e.getMessage());
             e.printStackTrace();
             javafx.application.Platform.runLater(() -> {
-                javafx.scene.control.Alert alert = new javafx.scene.control.Alert(
-                        javafx.scene.control.Alert.AlertType.ERROR);
-                alert.setTitle("Update Error");
-                alert.setHeaderText(null);
-                alert.setContentText("An unexpected error occurred while updating your profile. Please try again.");
-                alert.showAndWait();
+                DialogUtils.showErrorAlert("Update Error",
+                        "An unexpected error occurred while updating your profile. Please try again.");
             });
         }
     }
@@ -317,16 +292,10 @@ public class editProfileController {
                 boolean success = firebaseConnection.changePassword(user, currentPassword, newPassword);
 
                 if (success) {
-                    System.out.println("Password changed successfully for user: " + user.getEmail());
-
-                    // Show success message
+                    System.out.println("Password changed successfully for user: " + user.getEmail()); // Show success
+                                                                                                      // message
                     javafx.application.Platform.runLater(() -> {
-                        javafx.scene.control.Alert alert = new javafx.scene.control.Alert(
-                                javafx.scene.control.Alert.AlertType.INFORMATION);
-                        alert.setTitle("Password Changed");
-                        alert.setHeaderText(null);
-                        alert.setContentText("Your password has been changed successfully!");
-                        alert.showAndWait();
+                        DialogUtils.showInfoAlert("Password Changed", "Your password has been changed successfully!");
                     });
 
                     return true;
@@ -337,26 +306,16 @@ public class editProfileController {
             } else {
                 System.err.println("No current user found for password change");
                 javafx.application.Platform.runLater(() -> {
-                    javafx.scene.control.Alert alert = new javafx.scene.control.Alert(
-                            javafx.scene.control.Alert.AlertType.ERROR);
-                    alert.setTitle("Password Change Failed");
-                    alert.setHeaderText(null);
-                    alert.setContentText("No user session found. Please log in again.");
-                    alert.showAndWait();
+                    DialogUtils.showErrorAlert("Password Change Failed", "No user session found. Please log in again.");
                 });
                 return false;
             }
         } catch (Exception e) {
             System.err.println("Error during password change: " + e.getMessage());
             e.printStackTrace();
-
             javafx.application.Platform.runLater(() -> {
-                javafx.scene.control.Alert alert = new javafx.scene.control.Alert(
-                        javafx.scene.control.Alert.AlertType.ERROR);
-                alert.setTitle("Password Change Error");
-                alert.setHeaderText(null);
-                alert.setContentText("An unexpected error occurred while changing password. Please try again.");
-                alert.showAndWait();
+                DialogUtils.showErrorAlert("Password Change Error",
+                        "An unexpected error occurred while changing password. Please try again.");
             });
             return false;
         }
@@ -364,11 +323,13 @@ public class editProfileController {
 
     @FXML
     private void changePasswordClicked() {
-        try {
-            // Create a custom dialog for password change
+        try { // Create a custom dialog for password change
             Dialog<String[]> dialog = new Dialog<>();
             dialog.setTitle("Change Password");
             dialog.setHeaderText("Enter your current password and new password");
+
+            // Set the application icon
+            dialog.setOnShowing(e -> DialogUtils.setDialogIcon(dialog));
 
             // Set the button types
             javafx.scene.control.ButtonType changeButtonType = new javafx.scene.control.ButtonType("Change Password",
@@ -438,30 +399,18 @@ public class editProfileController {
             result.ifPresent(passwords -> {
                 String currentPass = passwords[0];
                 String newPass = passwords[1];
-                String confirmPass = passwords[2];
-
-                // Validate that new passwords match
+                String confirmPass = passwords[2]; // Validate that new passwords match
                 if (!newPass.equals(confirmPass)) {
                     javafx.application.Platform.runLater(() -> {
-                        javafx.scene.control.Alert alert = new javafx.scene.control.Alert(
-                                javafx.scene.control.Alert.AlertType.ERROR);
-                        alert.setTitle("Password Mismatch");
-                        alert.setHeaderText(null);
-                        alert.setContentText("New password and confirm password do not match. Please try again.");
-                        alert.showAndWait();
+                        DialogUtils.showErrorAlert("Password Mismatch",
+                                "New password and confirm password do not match. Please try again.");
                     });
                     return;
-                }
-
-                // Validate password strength (optional)
+                } // Validate password strength (optional)
                 if (newPass.length() < 6) {
                     javafx.application.Platform.runLater(() -> {
-                        javafx.scene.control.Alert alert = new javafx.scene.control.Alert(
-                                javafx.scene.control.Alert.AlertType.WARNING);
-                        alert.setTitle("Weak Password");
-                        alert.setHeaderText(null);
-                        alert.setContentText("New password should be at least 6 characters long.");
-                        alert.showAndWait();
+                        DialogUtils.showWarningAlert("Weak Password",
+                                "New password should be at least 6 characters long.");
                     });
                     return;
                 }
@@ -478,25 +427,21 @@ public class editProfileController {
         } catch (Exception e) {
             System.err.println("Error opening password change dialog: " + e.getMessage());
             e.printStackTrace();
-
             javafx.application.Platform.runLater(() -> {
-                javafx.scene.control.Alert alert = new javafx.scene.control.Alert(
-                        javafx.scene.control.Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setHeaderText(null);
-                alert.setContentText("Failed to open password change dialog. Please try again.");
-                alert.showAndWait();
+                DialogUtils.showErrorAlert("Error", "Failed to open password change dialog. Please try again.");
             });
         }
     }
 
     @FXML
     private void deleteAccountClicked() {
-        try {
-            // Create confirmation dialog with password verification
+        try { // Create confirmation dialog with password verification
             Dialog<String> dialog = new Dialog<>();
             dialog.setTitle("Delete Account");
             dialog.setHeaderText("WARNING: This action cannot be undone!");
+
+            // Set the application icon
+            dialog.setOnShowing(e -> DialogUtils.setDialogIcon(dialog));
 
             // Set the button types
             javafx.scene.control.ButtonType deleteButtonType = new javafx.scene.control.ButtonType("Delete Account",
@@ -551,13 +496,11 @@ public class editProfileController {
 
             java.util.Optional<String> result = dialog.showAndWait();
 
-            result.ifPresent(password -> {
-                // Show final confirmation dialog
-                javafx.scene.control.Alert finalConfirm = new javafx.scene.control.Alert(
-                        javafx.scene.control.Alert.AlertType.CONFIRMATION);
-                finalConfirm.setTitle("Final Confirmation");
-                finalConfirm.setHeaderText("Are you absolutely sure?");
-                finalConfirm.setContentText(
+            result.ifPresent(password -> { // Show final confirmation dialog
+                javafx.scene.control.Alert finalConfirm = DialogUtils.createAlert(
+                        javafx.scene.control.Alert.AlertType.CONFIRMATION,
+                        "Final Confirmation",
+                        "Are you absolutely sure?",
                         "This is your last chance to cancel. Once deleted, your account cannot be recovered.");
 
                 // Customize the buttons
@@ -579,14 +522,8 @@ public class editProfileController {
         } catch (Exception e) {
             System.err.println("Error opening delete account dialog: " + e.getMessage());
             e.printStackTrace();
-
             javafx.application.Platform.runLater(() -> {
-                javafx.scene.control.Alert alert = new javafx.scene.control.Alert(
-                        javafx.scene.control.Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setHeaderText(null);
-                alert.setContentText("Failed to open delete account dialog. Please try again.");
-                alert.showAndWait();
+                DialogUtils.showErrorAlert("Error", "Failed to open delete account dialog. Please try again.");
             });
         }
     }
@@ -604,16 +541,10 @@ public class editProfileController {
                 // Call Firebase connection to delete the user
                 boolean success = firebaseConnection.deleteUser(user, password);
 
-                if (success) {
-                    // Account deleted successfully
+                if (success) { // Account deleted successfully
                     javafx.application.Platform.runLater(() -> {
-                        javafx.scene.control.Alert alert = new javafx.scene.control.Alert(
-                                javafx.scene.control.Alert.AlertType.INFORMATION);
-                        alert.setTitle("Account Deleted");
-                        alert.setHeaderText(null);
-                        alert.setContentText(
+                        DialogUtils.showInfoAlert("Account Deleted",
                                 "Your account has been permanently deleted. You will now be redirected to the login screen.");
-                        alert.showAndWait();
 
                         // Clear current user session
                         AuthController.CurrentUser = null;
@@ -633,25 +564,15 @@ public class editProfileController {
             } else {
                 System.err.println("No current user found for account deletion");
                 javafx.application.Platform.runLater(() -> {
-                    javafx.scene.control.Alert alert = new javafx.scene.control.Alert(
-                            javafx.scene.control.Alert.AlertType.ERROR);
-                    alert.setTitle("Delete Account Failed");
-                    alert.setHeaderText(null);
-                    alert.setContentText("No user session found. Please log in again.");
-                    alert.showAndWait();
+                    DialogUtils.showErrorAlert("Delete Account Failed", "No user session found. Please log in again.");
                 });
             }
         } catch (Exception e) {
             System.err.println("Error during account deletion: " + e.getMessage());
             e.printStackTrace();
-
             javafx.application.Platform.runLater(() -> {
-                javafx.scene.control.Alert alert = new javafx.scene.control.Alert(
-                        javafx.scene.control.Alert.AlertType.ERROR);
-                alert.setTitle("Account Deletion Error");
-                alert.setHeaderText(null);
-                alert.setContentText("An unexpected error occurred while deleting your account. Please try again.");
-                alert.showAndWait();
+                DialogUtils.showErrorAlert("Account Deletion Error",
+                        "An unexpected error occurred while deleting your account. Please try again.");
             });
         }
     }
