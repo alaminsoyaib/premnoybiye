@@ -258,11 +258,27 @@
   -fx-text-fill: #1d2939;
 }
 
-/* for discover page card stack */
+/* for discover page */
+/* card stack */
 .card-stack {
-  -fx-background-image: url("img/card-stack-bg1.png");
-  -fx-background-size: cover;
-  -fx-background-position: center center;
-  -fx-background-repeat: no-repeat;
   -fx-background-radius: 16;
+  -fx-background-color: #ffffff;
+  -fx-border-radius: 16;
+}
+
+.card-shadow {
+  -fx-effect: dropshadow(gaussian, #e5e2ea, 22, 0.06, 4, 0);
+}
+
+.discover-label {
+  -fx-text-fill: #5C7193;
+  -fx-font-size: 14px;
+  -fx-font-weight: 700;
+  -fx-font-family: "Trebuchet MS", sans-serif;
+}
+
+.discover-text {
+  -fx-text-fill: #1D2939;
+  -fx-font-size: 16px;
+  -fx-font-family: "Trebuchet MS", sans-serif;
 }
