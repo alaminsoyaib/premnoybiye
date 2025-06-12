@@ -8,7 +8,6 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.PasswordField?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
@@ -154,28 +153,6 @@
                                 </TextField>
                               </children>
                             </VBox>
-                          </children>
-                        </HBox>
-                        <HBox maxWidth="1.7976931348623157E308" prefHeight="70.0" prefWidth="540.0" spacing="40.0">
-                          <children>
-                            <VBox maxWidth="1.7976931348623157E308" spacing="6.0" HBox.hgrow="ALWAYS">
-                              <children>
-                                <Label ellipsisString="***" text="Password" textFill="#344054">
-                                  <font>
-                                    <Font name="Trebuchet MS" size="14.0" />
-                                  </font>
-                                </Label>
-                                <PasswordField fx:id="passwordTextField" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" promptText="**********" styleClass="combo-box">
-                                  <font>
-                                    <Font size="14.0" />
-                                  </font>
-                                  <padding>
-                                    <Insets bottom="10.0" left="14.0" right="14.0" top="10.0" />
-                                  </padding>
-                                </PasswordField>
-                              </children>
-                            </VBox>
-                            <VBox layoutX="10.0" layoutY="10.0" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" prefWidth="250.0" HBox.hgrow="ALWAYS" />
                           </children>
                         </HBox>
                       </children>
@@ -560,6 +537,34 @@
     </ScrollPane>
     <HBox alignment="CENTER_RIGHT" maxWidth="940.0" prefWidth="756.0" style="-fx-background-color: #E7E6ED;">
       <children>
+            <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" prefWidth="540.0" spacing="40.0" HBox.hgrow="ALWAYS">
+               <children>
+                  <VBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" maxWidth="100.0" minHeight="-Infinity" minWidth="-Infinity" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Button fx:id="changePasswordButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#changePasswordClicked" prefHeight="36.0" prefWidth="130.0" style="-fx-border-color: #6631C4; -fx-border-radius: 8; -fx-border-width: 2; -fx-background-radius: 8; -fx-background-color: transparent; -fx-text-fill: #6631C4;" text="Change Password" textAlignment="CENTER">
+                           <font>
+                              <Font name="Trebuchet MS" size="12.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Button>
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity">
+                     <children>
+                        <Button fx:id="deleteAccountButton" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#deleteAccountClicked" prefHeight="36.0" prefWidth="130.0" style="-fx-border-color: #e45f5f; -fx-border-radius: 8; -fx-border-width: 2; -fx-background-radius: 8; -fx-background-color: #e45f5f; -fx-text-fill: white;" text="Delete Account" textAlignment="CENTER" textFill="WHITE">
+                           <font>
+                              <Font name="Trebuchet MS" size="12.0" />
+                           </font>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Button>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
         <Button maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#saveClicked" prefHeight="44.0" prefWidth="130.0" style="-fx-background-radius: 8; -fx-background-color: #6631C4; -fx-text-fill: white;" text="Save" textAlignment="CENTER">
           <font>
             <Font name="Trebuchet MS" size="12.0" />
@@ -570,7 +575,7 @@
         </Button>
       </children>
       <padding>
-        <Insets bottom="8.0" right="40.0" top="5.0" />
+        <Insets bottom="8.0" left="40.0" right="40.0" top="5.0" />
       </padding>
       <VBox.margin>
         <Insets />

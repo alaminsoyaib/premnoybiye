@@ -372,14 +372,13 @@ public class FirebaseConnection {
                 if (emailChanged) {
                     System.out.println("Email changed, updating email index...");
 
-                    // Remove old email index if it exists
-                    if (!oldEmail.isEmpty()) {
-                        boolean oldIndexRemoved = removeEmailFromIndex(oldEmail);
-                        System.out.println("Old email index removed: " + oldIndexRemoved);
-                    }
+                    // Remove old email index
+                    boolean oldIndexRemoved = removeEmailFromIndex(oldEmail);
 
                     // Add new email index
                     boolean newIndexAdded = addEmailToIndex(newEmail, userId);
+
+                    System.out.println("Old email index removed: " + oldIndexRemoved);
                     System.out.println("New email index added: " + newIndexAdded);
                 }
 
@@ -747,6 +746,343 @@ public class FirebaseConnection {
 
         } catch (Exception e) {
             System.err.println("Error removing email index: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * Changes user password using userId as primary key
+     * 
+     * @param userId          The user's ID
+     * @param currentPassword The current password for verification
+     * @param newPassword     The new password to set
+     * @return boolean indicating success or failure
+     */
+    public boolean changePassword(String userId, String currentPassword, String newPassword) {
+        try {
+            if (userId == null || userId.trim().isEmpty()) {
+                showErrorAlert("Password Change Error", "User ID is required for password change");
+                return false;
+            }
+
+            if (currentPassword == null || currentPassword.trim().isEmpty()) {
+                showErrorAlert("Password Change Error", "Current password is required");
+                return false;
+            }
+
+            if (newPassword == null || newPassword.trim().isEmpty()) {
+                showErrorAlert("Password Change Error", "New password cannot be empty");
+                return false;
+            }
+
+            // Get current user data to verify current password
+            String getUserUrl = databaseUrl + "/Users/" + userId + ".json?auth=" + apiKey;
+
+            HttpRequest getRequest = HttpRequest.newBuilder()
+                    .uri(URI.create(getUserUrl))
+                    .GET()
+                    .build();
+
+            HttpResponse<String> getResponse = httpClient.send(getRequest, HttpResponse.BodyHandlers.ofString());
+
+            if (getResponse.statusCode() == 200) {
+                JsonNode userNode = objectMapper.readTree(getResponse.body());
+
+                if (userNode != null && !userNode.isNull()) {
+                    String storedPassword = userNode.get("password").asText();
+
+                    // Verify current password
+                    if (!currentPassword.equals(storedPassword)) {
+                        showErrorAlert("Password Change Failed", "Current password is incorrect");
+                        System.err.println("Password verification failed for userId: " + userId);
+                        return false;
+                    }
+
+                    // Update only the password field
+                    Map<String, Object> passwordUpdate = new HashMap<>();
+                    passwordUpdate.put("password", newPassword);
+
+                    String jsonData = objectMapper.writeValueAsString(passwordUpdate);
+
+                    // Update password using PATCH request
+                    String updateUrl = databaseUrl + "/Users/" + userId + ".json?auth=" + apiKey;
+
+                    HttpRequest updateRequest = HttpRequest.newBuilder()
+                            .uri(URI.create(updateUrl))
+                            .header("Content-Type", "application/json")
+                            .method("PATCH", HttpRequest.BodyPublishers.ofString(jsonData))
+                            .build();
+
+                    HttpResponse<String> updateResponse = httpClient.send(updateRequest,
+                            HttpResponse.BodyHandlers.ofString());
+
+                    System.out.println("Password update response status: " + updateResponse.statusCode());
+                    System.out.println("Password update response body: " + updateResponse.body());
+
+                    if (updateResponse.statusCode() == 200) {
+                        System.out.println("Password updated successfully for userId: " + userId);
+                        return true;
+                    } else {
+                        showErrorAlert("Password Change Failed", "Failed to update password. Please try again.");
+                        System.err.println("Firebase password update failed. Status: " + updateResponse.statusCode());
+                        return false;
+                    }
+                } else {
+                    showErrorAlert("Password Change Failed", "User data not found");
+                    System.err.println("User data is null for userId: " + userId);
+                    return false;
+                }
+            } else {
+                showErrorAlert("Password Change Failed", "Unable to verify current password");
+                System.err
+                        .println("Failed to fetch user data for password change. Status: " + getResponse.statusCode());
+                return false;
+            }
+
+        } catch (Exception e) {
+            showErrorAlert("Password Change Error", "An unexpected error occurred. Please try again.");
+            System.err.println("Error changing password: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * Changes user password using userInfo object (convenience method)
+     * 
+     * @param user            The user object (must contain userId)
+     * @param currentPassword The current password for verification
+     * @param newPassword     The new password to set
+     * @return boolean indicating success or failure
+     */
+    public boolean changePassword(userInfo user, String currentPassword, String newPassword) {
+        String userId = getUserId(user);
+        if (userId == null) {
+            showErrorAlert("Password Change Error", "Unable to identify user for password change");
+            return false;
+        }
+
+        boolean success = changePassword(userId, currentPassword, newPassword);
+
+        // Update the user object's password if successful
+        if (success) {
+            user.setPassword(newPassword);
+        }
+
+        return success;
+    }
+
+    /**
+     * Verifies that a password change was successful by attempting login
+     * This is useful for testing password change functionality
+     * 
+     * @param email       User's email
+     * @param newPassword The new password to verify
+     * @return boolean indicating if login with new password succeeds
+     */
+    public boolean verifyPasswordChange(String email, String newPassword) {
+        try {
+            // Attempt login with new password (without updating CurrentUser)
+            String userId = getUserIdByEmail(email);
+
+            if (userId != null) {
+                String getUserUrl = databaseUrl + "/Users/" + userId + ".json?auth=" + apiKey;
+
+                HttpRequest getRequest = HttpRequest.newBuilder()
+                        .uri(URI.create(getUserUrl))
+                        .GET()
+                        .build();
+
+                HttpResponse<String> getResponse = httpClient.send(getRequest, HttpResponse.BodyHandlers.ofString());
+
+                if (getResponse.statusCode() == 200) {
+                    JsonNode userNode = objectMapper.readTree(getResponse.body());
+
+                    if (userNode != null && !userNode.isNull()) {
+                        String storedPassword = userNode.get("password").asText();
+                        boolean passwordMatches = newPassword.equals(storedPassword);
+
+                        System.out.println("Password verification for " + email + ": " +
+                                (passwordMatches ? "SUCCESS" : "FAILED"));
+                        return passwordMatches;
+                    }
+                }
+            }
+
+            System.out.println("Password verification failed - user not found: " + email);
+            return false;
+
+        } catch (Exception e) {
+            System.err.println("Error verifying password change: " + e.getMessage());
+            return false;
+        }
+    }
+
+    /**
+     * Permanently deletes a user account and all associated data
+     * This includes user data, email index, and Firebase Storage images
+     * 
+     * @param user     The user object to delete
+     * @param password The user's password for verification
+     * @return boolean indicating success or failure
+     */
+    public boolean deleteUser(userInfo user, String password) {
+        try {
+            if (user == null) {
+                showErrorAlert("Delete Account Error", "No user provided for deletion");
+                return false;
+            }
+
+            if (password == null || password.trim().isEmpty()) {
+                showErrorAlert("Delete Account Error", "Password is required for account deletion");
+                return false;
+            }
+
+            String userId = getUserId(user);
+            if (userId == null) {
+                showErrorAlert("Delete Account Error", "Unable to identify user for deletion");
+                return false;
+            }
+
+            System.out.println("Starting account deletion process for userId: " + userId);
+
+            // Step 1: Verify password before deletion
+            String getUserUrl = databaseUrl + "/Users/" + userId + ".json?auth=" + apiKey;
+
+            HttpRequest getRequest = HttpRequest.newBuilder()
+                    .uri(URI.create(getUserUrl))
+                    .GET()
+                    .build();
+
+            HttpResponse<String> getResponse = httpClient.send(getRequest, HttpResponse.BodyHandlers.ofString());
+
+            if (getResponse.statusCode() != 200) {
+                showErrorAlert("Delete Account Failed", "Unable to verify user data");
+                System.err.println("Failed to fetch user data for deletion. Status: " + getResponse.statusCode());
+                return false;
+            }
+
+            JsonNode userNode = objectMapper.readTree(getResponse.body());
+            if (userNode == null || userNode.isNull()) {
+                showErrorAlert("Delete Account Failed", "User data not found");
+                System.err.println("User data is null for userId: " + userId);
+                return false;
+            }
+
+            String storedPassword = userNode.get("password").asText();
+
+            // Verify current password
+            if (!password.equals(storedPassword)) {
+                showErrorAlert("Delete Account Failed", "Incorrect password. Account deletion cancelled.");
+                System.err.println("Password verification failed for account deletion. UserId: " + userId);
+                return false;
+            }
+
+            System.out.println("Password verified. Proceeding with account deletion...");
+
+            // Step 2: Delete user image from Firebase Storage (if exists)
+            String imageUrl = userNode.has("image") ? userNode.get("image").asText("") : "";
+            if (!imageUrl.isEmpty()) {
+                boolean imageDeleted = deleteImageFromStorage(userId);
+                if (imageDeleted) {
+                    System.out.println("User image deleted from Firebase Storage");
+                } else {
+                    System.err.println("Warning: Failed to delete user image from Firebase Storage");
+                    // Continue with deletion even if image deletion fails
+                }
+            }
+
+            // Step 3: Remove email from index
+            String email = user.getEmail();
+            boolean emailIndexRemoved = removeEmailFromIndex(email);
+            if (emailIndexRemoved) {
+                System.out.println("Email index removed successfully for: " + email);
+            } else {
+                System.err.println("Warning: Failed to remove email index for: " + email);
+                // Continue with deletion even if email index removal fails
+            }
+
+            // Step 4: Delete user data from Firebase Realtime Database
+            String deleteUserUrl = databaseUrl + "/Users/" + userId + ".json?auth=" + apiKey;
+
+            HttpRequest deleteUserRequest = HttpRequest.newBuilder()
+                    .uri(URI.create(deleteUserUrl))
+                    .DELETE()
+                    .build();
+
+            HttpResponse<String> deleteUserResponse = httpClient.send(deleteUserRequest,
+                    HttpResponse.BodyHandlers.ofString());
+
+            System.out.println("User data deletion response status: " + deleteUserResponse.statusCode());
+            System.out.println("User data deletion response body: " + deleteUserResponse.body());
+
+            if (deleteUserResponse.statusCode() == 200) {
+                System.out.println("User account deleted successfully: " + email + " (userId: " + userId + ")");
+                return true;
+            } else {
+                showErrorAlert("Delete Account Failed", "Failed to delete user data. Please try again.");
+                System.err.println("Firebase user data deletion failed. Status: " + deleteUserResponse.statusCode());
+                return false;
+            }
+
+        } catch (Exception e) {
+            showErrorAlert("Delete Account Error",
+                    "An unexpected error occurred during account deletion. Please try again.");
+            System.err.println("Error deleting user account: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * Deletes user image from Firebase Storage
+     * 
+     * @param userId The user ID to identify the image file
+     * @return boolean indicating success or failure
+     */
+    private boolean deleteImageFromStorage(String userId) {
+        try {
+            // The image is stored as Prem-Noy-Biye/{userId}.{extension}
+            // We need to find the exact filename first, then delete it
+
+            // Common image extensions to check
+            String[] extensions = { ".jpg", ".jpeg", ".png", ".gif" };
+
+            for (String extension : extensions) {
+                String fileName = "Prem-Noy-Biye/" + userId + extension;
+                String deleteUrl = "https://firebasestorage.googleapis.com/v0/b/" + storageBucket +
+                        "/o/" + java.net.URLEncoder.encode(fileName, "UTF-8");
+
+                HttpRequest deleteRequest = HttpRequest.newBuilder()
+                        .uri(URI.create(deleteUrl))
+                        .DELETE()
+                        .build();
+
+                HttpResponse<String> deleteResponse = httpClient.send(deleteRequest,
+                        HttpResponse.BodyHandlers.ofString());
+
+                System.out.println("Attempting to delete image: " + fileName);
+                System.out.println("Delete response status: " + deleteResponse.statusCode());
+
+                if (deleteResponse.statusCode() == 200) {
+                    System.out.println("Successfully deleted image: " + fileName);
+                    return true;
+                } else if (deleteResponse.statusCode() == 404) {
+                    System.out.println("Image not found: " + fileName + " (continuing to check other extensions)");
+                    // Continue checking other extensions
+                } else {
+                    System.err.println("Error deleting image " + fileName + ". Status: " + deleteResponse.statusCode());
+                    System.err.println("Response: " + deleteResponse.body());
+                    // Continue checking other extensions
+                }
+            }
+
+            System.out.println("No user image found to delete for userId: " + userId);
+            return true; // Return true since no image to delete is not an error
+
+        } catch (Exception e) {
+            System.err.println("Error deleting image from Firebase Storage: " + e.getMessage());
             e.printStackTrace();
             return false;
         }
