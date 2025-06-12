@@ -3,7 +3,6 @@ package com.bytebender.premnoybiye.DBConnection;
 public class userInfo {
     private String name = "";
     private String email = "";
-    private String password = "";
     private String dob = "";
     private String gender = "";
     private String religion = "";
@@ -18,12 +17,11 @@ public class userInfo {
     private String prefProfession = "";
     private String userId = ""; // Added userId field as primary key
 
-    public userInfo(String name, String email, String password, String dob, String gender, String religion,
+    public userInfo(String name, String email, String dob, String gender, String religion,
             String city, String image, String education, String profession, String income, String bio, String prefAge,
             String prefLocation, String prefProfession) {
         this.name = name;
         this.email = email;
-        this.password = password;
         this.dob = dob;
         this.gender = gender;
         this.religion = religion;
@@ -40,12 +38,11 @@ public class userInfo {
     }
 
     // Constructor with userId
-    public userInfo(String name, String email, String password, String dob, String gender, String religion,
+    public userInfo(String name, String email, String dob, String gender, String religion,
             String city, String image, String education, String profession, String income, String bio, String prefAge,
             String prefLocation, String prefProfession, String userId) {
         this.name = name;
         this.email = email;
-        this.password = password;
         this.dob = dob;
         this.gender = gender;
         this.religion = religion;
@@ -67,10 +64,6 @@ public class userInfo {
 
     public String getEmail() {
         return email;
-    }
-
-    public String getPassword() {
-        return password;
     }
 
     public String getDob() {
@@ -127,10 +120,6 @@ public class userInfo {
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public void setDob(String dob) {

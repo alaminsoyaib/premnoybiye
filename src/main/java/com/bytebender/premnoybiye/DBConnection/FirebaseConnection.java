@@ -422,12 +422,11 @@ public class FirebaseConnection {
                 if (getResponse.statusCode() == 200) {
                     JsonNode userNode = objectMapper.readTree(getResponse.body());
 
-                    if (userNode != null && !userNode.isNull()) {
-                        // Create and return userInfo object with retrieved data including userId
+                    if (userNode != null && !userNode.isNull()) { // Create and return userInfo object with retrieved
+                                                                  // data including userId
                         userInfo user = new userInfo(
                                 userNode.get("name").asText(""),
                                 userNode.get("email").asText(""),
-                                "", // No password stored in database anymore
                                 userNode.get("dob").asText(""),
                                 userNode.get("gender").asText(""),
                                 userNode.get("religion").asText(""),
@@ -833,13 +832,10 @@ public class FirebaseConnection {
             showErrorAlert("Password Change Error", "Unable to identify user for password change");
             return false;
         }
-
         boolean success = changePassword(userId, currentPassword, newPassword);
 
-        // Update the user object's password if successful
-        if (success) {
-            user.setPassword(newPassword);
-        }
+        // Password change handled by Firebase Auth - no need to update userInfo object
+        // since password is no longer stored locally
 
         return success;
     }
