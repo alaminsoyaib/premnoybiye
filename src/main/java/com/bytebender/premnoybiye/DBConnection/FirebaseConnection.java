@@ -52,23 +52,12 @@ public class FirebaseConnection {
         }
     }
 
-    /**
-     * Generates a custom timestamp in format: dd-MM-yy_h:mm:ssam/pm
-     * 
-     * @return formatted timestamp string
-     */
     private String generateCustomTimestamp() {
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yy_h:mm:ssa");
         return now.format(formatter).toLowerCase();
     }
 
-    /**
-     * Shows an error alert dialog to the user
-     * 
-     * @param title   The title of the alert
-     * @param message The error message to display
-     */
     private void showErrorAlert(String title, String message) {
         Platform.runLater(() -> {
             Alert alert = new Alert(AlertType.ERROR);
@@ -93,7 +82,9 @@ public class FirebaseConnection {
                 showErrorAlert("Registration Error", "Name, email, and password must not be empty");
                 return false;
             }
-            String userId = name.replace(" ", "-") + "__" + generateCustomTimestamp();
+            // Extract first name only (up to first space or full name if no space)
+            String firstName = name.trim().split(" ")[0];
+            String userId = firstName + "__" + generateCustomTimestamp();
 
             // Create user data map
             Map<String, Object> userData = new HashMap<>();
