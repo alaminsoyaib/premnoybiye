@@ -3,6 +3,8 @@ module com.bytebender.premnoybiye {
     requires javafx.fxml;
     requires transitive javafx.graphics;
     requires java.desktop;
+    requires java.net.http;
+    requires com.fasterxml.jackson.databind;
 
     opens com.bytebender.premnoybiye to javafx.fxml;
 
