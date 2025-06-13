@@ -16,6 +16,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 public class DiscoverController {
@@ -38,6 +39,12 @@ public class DiscoverController {
     // Card elements
     @FXML
     private ImageView cardImg;
+    @FXML
+    private ImageView blurImg;
+
+    @FXML
+    private StackPane imgStack;
+
     @FXML
     private Label cardName;
     @FXML
@@ -149,7 +156,13 @@ public class DiscoverController {
 
             // Load user image
             if (user.getImage() != null && !user.getImage().isEmpty()) {
-                component.setImage(user.getImage(), cardImg, 258, 358, false, 16);
+                component.setImage(user.getImage(), cardImg, 258, 258, true, 0);
+                component.setImage(user.getImage(), blurImg, 258, 358, false, 0);
+
+                javafx.scene.shape.Rectangle clip = new javafx.scene.shape.Rectangle(258, 358);
+                clip.setArcWidth(20);
+                clip.setArcHeight(20);
+                imgStack.setClip(clip);
             } else {
                 // Set default image if no image available
                 cardImg.setImage(new javafx.scene.image.Image(getClass().getResourceAsStream("img/icon/card-img.png")));
@@ -267,7 +280,6 @@ public class DiscoverController {
         // Hide button holder and show user details
         hideButtonHolder();
         showUserDetails();
-        card.getStyleClass().remove("card-shadow");
     }
 
     @FXML
@@ -275,7 +287,6 @@ public class DiscoverController {
         // Hide user details and show button holder
         hideUserDetails();
         showButtonHolder();
-        card.getStyleClass().add("card-shadow");
     } // Getter for liked users (can be used by other controllers)
 
     public List<String> getLikedUserIds() {

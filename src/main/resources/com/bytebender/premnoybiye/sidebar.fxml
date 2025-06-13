@@ -4,13 +4,14 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.MotionBlur?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-
 
 <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="1000.0" style="-fx-background-color: #E7E6ED;" stylesheets="@application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bytebender.premnoybiye.SidebarController">
    <children>
@@ -22,11 +23,23 @@
               <children>
                 <HBox fx:id="sidebarProfileBox" alignment="CENTER_LEFT" spacing="12.0">
                   <children>
-                    <ImageView fx:id="sidebarProfileImage" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
-                      <image>
-                        <Image url="@img/icon/profile-image.png" />
-                      </image>
-                    </ImageView>
+                              <StackPane fx:id="imgStack">
+                                 <children>
+                                    <ImageView fx:id="sidebarBlurImg" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@img/icon/profile-image.png" />
+                                       </image>
+                                       <effect>
+                                          <MotionBlur angle="360.0" radius="11.18" />
+                                       </effect>
+                                    </ImageView>
+                          <ImageView fx:id="sidebarProfileImage" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                            <image>
+                              <Image url="@img/icon/profile-image.png" />
+                            </image>
+                          </ImageView>
+                                 </children>
+                              </StackPane>
                     <VBox alignment="CENTER_LEFT" spacing="4.0">
                       <children>
                         <Text fill="#262626" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello,">

@@ -12,6 +12,7 @@ import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 public class SidebarController {
@@ -24,6 +25,12 @@ public class SidebarController {
     private HBox sidebarProfileBox;
     @FXML
     private ImageView sidebarProfileImage;
+    @FXML
+    private ImageView sidebarBlurImg;
+
+    @FXML
+    private StackPane imgStack;
+
     @FXML
     private Label sidebarUserName;
     @FXML
@@ -115,7 +122,13 @@ public class SidebarController {
                 }
                 if (AuthController.CurrentUser.getImage() != "") {
                     // component.setImage(user.getImage(), demoProfileImg, 84, 84, false, 20);
-                    component.setImage(AuthController.CurrentUser.getImage(), sidebarProfileImage, 40, 40, false, 20);
+                    component.setImage(AuthController.CurrentUser.getImage(), sidebarProfileImage, 40, 40, true, 20);
+                    component.setImage(AuthController.CurrentUser.getImage(), sidebarBlurImg, 40, 40, false, 20);
+
+                    javafx.scene.shape.Rectangle clip = new javafx.scene.shape.Rectangle(84, 84);
+                    clip.setArcWidth(20);
+                    clip.setArcHeight(20);
+                    imgStack.setClip(clip);
                 }
             }
         } catch (Exception e) {

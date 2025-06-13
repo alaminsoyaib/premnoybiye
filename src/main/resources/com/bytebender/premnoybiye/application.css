@@ -271,14 +271,14 @@
 }
 
 .discover-label {
-  -fx-text-fill: #5C7193;
+  -fx-text-fill: #5c7193;
   -fx-font-size: 14px;
   -fx-font-weight: 700;
   -fx-font-family: "Trebuchet MS", sans-serif;
 }
 
 .discover-text {
-  -fx-text-fill: #1D2939;
+  -fx-text-fill: #1d2939;
   -fx-font-size: 16px;
   -fx-font-family: "Trebuchet MS", sans-serif;
 }
