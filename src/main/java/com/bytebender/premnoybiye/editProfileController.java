@@ -36,7 +36,8 @@ public class editProfileController {
     @FXML
     private Label editProfileName;
     @FXML
-    private Label editEmailLabel;    @FXML
+    private Label editEmailLabel;
+    @FXML
     private TextField editNameTextField;
 
     @FXML
@@ -72,7 +73,8 @@ public class editProfileController {
                 if (user.getName() != "") {
                     editProfileName.setText(user.getName());
                     editNameTextField.setText(user.getName());
-                }                if (user.getEmail() != "") {
+                }
+                if (user.getEmail() != "") {
                     editEmailLabel.setText(user.getEmail());
                 }
                 if (user.getReligion() != "") {
@@ -169,9 +171,12 @@ public class editProfileController {
 
                     // Get the actual userId from the user object (which now includes userId)
                     String userId = firebaseConnection.getUserId(user);
-
                     if (userId != null) {
-                        String imageUrl = firebaseConnection.uploadImageToStorage(selectedImageFile, userId);
+                        // Use authenticated upload with user credentials
+                        String idToken = firebaseConnection.getIdTokenForUser(AuthController.CurrentUserEmail,
+                                AuthController.CurrentUserPassword);
+                        String imageUrl = firebaseConnection.uploadImageToStorageWithToken(selectedImageFile, userId,
+                                idToken);
 
                         if (imageUrl != null) {
                             user.setImage(imageUrl);

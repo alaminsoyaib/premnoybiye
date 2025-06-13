@@ -207,9 +207,12 @@ public class StepperController {
 
 				// Get the actual userId from the user object (which now includes userId)
 				String userId = firebaseConnection.getUserId(AuthController.CurrentUser);
-
 				if (userId != null) {
-					String imageUrl = firebaseConnection.uploadImageToStorage(selectedImageFile, userId);
+					// Use authenticated upload with user credentials
+					String idToken = firebaseConnection.getIdTokenForUser(AuthController.CurrentUserEmail,
+							AuthController.CurrentUserPassword);
+					String imageUrl = firebaseConnection.uploadImageToStorageWithToken(selectedImageFile, userId,
+							idToken);
 
 					if (imageUrl != null) {
 						AuthController.CurrentUser.setImage(imageUrl);

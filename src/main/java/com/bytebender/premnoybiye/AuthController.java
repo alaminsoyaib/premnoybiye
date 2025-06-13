@@ -10,6 +10,8 @@ import javafx.scene.control.TextField;
 
 public class AuthController {
     static userInfo CurrentUser;
+    static String CurrentUserEmail; // Store email for getting fresh tokens
+    static String CurrentUserPassword; // Temporarily store password (not recommended for production)
     private FirebaseConnection firebaseConnection = new FirebaseConnection();
 
     @FXML
@@ -36,9 +38,11 @@ public class AuthController {
 
         // Use Firebase connection to login user (similar to Component.setImage pattern)
         userInfo loggedInUser = firebaseConnection.loginUser(email, password);
-
         if (loggedInUser != null) {
             CurrentUser = loggedInUser;
+            // Store credentials for authenticated operations
+            CurrentUserEmail = email;
+            CurrentUserPassword = password;
             App.setRoot("sidebar");
         } else {
             // Handle login failure (Firebase connection already shows error alerts)
@@ -58,6 +62,9 @@ public class AuthController {
             // Create CurrentUser with the userId from registration (no password needed
             // since Firebase Auth handles it)
             CurrentUser = new userInfo(name, email, "", "", "", "", "", "", "", "", "", "", "", "", userId);
+            // Store credentials for authenticated operations during profile setup
+            CurrentUserEmail = email;
+            CurrentUserPassword = password;
             App.setRoot("stepper");
         } else {
             // Handle registration failure (Firebase connection already shows error alerts)
