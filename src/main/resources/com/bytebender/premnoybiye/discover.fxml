@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
@@ -10,16 +11,16 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox alignment="CENTER" maxHeight="600.0" maxWidth="400.0" prefHeight="600.0" prefWidth="400.0" style="-fx-background-color: white;" stylesheets="@application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="CENTER" maxHeight="600.0" maxWidth="400.0" prefHeight="600.0" prefWidth="400.0" style="-fx-background-color: white;" stylesheets="@application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bytebender.premnoybiye.DiscoverController">
   <padding>
     <Insets bottom="24.0" left="24.0" right="24.0" top="24.0" />
   </padding>
   <children>
     <HBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" VBox.vgrow="ALWAYS">
       <children>
-        <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="20.0" styleClass="hidden" HBox.hgrow="NEVER">
+        <VBox fx:id="buttonHolder" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" spacing="20.0" HBox.hgrow="NEVER">
           <children>
-            <ImageView fx:id="cardReject" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="cardReject" fitHeight="50.0" fitWidth="50.0" onMouseClicked="#handleReject" pickOnBounds="true" preserveRatio="true">
               <image>
                 <Image url="@img/icon/card-reject.png" />
               </image>
@@ -28,7 +29,7 @@
               </cursor>
             </ImageView>
             <HBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" />
-            <ImageView fx:id="cardLove" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="cardLove" fitHeight="50.0" fitWidth="50.0" onMouseClicked="#handleLove" pickOnBounds="true" preserveRatio="true">
               <image>
                 <Image url="@img/icon/card-love.png" />
               </image>
@@ -37,7 +38,7 @@
               </cursor>
             </ImageView>
             <HBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" />
-            <ImageView fx:id="cardInfo" fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="cardInfo" fitHeight="50.0" fitWidth="50.0" onMouseClicked="#handleInfo" pickOnBounds="true" preserveRatio="true">
               <image>
                 <Image url="@img/icon/card-info.png" />
               </image>
@@ -54,7 +55,7 @@
           <children>
             <HBox>
               <children>
-                <HBox fx:id="discoverBackButton" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" spacing="4.0" style="-fx-background-color: #E7EDF0; -fx-background-radius: 4;">
+                <HBox fx:id="discoverBackButton" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" onMouseClicked="#handleBack" spacing="4.0" style="-fx-background-color: #E7EDF0; -fx-background-radius: 4;">
                   <children>
                     <ImageView fitHeight="15.0" fitWidth="15.0" pickOnBounds="true" preserveRatio="true">
                       <image>
@@ -70,16 +71,16 @@
                   <padding>
                     <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
                   </padding>
-                           <cursor>
-                              <Cursor fx:constant="HAND" />
-                           </cursor>
+                  <cursor>
+                    <Cursor fx:constant="HAND" />
+                  </cursor>
                 </HBox>
               </children>
               <padding>
                 <Insets left="8.0" right="8.0" />
               </padding>
             </HBox>
-            <VBox fx:id="card" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="476.0" prefWidth="279.0" styleClass="card-stack" stylesheets="@application.css">
+            <VBox fx:id="card" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="476.0" prefWidth="279.0" stylesheets="@application.css">
               <children>
                 <ImageView fx:id="cardImg" fitHeight="358.0" fitWidth="258.0" pickOnBounds="true" preserveRatio="true" styleClass="card-img">
                   <image>
@@ -129,6 +130,10 @@
               <padding>
                 <Insets bottom="14.0" left="8.0" right="8.0" top="8.0" />
               </padding>
+                     <styleClass>
+                        <String fx:value="card-stack" />
+                        <String fx:value="card-shadow" />
+                     </styleClass>
             </VBox>
           </children>
         </VBox>
@@ -145,7 +150,7 @@
                   <children>
                     <HBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefWidth="540.0" spacing="40.0">
                       <children>
-                        <Label ellipsisString="***" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" styleClass="discover-text" text="This is a bio" textFill="#344054" HBox.hgrow="ALWAYS">
+                        <Label fx:id="discoverBio" ellipsisString="***" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" styleClass="discover-text" text="This is a bio" textFill="#344054" HBox.hgrow="ALWAYS">
                           <font>
                             <Font name="Trebuchet MS" size="14.0" />
                           </font>
@@ -177,7 +182,7 @@
                                 <Insets bottom="6.0" />
                               </VBox.margin>
                             </Label>
-                            <Label ellipsisString="***" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" styleClass="discover-text" text="25" textFill="#344054">
+                            <Label fx:id="discoverAge" ellipsisString="***" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" styleClass="discover-text" text="25" textFill="#344054">
                               <font>
                                 <Font name="Trebuchet MS" size="14.0" />
                               </font>
@@ -197,7 +202,7 @@
                                 <Insets bottom="6.0" />
                               </VBox.margin>
                             </Label>
-                            <Label ellipsisString="***" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="discover-text" text="Male" textFill="#344054">
+                            <Label fx:id="discoverGender" ellipsisString="***" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="discover-text" text="Male" textFill="#344054">
                               <font>
                                 <Font name="Trebuchet MS" size="14.0" />
                               </font>
@@ -218,7 +223,7 @@
                                 <Insets bottom="6.0" />
                               </VBox.margin>
                             </Label>
-                            <Label ellipsisString="***" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" styleClass="discover-text" text="Islam" textFill="#344054">
+                            <Label fx:id="discoverReligion" ellipsisString="***" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" styleClass="discover-text" text="Islam" textFill="#344054">
                               <font>
                                 <Font name="Trebuchet MS" size="14.0" />
                               </font>
@@ -238,7 +243,7 @@
                                 <Insets bottom="6.0" />
                               </VBox.margin>
                             </Label>
-                            <Label ellipsisString="***" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="discover-text" text="Noakhali" textFill="#344054">
+                            <Label fx:id="discoverCity" ellipsisString="***" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="discover-text" text="Noakhali" textFill="#344054">
                               <font>
                                 <Font name="Trebuchet MS" size="14.0" />
                               </font>
@@ -272,7 +277,7 @@
                                 <Insets bottom="6.0" />
                               </VBox.margin>
                             </Label>
-                            <Label ellipsisString="***" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" styleClass="discover-text" text="PhD or Upper" textFill="#344054">
+                            <Label fx:id="discoverEducation" ellipsisString="***" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" styleClass="discover-text" text="PhD or Upper" textFill="#344054">
                               <font>
                                 <Font name="Trebuchet MS" size="14.0" />
                               </font>
@@ -292,7 +297,7 @@
                                 <Insets bottom="6.0" />
                               </VBox.margin>
                             </Label>
-                            <Label ellipsisString="***" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="discover-text" text="Student" textFill="#344054">
+                            <Label fx:id="discoverProfession" ellipsisString="***" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="discover-text" text="Student" textFill="#344054">
                               <font>
                                 <Font name="Trebuchet MS" size="14.0" />
                               </font>
@@ -313,7 +318,7 @@
                                 <Insets bottom="6.0" />
                               </VBox.margin>
                             </Label>
-                            <Label ellipsisString="***" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="discover-text" text="0 - 20,000" textFill="#344054">
+                            <Label fx:id="discoverIncome" ellipsisString="***" layoutX="10.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="discover-text" text="0 - 20,000" textFill="#344054">
                               <font>
                                 <Font name="Trebuchet MS" size="14.0" />
                               </font>

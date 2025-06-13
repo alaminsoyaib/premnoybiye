@@ -1402,4 +1402,73 @@ public class FirebaseConnection {
             return false;
         }
     }
+
+    /**
+     * Get all users from Firestore filtered by gender (opposite gender for discover
+     * functionality)
+     */
+    public java.util.List<userInfo> getUsersByGender(String desiredGender) {
+        java.util.List<userInfo> users = new java.util.ArrayList<>();
+
+        try {
+            // Create the query URL to get all users
+            String url = firestoreBaseUrl + "/users";
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == 200) {
+                JsonNode jsonResponse = objectMapper.readTree(response.body());
+
+                if (jsonResponse.has("documents")) {
+                    JsonNode documents = jsonResponse.get("documents");
+
+                    for (JsonNode document : documents) {
+                        try {
+                            Map<String, Object> userData = fromFirestoreDocument(document);
+                            String gender = (String) userData.get("gender");
+
+                            // Filter by desired gender
+                            if (desiredGender.equalsIgnoreCase(gender)) {
+                                userInfo user = new userInfo(
+                                        (String) userData.getOrDefault("name", ""),
+                                        (String) userData.getOrDefault("email", ""),
+                                        (String) userData.getOrDefault("dob", ""),
+                                        (String) userData.getOrDefault("gender", ""),
+                                        (String) userData.getOrDefault("religion", ""),
+                                        (String) userData.getOrDefault("city", ""),
+                                        (String) userData.getOrDefault("image", ""),
+                                        (String) userData.getOrDefault("education", ""),
+                                        (String) userData.getOrDefault("profession", ""),
+                                        (String) userData.getOrDefault("income", ""),
+                                        (String) userData.getOrDefault("bio", ""),
+                                        (String) userData.getOrDefault("prefAge", ""),
+                                        (String) userData.getOrDefault("prefLocation", ""),
+                                        (String) userData.getOrDefault("prefProfession", ""),
+                                        (String) userData.getOrDefault("userId", ""));
+                                users.add(user);
+                            }
+                        } catch (Exception e) {
+                            System.err.println("Error parsing user document: " + e.getMessage());
+                        }
+                    }
+                }
+
+                System.out.println("Retrieved " + users.size() + " users with gender: " + desiredGender);
+            } else {
+                System.err.println("Failed to get users. Status code: " + response.statusCode());
+                System.err.println("Response: " + response.body());
+            }
+
+        } catch (Exception e) {
+            System.err.println("Error getting users by gender: " + e.getMessage());
+            e.printStackTrace();
+        }
+
+        return users;
+    }
 }
