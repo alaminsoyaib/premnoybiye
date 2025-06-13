@@ -68,7 +68,6 @@ public class FirebaseConnection {
     private Map<String, Object> toFirestoreDocument(Map<String, Object> data) {
         Map<String, Object> document = new HashMap<>();
         Map<String, Object> fields = new HashMap<>();
-
         for (Map.Entry<String, Object> entry : data.entrySet()) {
             Map<String, Object> field = new HashMap<>();
             Object value = entry.getValue();
@@ -79,6 +78,22 @@ public class FirebaseConnection {
                 field.put("integerValue", value.toString());
             } else if (value instanceof Boolean) {
                 field.put("booleanValue", value);
+            } else if (value instanceof java.util.List) {
+                // Handle arrays/lists
+                Map<String, Object> arrayValue = new HashMap<>();
+                java.util.List<Map<String, Object>> values = new java.util.ArrayList<>();
+
+                @SuppressWarnings("unchecked")
+                java.util.List<Object> list = (java.util.List<Object>) value;
+
+                for (Object item : list) {
+                    Map<String, Object> valueMap = new HashMap<>();
+                    valueMap.put("stringValue", item.toString());
+                    values.add(valueMap);
+                }
+
+                arrayValue.put("values", values);
+                field.put("arrayValue", arrayValue);
             } else {
                 field.put("stringValue", value != null ? value.toString() : "");
             }
@@ -107,6 +122,21 @@ public class FirebaseConnection {
                     data.put(fieldName, field.get("integerValue").asText());
                 } else if (field.has("booleanValue")) {
                     data.put(fieldName, field.get("booleanValue").asBoolean());
+                } else if (field.has("arrayValue")) {
+                    // Handle arrays
+                    java.util.List<String> arrayList = new java.util.ArrayList<>();
+                    JsonNode arrayValue = field.get("arrayValue");
+
+                    if (arrayValue.has("values")) {
+                        JsonNode values = arrayValue.get("values");
+                        for (JsonNode valueNode : values) {
+                            if (valueNode.has("stringValue")) {
+                                arrayList.add(valueNode.get("stringValue").asText());
+                            }
+                        }
+                    }
+
+                    data.put(fieldName, arrayList);
                 } else {
                     data.put(fieldName, "");
                 }
@@ -482,9 +512,8 @@ public class FirebaseConnection {
 
                 if (userDoc != null && !userDoc.isNull()) {
                     // Convert Firestore document to regular data format
-                    Map<String, Object> userData = fromFirestoreDocument(userDoc);
-
-                    // Create userInfo object with retrieved data
+                    Map<String, Object> userData = fromFirestoreDocument(userDoc); // Create userInfo object with
+                                                                                   // retrieved data
                     userInfo user = new userInfo(
                             (String) userData.getOrDefault("name", ""),
                             (String) userData.getOrDefault("email", ""),
@@ -501,6 +530,17 @@ public class FirebaseConnection {
                             (String) userData.getOrDefault("prefLocation", ""),
                             (String) userData.getOrDefault("prefProfession", ""),
                             userId);
+
+                    // Set liked and rejected users lists
+                    @SuppressWarnings("unchecked")
+                    java.util.List<String> likedUsers = (java.util.List<String>) userData.getOrDefault("likedUsers",
+                            new java.util.ArrayList<String>());
+                    @SuppressWarnings("unchecked")
+                    java.util.List<String> rejectedUsers = (java.util.List<String>) userData
+                            .getOrDefault("rejectedUsers", new java.util.ArrayList<String>());
+
+                    user.setLikedUsers(likedUsers);
+                    user.setRejectedUsers(rejectedUsers);
 
                     System.out.println("User login successful: " + email + " (userId: " + userId + ")");
                     return user;
@@ -1430,9 +1470,7 @@ public class FirebaseConnection {
                     for (JsonNode document : documents) {
                         try {
                             Map<String, Object> userData = fromFirestoreDocument(document);
-                            String gender = (String) userData.get("gender");
-
-                            // Filter by desired gender
+                            String gender = (String) userData.get("gender"); // Filter by desired gender
                             if (desiredGender.equalsIgnoreCase(gender)) {
                                 userInfo user = new userInfo(
                                         (String) userData.getOrDefault("name", ""),
@@ -1450,6 +1488,18 @@ public class FirebaseConnection {
                                         (String) userData.getOrDefault("prefLocation", ""),
                                         (String) userData.getOrDefault("prefProfession", ""),
                                         (String) userData.getOrDefault("userId", ""));
+
+                                // Set liked and rejected users lists
+                                @SuppressWarnings("unchecked")
+                                java.util.List<String> likedUsers = (java.util.List<String>) userData
+                                        .getOrDefault("likedUsers", new java.util.ArrayList<String>());
+                                @SuppressWarnings("unchecked")
+                                java.util.List<String> rejectedUsers = (java.util.List<String>) userData
+                                        .getOrDefault("rejectedUsers", new java.util.ArrayList<String>());
+
+                                user.setLikedUsers(likedUsers);
+                                user.setRejectedUsers(rejectedUsers);
+
                                 users.add(user);
                             }
                         } catch (Exception e) {
@@ -1470,5 +1520,89 @@ public class FirebaseConnection {
         }
 
         return users;
+    }
+
+    /**
+     * Add a user to the liked users list
+     */
+    public boolean addToLikedUsers(String userId, String targetUserId) {
+        return updateUserInteractionList(userId, targetUserId, "likedUsers", "add");
+    }
+
+    /**
+     * Add a user to the rejected users list
+     */
+    public boolean addToRejectedUsers(String userId, String targetUserId) {
+        return updateUserInteractionList(userId, targetUserId, "rejectedUsers", "add");
+    }
+
+    /**
+     * Helper method to update user interaction lists (liked/rejected)
+     */
+    private boolean updateUserInteractionList(String userId, String targetUserId, String listType, String action) {
+        try {
+            // First, get the current user data to retrieve existing lists
+            String getUserUrl = firestoreBaseUrl + "/users/" + userId + "?key=" + apiKey;
+
+            HttpRequest getRequest = HttpRequest.newBuilder()
+                    .uri(URI.create(getUserUrl))
+                    .GET()
+                    .build();
+
+            HttpResponse<String> getResponse = httpClient.send(getRequest, HttpResponse.BodyHandlers.ofString());
+
+            if (getResponse.statusCode() == 200) {
+                JsonNode userDocument = objectMapper.readTree(getResponse.body());
+                Map<String, Object> userData = fromFirestoreDocument(userDocument);
+
+                // Get existing list or create new one
+                @SuppressWarnings("unchecked")
+                java.util.List<String> currentList = (java.util.List<String>) userData.getOrDefault(listType,
+                        new java.util.ArrayList<String>());
+
+                // Add target user ID if not already present
+                if (!currentList.contains(targetUserId)) {
+                    currentList.add(targetUserId);
+
+                    // Update the user data
+                    userData.put(listType, currentList);
+
+                    // Convert to Firestore format and update
+                    Map<String, Object> firestoreDoc = toFirestoreDocument(userData);
+                    String jsonData = objectMapper.writeValueAsString(firestoreDoc);
+
+                    String updateUrl = firestoreBaseUrl + "/users/" + userId + "?key=" + apiKey;
+
+                    HttpRequest updateRequest = HttpRequest.newBuilder()
+                            .uri(URI.create(updateUrl))
+                            .header("Content-Type", "application/json")
+                            .method("PATCH", HttpRequest.BodyPublishers.ofString(jsonData))
+                            .build();
+
+                    HttpResponse<String> updateResponse = httpClient.send(updateRequest,
+                            HttpResponse.BodyHandlers.ofString());
+
+                    if (updateResponse.statusCode() == 200) {
+                        System.out.println("Successfully updated " + listType + " for user: " + userId);
+                        return true;
+                    } else {
+                        System.err.println("Failed to update " + listType + ". Status: " + updateResponse.statusCode());
+                        return false;
+                    }
+                } else {
+                    System.out.println("Target user already in " + listType + " list");
+                    return true; // Already in list, consider it success
+                }
+            } else {
+                System.err.println(
+                        "Failed to get user data for updating " + listType + ". Status: " + getResponse.statusCode());
+                return false;
+            }
+
+        } catch (Exception e) {
+            System.err.println("Error updating " + listType + ": " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
     }
 }

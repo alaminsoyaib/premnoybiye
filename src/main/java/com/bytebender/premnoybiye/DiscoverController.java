@@ -21,14 +21,8 @@ import javafx.scene.layout.VBox;
 public class DiscoverController {
 
     private FirebaseConnection firebaseConnection = new FirebaseConnection();
-    private Component component = new Component();
-
-    // Available users to show
+    private Component component = new Component(); // Available users to show
     private List<userInfo> availableUsers = new ArrayList<>();
-    // Users that have been rejected or liked (to avoid showing again)
-    private List<String> seenUserIds = new ArrayList<>();
-    // Users that have been liked
-    private List<String> likedUserIds = new ArrayList<>();
     // Current user being displayed
     private userInfo currentDisplayUser;
 
@@ -118,7 +112,7 @@ public class DiscoverController {
         // Find next unseen user
         userInfo nextUser = null;
         for (userInfo user : availableUsers) {
-            if (!seenUserIds.contains(user.getUserId())) {
+            if (AuthController.CurrentUser != null && !AuthController.CurrentUser.hasSeenUser(user.getUserId())) {
                 nextUser = user;
                 break;
             }
@@ -225,31 +219,46 @@ public class DiscoverController {
 
     @FXML
     void handleReject(MouseEvent event) {
-        if (currentDisplayUser != null) {
-            // Add to seen users
-            seenUserIds.add(currentDisplayUser.getUserId());
+        if (currentDisplayUser != null && AuthController.CurrentUser != null) {
+            // Add to rejected users in database
+            boolean success = firebaseConnection.addToRejectedUsers(
+                    AuthController.CurrentUser.getUserId(),
+                    currentDisplayUser.getUserId());
 
-            // Show next user
-            showNextUser();
+            if (success) {
+                // Update local CurrentUser object
+                AuthController.CurrentUser.addRejectedUser(currentDisplayUser.getUserId());
 
-            System.out.println("Rejected user: " + currentDisplayUser.getName());
+                // Show next user
+                showNextUser();
+
+                System.out.println("Rejected user: " + currentDisplayUser.getName());
+            } else {
+                System.err.println("Failed to save rejection to database");
+            }
         }
     }
 
     @FXML
     void handleLove(MouseEvent event) {
-        if (currentDisplayUser != null) {
-            // Add to seen users
-            seenUserIds.add(currentDisplayUser.getUserId());
+        if (currentDisplayUser != null && AuthController.CurrentUser != null) {
+            // Add to liked users in database
+            boolean success = firebaseConnection.addToLikedUsers(
+                    AuthController.CurrentUser.getUserId(),
+                    currentDisplayUser.getUserId());
 
-            // Add to liked users
-            likedUserIds.add(currentDisplayUser.getUserId());
+            if (success) {
+                // Update local CurrentUser object
+                AuthController.CurrentUser.addLikedUser(currentDisplayUser.getUserId());
 
-            // Show next user
-            showNextUser();
+                // Show next user
+                showNextUser();
 
-            System.out.println("Liked user: " + currentDisplayUser.getName());
-            System.out.println("Total liked users: " + likedUserIds.size());
+                System.out.println("Liked user: " + currentDisplayUser.getName());
+                System.out.println("Total liked users: " + AuthController.CurrentUser.getLikedUsers().size());
+            } else {
+                System.err.println("Failed to save like to database");
+            }
         }
     }
 
@@ -267,10 +276,12 @@ public class DiscoverController {
         hideUserDetails();
         showButtonHolder();
         card.getStyleClass().add("card-shadow");
-    }
+    } // Getter for liked users (can be used by other controllers)
 
-    // Getter for liked users (can be used by other controllers)
     public List<String> getLikedUserIds() {
-        return new ArrayList<>(likedUserIds);
+        if (AuthController.CurrentUser != null) {
+            return new ArrayList<>(AuthController.CurrentUser.getLikedUsers());
+        }
+        return new ArrayList<>();
     }
 }
