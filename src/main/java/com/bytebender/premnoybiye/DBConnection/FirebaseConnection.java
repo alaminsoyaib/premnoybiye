@@ -19,15 +19,18 @@ import javafx.application.Platform;
 
 public class FirebaseConnection {
     private String apiKey;
-    private String databaseUrl;
+    private String projectId;
     private String storageBucket;
     private ObjectMapper objectMapper;
     private HttpClient httpClient;
+    private String firestoreBaseUrl;
 
     public FirebaseConnection() {
         loadFirebaseConfig();
         this.objectMapper = new ObjectMapper();
         this.httpClient = HttpClient.newHttpClient();
+        this.firestoreBaseUrl = "https://firestore.googleapis.com/v1/projects/" + projectId
+                + "/databases/(default)/documents";
     }
 
     private void loadFirebaseConfig() {
@@ -41,11 +44,11 @@ public class FirebaseConnection {
             properties.load(input);
 
             this.apiKey = properties.getProperty("apiKey");
-            this.databaseUrl = properties.getProperty("databaseUrl");
+            this.projectId = properties.getProperty("projectId");
             this.storageBucket = properties.getProperty("storageBucket");
 
             System.out.println("Firebase config loaded successfully");
-            System.out.println("Database URL: " + this.databaseUrl);
+            System.out.println("Project ID: " + this.projectId);
             System.out.println("Storage Bucket: " + this.storageBucket);
 
         } catch (IOException e) {
@@ -60,7 +63,62 @@ public class FirebaseConnection {
     }
 
     /**
-     * Registers a new user in Firebase with Firebase Authentication
+     * Converts data to Firestore document format
+     */
+    private Map<String, Object> toFirestoreDocument(Map<String, Object> data) {
+        Map<String, Object> document = new HashMap<>();
+        Map<String, Object> fields = new HashMap<>();
+
+        for (Map.Entry<String, Object> entry : data.entrySet()) {
+            Map<String, Object> field = new HashMap<>();
+            Object value = entry.getValue();
+
+            if (value instanceof String) {
+                field.put("stringValue", value);
+            } else if (value instanceof Number) {
+                field.put("integerValue", value.toString());
+            } else if (value instanceof Boolean) {
+                field.put("booleanValue", value);
+            } else {
+                field.put("stringValue", value != null ? value.toString() : "");
+            }
+
+            fields.put(entry.getKey(), field);
+        }
+
+        document.put("fields", fields);
+        return document;
+    }
+
+    /**
+     * Converts Firestore document to regular data format
+     */
+    private Map<String, Object> fromFirestoreDocument(JsonNode document) {
+        Map<String, Object> data = new HashMap<>();
+
+        if (document.has("fields")) {
+            JsonNode fields = document.get("fields");
+            fields.fieldNames().forEachRemaining(fieldName -> {
+                JsonNode field = fields.get(fieldName);
+
+                if (field.has("stringValue")) {
+                    data.put(fieldName, field.get("stringValue").asText());
+                } else if (field.has("integerValue")) {
+                    data.put(fieldName, field.get("integerValue").asText());
+                } else if (field.has("booleanValue")) {
+                    data.put(fieldName, field.get("booleanValue").asBoolean());
+                } else {
+                    data.put(fieldName, "");
+                }
+            });
+        }
+
+        return data;
+    }
+
+    /**
+     * Registers a new user in Firebase with Firebase Authentication and stores
+     * profile in Firestore
      * 
      * @param name     User's name
      * @param email    User's email
@@ -72,14 +130,16 @@ public class FirebaseConnection {
             if (name.trim().isEmpty() || email.trim().isEmpty() || password.trim().isEmpty()) {
                 showErrorAlert("Registration Error", "Name, email, and password must not be empty");
                 return null;
-            } // Step 1: Create user with Firebase Authentication
+            }
+
+            // Step 1: Create user with Firebase Authentication
             String userId = createFirebaseAuthUser(email, password);
             if (userId == null) {
                 return null; // Error already shown in createFirebaseAuthUser
             }
 
-            // Step 2: Create user profile in Realtime Database using Firebase Auth UID as
-            // primary key
+            // Step 2: Create user profile in Firestore using Firebase Auth UID as document
+            // ID
             Map<String, Object> userData = new HashMap<>();
             userData.put("name", name);
             userData.put("email", email);
@@ -95,35 +155,39 @@ public class FirebaseConnection {
             userData.put("prefAge", "");
             userData.put("prefLocation", "");
             userData.put("prefProfession", "");
-            userData.put("userId", userId); // Firebase Auth UID used as primary key // Convert to JSON
-            String jsonData = objectMapper.writeValueAsString(userData);
+            userData.put("userId", userId);
 
-            // Create HTTP PUT request to Firebase Realtime Database
-            String url = databaseUrl + "/Users/" + userId + ".json?auth=" + apiKey;
+            // Convert to Firestore document format
+            Map<String, Object> firestoreDoc = toFirestoreDocument(userData);
+            String jsonData = objectMapper.writeValueAsString(firestoreDoc);
+
+            // Create HTTP PATCH request to Firestore
+            String url = firestoreBaseUrl + "/users/" + userId + "?key=" + apiKey;
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(url))
                     .header("Content-Type", "application/json")
-                    .PUT(HttpRequest.BodyPublishers.ofString(jsonData))
+                    .method("PATCH", HttpRequest.BodyPublishers.ofString(jsonData))
                     .build();
 
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
             if (response.statusCode() == 200) {
                 // User profile created successfully, now add email to index for faster lookups
                 boolean emailIndexSuccess = addEmailToIndex(email, userId);
 
                 if (emailIndexSuccess) {
                     System.out.println(
-                            "User registered successfully in Firebase with email index: " + name + " (" + email
+                            "User registered successfully in Firestore with email index: " + name + " (" + email
                                     + ") userId: " + userId);
                 } else {
-                    System.out.println("User registered successfully in Firebase, but email index failed: " + name
+                    System.out.println("User registered successfully in Firestore, but email index failed: " + name
                             + " (" + email + ") userId: " + userId);
                 }
                 return userId; // Return the Firebase Auth UID as primary key
             } else {
                 showErrorAlert("Registration Failed",
                         "Failed to create user profile. Please check your internet connection and try again.");
-                System.err.println("Firebase user profile creation failed. Status: " + response.statusCode());
+                System.err.println("Firestore user profile creation failed. Status: " + response.statusCode());
                 System.err.println("Response: " + response.body());
 
                 // Note: We could delete the Firebase Auth user here, but we'd need the ID token
@@ -134,14 +198,14 @@ public class FirebaseConnection {
 
         } catch (Exception e) {
             showErrorAlert("Registration Error", "An unexpected error occurred during registration. Please try again.");
-            System.err.println("Error registering user in Firebase: " + e.getMessage());
+            System.err.println("Error registering user in Firestore: " + e.getMessage());
             e.printStackTrace();
             return null;
         }
     }
 
     /**
-     * Updates user profile information in Firebase
+     * Updates user profile information in Firestore
      * 
      * @param userInfo     Complete user information object
      * @param currentEmail The current email (before any changes) for lookup
@@ -154,7 +218,7 @@ public class FirebaseConnection {
 
             if (targetUserId != null) {
                 // Get current user data to check if email is changing
-                String getCurrentUrl = databaseUrl + "/Users/" + targetUserId + ".json?auth=" + apiKey;
+                String getCurrentUrl = firestoreBaseUrl + "/users/" + targetUserId + "?key=" + apiKey;
 
                 HttpRequest getCurrentRequest = HttpRequest.newBuilder()
                         .uri(URI.create(getCurrentUrl))
@@ -169,9 +233,10 @@ public class FirebaseConnection {
                 boolean emailChanged = false;
 
                 if (getCurrentResponse.statusCode() == 200) {
-                    JsonNode currentUserNode = objectMapper.readTree(getCurrentResponse.body());
-                    if (currentUserNode != null && !currentUserNode.isNull()) {
-                        oldEmail = currentUserNode.get("email").asText("");
+                    JsonNode currentUserDoc = objectMapper.readTree(getCurrentResponse.body());
+                    if (currentUserDoc != null && !currentUserDoc.isNull()) {
+                        Map<String, Object> currentData = fromFirestoreDocument(currentUserDoc);
+                        oldEmail = (String) currentData.getOrDefault("email", "");
                         emailChanged = !oldEmail.equals(newEmail);
                     }
                 }
@@ -194,11 +259,12 @@ public class FirebaseConnection {
                 userData.put("prefProfession", user.getPrefProfession());
                 userData.put("userId", targetUserId); // Ensure userId is maintained
 
-                // Convert to JSON
-                String jsonData = objectMapper.writeValueAsString(userData);
+                // Convert to Firestore document format
+                Map<String, Object> firestoreDoc = toFirestoreDocument(userData);
+                String jsonData = objectMapper.writeValueAsString(firestoreDoc);
 
                 // Update user data using the found userId
-                String updateUrl = databaseUrl + "/Users/" + targetUserId + ".json?auth=" + apiKey;
+                String updateUrl = firestoreBaseUrl + "/users/" + targetUserId + "?key=" + apiKey;
 
                 System.out.println("Updating user profile with ID: " + targetUserId);
                 System.out.println("Update URL: " + updateUrl);
@@ -238,10 +304,10 @@ public class FirebaseConnection {
                         }
                     }
 
-                    System.out.println("User profile updated successfully in Firebase: " + user.getName());
+                    System.out.println("User profile updated successfully in Firestore: " + user.getName());
                     return true;
                 } else {
-                    System.err.println("Firebase profile update failed. Status: " + updateResponse.statusCode());
+                    System.err.println("Firestore profile update failed. Status: " + updateResponse.statusCode());
                     return false;
                 }
             } else {
@@ -250,7 +316,7 @@ public class FirebaseConnection {
             }
 
         } catch (Exception e) {
-            System.err.println("Error updating user profile in Firebase: " + e.getMessage());
+            System.err.println("Error updating user profile in Firestore: " + e.getMessage());
             e.printStackTrace();
             return false;
         }
@@ -285,7 +351,7 @@ public class FirebaseConnection {
     private boolean updateUserProfileByUserId(userInfo user, String userId) {
         try {
             // Get current user data to check if email is changing
-            String getCurrentUrl = databaseUrl + "/Users/" + userId + ".json?auth=" + apiKey;
+            String getCurrentUrl = firestoreBaseUrl + "/users/" + userId + "?key=" + apiKey;
 
             HttpRequest getCurrentRequest = HttpRequest.newBuilder()
                     .uri(URI.create(getCurrentUrl))
@@ -300,9 +366,10 @@ public class FirebaseConnection {
             boolean emailChanged = false;
 
             if (getCurrentResponse.statusCode() == 200) {
-                JsonNode currentUserNode = objectMapper.readTree(getCurrentResponse.body());
-                if (currentUserNode != null && !currentUserNode.isNull()) {
-                    oldEmail = currentUserNode.get("email").asText("");
+                JsonNode currentUserDoc = objectMapper.readTree(getCurrentResponse.body());
+                if (currentUserDoc != null && !currentUserDoc.isNull()) {
+                    Map<String, Object> currentData = fromFirestoreDocument(currentUserDoc);
+                    oldEmail = (String) currentData.getOrDefault("email", "");
                     emailChanged = !oldEmail.equals(newEmail);
                 }
             }
@@ -325,11 +392,12 @@ public class FirebaseConnection {
             userData.put("prefProfession", user.getPrefProfession());
             userData.put("userId", userId); // Ensure userId is maintained
 
-            // Convert to JSON
-            String jsonData = objectMapper.writeValueAsString(userData);
+            // Convert to Firestore document format
+            Map<String, Object> firestoreDoc = toFirestoreDocument(userData);
+            String jsonData = objectMapper.writeValueAsString(firestoreDoc);
 
             // Update user data using the userId
-            String updateUrl = databaseUrl + "/Users/" + userId + ".json?auth=" + apiKey;
+            String updateUrl = firestoreBaseUrl + "/users/" + userId + "?key=" + apiKey;
 
             System.out.println("Updating user profile with ID: " + userId);
             System.out.println("Update URL: " + updateUrl);
@@ -364,22 +432,23 @@ public class FirebaseConnection {
                     System.out.println("New email index added: " + newIndexAdded);
                 }
 
-                System.out.println("User profile updated successfully in Firebase: " + user.getName());
+                System.out.println("User profile updated successfully in Firestore: " + user.getName());
                 return true;
             } else {
-                System.err.println("Firebase profile update failed. Status: " + updateResponse.statusCode());
+                System.err.println("Firestore profile update failed. Status: " + updateResponse.statusCode());
                 return false;
             }
 
         } catch (Exception e) {
-            System.err.println("Error updating user profile in Firebase: " + e.getMessage());
+            System.err.println("Error updating user profile in Firestore: " + e.getMessage());
             e.printStackTrace();
             return false;
         }
     }
 
     /**
-     * Authenticates user login with Firebase Authentication
+     * Authenticates user login with Firebase Authentication and retrieves profile
+     * from Firestore
      * 
      * @param email    User's email
      * @param password User's password
@@ -393,8 +462,8 @@ public class FirebaseConnection {
                 return null; // Error already shown in authenticateFirebaseUser
             }
 
-            // Step 2: Get user profile from Realtime Database using userId
-            String getUserUrl = databaseUrl + "/Users/" + userId + ".json?auth=" + apiKey;
+            // Step 2: Get user profile from Firestore using userId
+            String getUserUrl = firestoreBaseUrl + "/users/" + userId + "?key=" + apiKey;
 
             System.out.println("Fetching user data for login: " + userId);
             System.out.println("User data URL: " + getUserUrl);
@@ -409,25 +478,28 @@ public class FirebaseConnection {
             System.out.println("User data response status: " + getResponse.statusCode());
 
             if (getResponse.statusCode() == 200) {
-                JsonNode userNode = objectMapper.readTree(getResponse.body());
+                JsonNode userDoc = objectMapper.readTree(getResponse.body());
 
-                if (userNode != null && !userNode.isNull()) {
+                if (userDoc != null && !userDoc.isNull()) {
+                    // Convert Firestore document to regular data format
+                    Map<String, Object> userData = fromFirestoreDocument(userDoc);
+
                     // Create userInfo object with retrieved data
                     userInfo user = new userInfo(
-                            userNode.get("name").asText(""),
-                            userNode.get("email").asText(""),
-                            userNode.get("dob").asText(""),
-                            userNode.get("gender").asText(""),
-                            userNode.get("religion").asText(""),
-                            userNode.get("city").asText(""),
-                            userNode.get("image").asText(""),
-                            userNode.get("education").asText(""),
-                            userNode.get("profession").asText(""),
-                            userNode.get("income").asText(""),
-                            userNode.get("bio").asText(""),
-                            userNode.get("prefAge").asText(""),
-                            userNode.get("prefLocation").asText(""),
-                            userNode.get("prefProfession").asText(""),
+                            (String) userData.getOrDefault("name", ""),
+                            (String) userData.getOrDefault("email", ""),
+                            (String) userData.getOrDefault("dob", ""),
+                            (String) userData.getOrDefault("gender", ""),
+                            (String) userData.getOrDefault("religion", ""),
+                            (String) userData.getOrDefault("city", ""),
+                            (String) userData.getOrDefault("image", ""),
+                            (String) userData.getOrDefault("education", ""),
+                            (String) userData.getOrDefault("profession", ""),
+                            (String) userData.getOrDefault("income", ""),
+                            (String) userData.getOrDefault("bio", ""),
+                            (String) userData.getOrDefault("prefAge", ""),
+                            (String) userData.getOrDefault("prefLocation", ""),
+                            (String) userData.getOrDefault("prefProfession", ""),
                             userId);
 
                     System.out.println("User login successful: " + email + " (userId: " + userId + ")");
@@ -440,7 +512,7 @@ public class FirebaseConnection {
             } else {
                 showErrorAlert("Login Failed",
                         "Unable to fetch user profile. Please check your internet connection.");
-                System.err.println("Firebase user data fetch failed. Status: " + getResponse.statusCode());
+                System.err.println("Firestore user data fetch failed. Status: " + getResponse.statusCode());
                 return null;
             }
         } catch (Exception e) {
@@ -485,7 +557,7 @@ public class FirebaseConnection {
     }
 
     /**
-     * Adds email to index for faster user lookups
+     * Adds email to index for faster user lookups in Firestore
      * 
      * @param email  The user's email
      * @param userId The user's ID
@@ -493,9 +565,18 @@ public class FirebaseConnection {
      */
     private boolean addEmailToIndex(String email, String userId) {
         try {
-            // Add to AllEmails index: PUT /AllEmails/{email}.json
-            String emailKey = email.replace(".", "_DOT_").replace("@", "_AT_"); // Firebase keys can't contain . or @
-            String indexUrl = databaseUrl + "/AllEmails/" + emailKey + ".json?auth=" + apiKey;
+            // Add to emailIndex collection in Firestore
+            String emailKey = email.replace(".", "_DOT_").replace("@", "_AT_"); // Firestore document IDs can't contain
+                                                                                // . or @
+
+            Map<String, Object> indexData = new HashMap<>();
+            indexData.put("userId", userId);
+            indexData.put("email", email);
+
+            Map<String, Object> firestoreDoc = toFirestoreDocument(indexData);
+            String jsonData = objectMapper.writeValueAsString(firestoreDoc);
+
+            String indexUrl = firestoreBaseUrl + "/emailIndex/" + emailKey + "?key=" + apiKey;
 
             System.out.println("Adding email to index: " + email + " -> " + userId);
             System.out.println("Index URL: " + indexUrl);
@@ -503,7 +584,7 @@ public class FirebaseConnection {
             HttpRequest indexRequest = HttpRequest.newBuilder()
                     .uri(URI.create(indexUrl))
                     .header("Content-Type", "application/json")
-                    .PUT(HttpRequest.BodyPublishers.ofString("\"" + userId + "\"")) // Store the userId as a JSON string
+                    .method("PATCH", HttpRequest.BodyPublishers.ofString(jsonData))
                     .build();
 
             HttpResponse<String> indexResponse = httpClient.send(indexRequest, HttpResponse.BodyHandlers.ofString());
@@ -527,7 +608,7 @@ public class FirebaseConnection {
     }
 
     /**
-     * Gets userId from email index for faster lookups
+     * Gets userId from email index for faster lookups in Firestore
      * 
      * @param email The user's email
      * @return userId if found, null otherwise
@@ -535,7 +616,7 @@ public class FirebaseConnection {
     private String getUserIdByEmail(String email) {
         try {
             String emailKey = email.replace(".", "_DOT_").replace("@", "_AT_");
-            String indexUrl = databaseUrl + "/AllEmails/" + emailKey + ".json?auth=" + apiKey;
+            String indexUrl = firestoreBaseUrl + "/emailIndex/" + emailKey + "?key=" + apiKey;
 
             System.out.println("Looking up userId for email: " + email);
             System.out.println("Index lookup URL: " + indexUrl);
@@ -553,10 +634,13 @@ public class FirebaseConnection {
             if (getResponse.statusCode() == 200) {
                 String responseBody = getResponse.body();
                 if (!responseBody.equals("null") && !responseBody.isEmpty()) {
-                    // Remove quotes from the response (since we stored it as a JSON string)
-                    String userId = responseBody.replace("\"", "");
-                    System.out.println("Found userId from index: " + userId + " for email: " + email);
-                    return userId;
+                    JsonNode indexDoc = objectMapper.readTree(responseBody);
+                    if (indexDoc != null && !indexDoc.isNull()) {
+                        Map<String, Object> indexData = fromFirestoreDocument(indexDoc);
+                        String userId = (String) indexData.get("userId");
+                        System.out.println("Found userId from index: " + userId + " for email: " + email);
+                        return userId;
+                    }
                 }
             }
             System.out.println("No userId found in index for email: " + email);
@@ -1125,18 +1209,18 @@ public class FirebaseConnection {
     }
 
     /**
-     * Removes an email from the email index in Firebase Realtime Database
+     * Removes an email from the email index in Firestore
      * 
      * @param email The email to remove from the index
      * @return true if the removal was successful, false otherwise
      */
     private boolean removeEmailFromIndex(String email) {
         try {
-            // Convert email to a valid Firebase key (replace . with ,)
-            String emailKey = email.replace(".", ",");
+            // Convert email to a valid Firestore document ID
+            String emailKey = email.replace(".", "_DOT_").replace("@", "_AT_");
 
-            // URL for the email index node
-            String url = databaseUrl + "/emailIndex/" + emailKey + ".json";
+            // URL for the email index document
+            String url = firestoreBaseUrl + "/emailIndex/" + emailKey + "?key=" + apiKey;
 
             // Create DELETE request
             HttpRequest request = HttpRequest.newBuilder()
@@ -1163,7 +1247,7 @@ public class FirebaseConnection {
     }
 
     /**
-     * Deletes all user data from the Firebase Realtime Database
+     * Deletes all user data from Firestore
      * 
      * @param email The email of the user whose data to delete
      * @return true if the user data was deleted successfully, false otherwise
@@ -1186,18 +1270,22 @@ public class FirebaseConnection {
     }
 
     /**
-     * Removes a user from the Firebase Realtime Database
+     * Removes a user from Firestore
      * 
      * @param email The email of the user to remove
      * @return true if the user was removed successfully, false otherwise
      */
     private boolean removeUserFromDatabase(String email) {
         try {
-            // Convert email to a valid Firebase key (replace . with ,)
-            String emailKey = email.replace(".", ",");
+            // First get the userId from email
+            String userId = getUserIdByEmail(email);
+            if (userId == null) {
+                System.err.println("User not found for email: " + email);
+                return false;
+            }
 
-            // URL for the user node
-            String url = databaseUrl + "/users/" + emailKey + ".json";
+            // URL for the user document
+            String url = firestoreBaseUrl + "/users/" + userId + "?key=" + apiKey;
 
             // Create DELETE request
             HttpRequest request = HttpRequest.newBuilder()
