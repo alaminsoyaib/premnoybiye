@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.image.Image?>
@@ -8,11 +9,12 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxWidth="-Infinity" prefWidth="200.0" spacing="16.0" styleClass="card" stylesheets="@application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+
+<VBox maxWidth="-Infinity" prefWidth="200.0" spacing="16.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <VBox>
          <children>
-            <ImageView fitHeight="358.0" fitWidth="258.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="cardImg" fitHeight="358.0" fitWidth="258.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@img/icon/card-img.png" />
                </image>
@@ -24,12 +26,12 @@
                <children>
                   <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" spacing="4.0">
                      <children>
-                        <Label styleClass="card-title" text="Label">
+                        <Label fx:id="cardName" styleClass="card-title" text="Label">
                            <font>
                               <Font name="Trebuchet MS Bold" size="20.0" />
                            </font>
                         </Label>
-                        <Label maxWidth="300.0" minWidth="200.0" opacity="0.5" prefWidth="200.0" styleClass="card-subtitle" text="Lorem ipsum dolor sit amet consectetur. Odio posuere risus ac lacus tellus at. Quis donec viverra dictumst etiam purus." textOverrun="CLIP" wrapText="true">
+                        <Label fx:id="cardBio" maxWidth="300.0" minWidth="200.0" opacity="0.5" prefWidth="200.0" styleClass="card-subtitle" text="Lorem ipsum dolor sit amet consectetur. Odio posuere risus ac lacus tellus at. Quis donec viverra dictumst etiam purus." textOverrun="CLIP" wrapText="true">
                            <font>
                               <Font name="Trebuchet MS" size="12.0" />
                            </font>
@@ -45,7 +47,7 @@
                                     <Image url="@img/icon/location-icon.png" />
                                  </image>
                               </ImageView>
-                              <Label text="Noakhali">
+                              <Label fx:id="cardLocation" text="Noakhali">
                                  <font>
                                     <Font name="Trebuchet MS" size="12.0" />
                                  </font>
@@ -59,7 +61,7 @@
                                     <Image url="@img/icon/baby-icon.png" />
                                  </image>
                               </ImageView>
-                              <Label text="24">
+                              <Label fx:id="cardAge" text="24">
                                  <font>
                                     <Font name="Trebuchet MS" size="12.0" />
                                  </font>
@@ -76,4 +78,8 @@
    <padding>
       <Insets bottom="14.0" left="8.0" right="8.0" top="8.0" />
    </padding>
+   <styleClass>
+      <String fx:value="card-shadow" />
+      <String fx:value="card-stack" />
+   </styleClass>
 </VBox>
