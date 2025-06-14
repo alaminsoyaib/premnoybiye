@@ -4,21 +4,24 @@ import java.io.IOException;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.List;
 
-import com.bytebender.premnoybiye.DBConnection.userInfo;
 import com.bytebender.premnoybiye.DBConnection.FirebaseConnection;
+import com.bytebender.premnoybiye.DBConnection.userInfo;
 import com.bytebender.premnoybiye.Component.Component;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
 public class MyMatchesController {
 
@@ -110,7 +113,7 @@ public class MyMatchesController {
             // Find the card elements by fx:id
             ImageView cardImg = (ImageView) cardNode.lookup("#cardImg");
             ImageView blurImg = (ImageView) cardNode.lookup("#blurImg");
-            StackPane imgStack = (StackPane) cardNode.lookup("#imgStack");
+            javafx.scene.layout.StackPane imgStack = (javafx.scene.layout.StackPane) cardNode.lookup("#imgStack");
             Label cardName = (Label) cardNode.lookup("#cardName");
             Label cardBio = (Label) cardNode.lookup("#cardBio");
             Label cardLocation = (Label) cardNode.lookup("#cardLocation");
@@ -151,6 +154,25 @@ public class MyMatchesController {
                 imgStack.setClip(clip);
             }
 
+            // Add click handler to open user profile modal
+            cardNode.setOnMouseClicked(event -> {
+                try {
+                    showUserProfileModal(user);
+                } catch (Exception e) {
+                    System.err.println("Error opening user profile: " + e.getMessage());
+                    e.printStackTrace();
+                }
+            });
+
+            // Add hover effect
+            cardNode.setOnMouseEntered(event -> {
+                cardNode.setStyle("-fx-cursor: hand;");
+            });
+
+            cardNode.setOnMouseExited(event -> {
+                cardNode.setStyle("-fx-cursor: default;");
+            });
+
         } catch (Exception e) {
             System.err.println("Error populating card for user: " + user.getName());
             e.printStackTrace();
@@ -176,5 +198,37 @@ public class MyMatchesController {
     public void refreshMatches() {
         loadMatchedUsers();
         displayMatchedUsers();
+    }
+
+    /**
+     * Show user profile in a modal dialog
+     */
+    private void showUserProfileModal(userInfo user) throws IOException {
+        try {
+            // Load the user profile FXML
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("userprofile.fxml"));
+            Parent modalRoot = loader.load();
+
+            // Get the controller and set the user data
+            UserProfileController modalController = loader.getController();
+            modalController.setDisplayUser(user);
+
+            // Create a new stage for the modal
+            Stage modalStage = new Stage();
+            modalController.setModalStage(modalStage);
+
+            modalStage.setTitle(user.getName() + "'s Profile");
+            modalStage.initModality(Modality.APPLICATION_MODAL);
+            modalStage.setScene(new Scene(modalRoot));
+            modalStage.setResizable(false);
+
+            // Show the modal and wait for it to close
+            modalStage.showAndWait();
+
+        } catch (IOException e) {
+            System.err.println("Error loading user profile modal: " + e.getMessage());
+            e.printStackTrace();
+            throw e;
+        }
     }
 }

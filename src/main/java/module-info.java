@@ -9,4 +9,5 @@ module com.bytebender.premnoybiye {
     opens com.bytebender.premnoybiye to javafx.fxml;
 
     exports com.bytebender.premnoybiye;
+    exports com.bytebender.premnoybiye.DBConnection;
 }
