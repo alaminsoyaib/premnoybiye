@@ -1511,4 +1511,120 @@ public class FirebaseConnection {
             return false;
         }
     }
+
+    /**
+     * Send a message between two users
+     */
+    public boolean sendMessage(com.bytebender.premnoybiye.DBConnection.Message message) {
+        try {
+            // Generate a unique message ID
+            String messageId = java.util.UUID.randomUUID().toString();
+            message.setMessageId(messageId);
+
+            // Create conversation ID (consistent regardless of who sends first)
+            String conversationId = createConversationId(message.getSenderId(), message.getReceiverId());
+
+            // Prepare message data
+            Map<String, Object> messageData = new HashMap<>();
+            messageData.put("messageId", message.getMessageId());
+            messageData.put("senderId", message.getSenderId());
+            messageData.put("receiverId", message.getReceiverId());
+            messageData.put("content", message.getContent());
+            messageData.put("timestamp", message.getTimestamp());
+            messageData.put("isRead", message.isRead());
+
+            // Convert to Firestore format
+            Map<String, Object> firestoreDoc = toFirestoreDocument(messageData);
+            String jsonData = objectMapper.writeValueAsString(firestoreDoc);
+
+            // Send to Firestore
+            String url = firestoreBaseUrl + "/conversations/" + conversationId + "/messages/" + messageId + "?key=" + apiKey;
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .header("Content-Type", "application/json")
+                    .method("PATCH", HttpRequest.BodyPublishers.ofString(jsonData))
+                    .build();
+
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == 200) {
+                System.out.println("Message sent successfully");
+                return true;
+            } else {
+                System.err.println("Failed to send message. Status: " + response.statusCode());
+                return false;
+            }
+
+        } catch (Exception e) {
+            System.err.println("Error sending message: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * Get conversation between two users
+     */
+    public java.util.List<com.bytebender.premnoybiye.DBConnection.Message> getConversation(String userId1, String userId2) {
+        java.util.List<com.bytebender.premnoybiye.DBConnection.Message> messages = new java.util.ArrayList<>();
+        
+        try {
+            String conversationId = createConversationId(userId1, userId2);
+            String url = firestoreBaseUrl + "/conversations/" + conversationId + "/messages?key=" + apiKey;
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == 200) {
+                JsonNode documentsNode = objectMapper.readTree(response.body());
+                
+                if (documentsNode.has("documents")) {
+                    for (JsonNode messageDoc : documentsNode.get("documents")) {
+                        Map<String, Object> messageData = fromFirestoreDocument(messageDoc);
+                        
+                        com.bytebender.premnoybiye.DBConnection.Message message = new com.bytebender.premnoybiye.DBConnection.Message(
+                            (String) messageData.getOrDefault("messageId", ""),
+                            (String) messageData.getOrDefault("senderId", ""),
+                            (String) messageData.getOrDefault("receiverId", ""),
+                            (String) messageData.getOrDefault("content", ""),
+                            (String) messageData.getOrDefault("timestamp", ""),
+                            Boolean.parseBoolean(messageData.getOrDefault("isRead", "false").toString())
+                        );
+                        
+                        messages.add(message);
+                    }
+                }
+                
+                // Sort messages by timestamp
+                messages.sort((m1, m2) -> m1.getTimestamp().compareTo(m2.getTimestamp()));
+                
+            } else if (response.statusCode() == 404) {
+                // No conversation exists yet, return empty list
+                System.out.println("No conversation found between users");
+            } else {
+                System.err.println("Failed to get conversation. Status: " + response.statusCode());
+            }
+
+        } catch (Exception e) {
+            System.err.println("Error getting conversation: " + e.getMessage());
+            e.printStackTrace();
+        }
+        
+        return messages;
+    }
+
+    /**
+     * Create a consistent conversation ID for two users
+     */
+    private String createConversationId(String userId1, String userId2) {
+        // Sort user IDs to ensure consistent conversation ID regardless of order
+        java.util.List<String> userIds = java.util.Arrays.asList(userId1, userId2);
+        java.util.Collections.sort(userIds);
+        return userIds.get(0) + "_" + userIds.get(1);
+    }
 }

@@ -12,154 +12,27 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="756.0" style="-fx-background-color: #E7E6ED;" stylesheets="@application.css" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<HBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="756.0" style="-fx-background-color: #E7E6ED;" stylesheets="@application.css" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bytebender.premnoybiye.ChatController">
   <children>
     <VBox layoutX="10.0" layoutY="10.0" maxHeight="1.7976931348623157E308" minWidth="-Infinity" prefHeight="200.0" prefWidth="250.0" style="-fx-background-color: white; -fx-border-width: 0 1 0 0; -fx-border-color: #D0D5DD;">
       <children>
-        <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefWidth="100.0" spacing="18.0">
+        <VBox maxHeight="1.7976931348623157E308" spacing="18.0" VBox.vgrow="ALWAYS">
           <children>
             <Label text="Messages">
               <font>
-                <Font name="Trebuchet MS Bold" size="20.0"/>
+                <Font name="Trebuchet MS Bold" size="20.0" />
               </font>
             </Label>
-            <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="48.0" spacing="12.0">
-              <padding>
-                <Insets bottom="12.0" top="12.0"/>
-              </padding>
-              <children>
-                <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="48.0" prefWidth="48.0">
-                  <children>
-                    <ImageView fitHeight="48.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
-                      <image>
-                        <Image url="@img/icon/profile-image.png"/>
-                      </image>
-                    </ImageView>
-                  </children>
-                </VBox>
-                <VBox spacing="2.0">
-                  <children>
-                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Kuddus Begum">
-                      <font>
-                        <Font name="Trebuchet MS" size="16.0"/>
-                      </font>
-                    </Text>
-                    <Text fill="#94a0b2" layoutX="10.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Noakhali, 24">
-                      <font>
-                        <Font name="Trebuchet MS" size="10.0"/>
-                      </font>
-                    </Text>
-                  </children>
-                </VBox>
-              </children>
-              <cursor>
-                <Cursor fx:constant="HAND"/>
-              </cursor>
-            </HBox>
-            <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="54.0" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="48.0" spacing="12.0">
-              <padding>
-                <Insets bottom="12.0" top="12.0"/>
-              </padding>
-              <children>
-                <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="48.0" prefWidth="48.0">
-                  <children>
-                    <ImageView fitHeight="48.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
-                      <image>
-                        <Image url="@img/icon/profile-image.png"/>
-                      </image>
-                    </ImageView>
-                  </children>
-                </VBox>
-                <VBox spacing="2.0">
-                  <children>
-                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Kuddus Begum">
-                      <font>
-                        <Font name="Trebuchet MS" size="16.0"/>
-                      </font>
-                    </Text>
-                    <Text fill="#94a0b2" layoutX="10.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Noakhali, 24">
-                      <font>
-                        <Font name="Trebuchet MS" size="10.0"/>
-                      </font>
-                    </Text>
-                  </children>
-                </VBox>
-              </children>
-              <cursor>
-                <Cursor fx:constant="HAND"/>
-              </cursor>
-            </HBox>
-            <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="120.0" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="48.0" spacing="12.0">
-              <padding>
-                <Insets bottom="12.0" top="12.0"/>
-              </padding>
-              <children>
-                <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="48.0" prefWidth="48.0">
-                  <children>
-                    <ImageView fitHeight="48.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
-                      <image>
-                        <Image url="@img/icon/profile-image.png"/>
-                      </image>
-                    </ImageView>
-                  </children>
-                </VBox>
-                <VBox spacing="2.0">
-                  <children>
-                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Kuddus Begum">
-                      <font>
-                        <Font name="Trebuchet MS" size="16.0"/>
-                      </font>
-                    </Text>
-                    <Text fill="#94a0b2" layoutX="10.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Noakhali, 24">
-                      <font>
-                        <Font name="Trebuchet MS" size="10.0"/>
-                      </font>
-                    </Text>
-                  </children>
-                </VBox>
-              </children>
-              <cursor>
-                <Cursor fx:constant="HAND"/>
-              </cursor>
-            </HBox>
-            <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="187.0" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="48.0" spacing="12.0">
-              <padding>
-                <Insets bottom="12.0" top="12.0"/>
-              </padding>
-              <children>
-                <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="48.0" prefWidth="48.0">
-                  <children>
-                    <ImageView fitHeight="48.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
-                      <image>
-                        <Image url="@img/icon/profile-image.png"/>
-                      </image>
-                    </ImageView>
-                  </children>
-                </VBox>
-                <VBox spacing="2.0">
-                  <children>
-                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Kuddus Begum">
-                      <font>
-                        <Font name="Trebuchet MS" size="16.0"/>
-                      </font>
-                    </Text>
-                    <Text fill="#94a0b2" layoutX="10.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Noakhali, 24">
-                      <font>
-                        <Font name="Trebuchet MS" size="10.0"/>
-                      </font>
-                    </Text>
-                  </children>
-                </VBox>
-              </children>
-              <cursor>
-                <Cursor fx:constant="HAND"/>
-              </cursor>
-            </HBox>
+            <ScrollPane fitToWidth="true" maxHeight="1.7976931348623157E308" VBox.vgrow="ALWAYS">
+              <content>
+                <VBox fx:id="userlistHolder" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minWidth="-Infinity" prefWidth="216.0" spacing="16.0" />
+              </content>
+            </ScrollPane>
           </children>
         </VBox>
       </children>
       <padding>
-        <Insets left="16.0" right="16.0" top="16.0"/>
+        <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
       </padding>
     </VBox>
     <VBox alignment="TOP_CENTER" HBox.hgrow="ALWAYS">
@@ -168,217 +41,61 @@
           <children>
             <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" spacing="2.0" HBox.hgrow="ALWAYS">
               <children>
-                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Kuddus Begum">
+                <Text fx:id="userName" strokeType="OUTSIDE" strokeWidth="0.0" text="Kuddus Begum">
                   <font>
-                    <Font name="Trebuchet MS" size="16.0"/>
+                    <Font name="Trebuchet MS" size="16.0" />
                   </font>
                 </Text>
-                <Text fill="#94a0b2" layoutX="10.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Noakhali, 24">
+                <Text fx:id="userLocationAge" fill="#94a0b2" layoutX="10.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Noakhali, 24">
                   <font>
-                    <Font name="Trebuchet MS" size="12.0"/>
+                    <Font name="Trebuchet MS" size="12.0" />
                   </font>
                 </Text>
               </children>
             </VBox>
-            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="infoButton" fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
               <image>
-                <Image url="@img/icon/info-icon.png"/>
+                <Image url="@img/icon/info-icon.png" />
               </image>
               <cursor>
-                <Cursor fx:constant="HAND"/>
+                <Cursor fx:constant="HAND" />
               </cursor>
             </ImageView>
           </children>
           <padding>
-            <Insets bottom="16.0" left="16.0" right="16.0" top="16.0"/>
+            <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
           </padding>
         </HBox>
         <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" stylesheets="@application.css" translateX="-1.0" VBox.vgrow="ALWAYS">
           <content>
-            <VBox cache="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="16.0">
-              <children>
-                <VBox alignment="TOP_RIGHT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" spacing="4.0">
-                  <children>
-                    <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: #6631C4; -fx-border-radius: 8; -fx-background-radius: 8;">
-                      <children>
-                        <Label text="Hi" textFill="WHITE">
-                          <font>
-                            <Font size="16.0"/>
-                          </font>
-                        </Label>
-                      </children>
-                      <padding>
-                        <Insets bottom="8.0" left="16.0" right="16.0" top="8.0"/>
-                      </padding>
-                    </VBox>
-                    <Label text="12:30 PM" textFill="#99adb8"/>
-                  </children>
-                </VBox>
-                <VBox layoutX="26.0" layoutY="264.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" spacing="4.0">
-                  <children>
-                    <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: #E7E7ED; -fx-border-radius: 6; -fx-background-radius: 6;">
-                      <children>
-                        <Text boundsType="VISUAL" lineSpacing="4.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hello" wrappingWidth="400.0">
-                          <font>
-                            <Font name="Trebuchet MS" size="16.0"/>
-                          </font>
-                        </Text>
-                      </children>
-                      <padding>
-                        <Insets bottom="12.0" left="16.0" right="16.0" top="12.0"/>
-                      </padding>
-                    </VBox>
-                    <Label text="12:30 PM" textFill="#99adb8"/>
-                  </children>
-                  <padding>
-                    <Insets right="48.0"/>
-                  </padding>
-                </VBox>
-                <VBox alignment="TOP_RIGHT" layoutX="26.0" layoutY="26.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" spacing="4.0">
-                  <children>
-                    <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: #6631C4; -fx-border-radius: 8; -fx-background-radius: 8;">
-                      <children>
-                        <Label text="Tomar basa kothay?" textFill="WHITE">
-                          <font>
-                            <Font size="16.0"/>
-                          </font>
-                        </Label>
-                      </children>
-                      <padding>
-                        <Insets bottom="8.0" left="16.0" right="16.0" top="8.0"/>
-                      </padding>
-                    </VBox>
-                    <Label text="12:30 PM" textFill="#99adb8"/>
-                  </children>
-                </VBox>
-                <VBox layoutX="26.0" layoutY="105.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" spacing="4.0">
-                  <children>
-                    <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: #E7E7ED; -fx-border-radius: 6; -fx-background-radius: 6;">
-                      <children>
-                        <Text boundsType="VISUAL" lineSpacing="4.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bolbo na" wrappingWidth="400.0">
-                          <font>
-                            <Font name="Trebuchet MS" size="16.0"/>
-                          </font>
-                        </Text>
-                      </children>
-                      <padding>
-                        <Insets bottom="12.0" left="16.0" right="16.0" top="12.0"/>
-                      </padding>
-                    </VBox>
-                    <Label text="12:30 PM" textFill="#99adb8"/>
-                  </children>
-                  <padding>
-                    <Insets right="48.0"/>
-                  </padding>
-                </VBox>
-                <VBox alignment="TOP_RIGHT" layoutX="26.0" layoutY="264.0" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" spacing="4.0">
-                  <children>
-                    <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: #6631C4; -fx-border-radius: 6; -fx-background-radius: 6;">
-                      <children>
-                        <Text boundsType="VISUAL" fill="WHITE" lineSpacing="4.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lorem ipsum dolor sit amet consectetur. Non facilisi habitasse dui amet nunc dictumst quisque iaculis. Natoque nisi amet ultrices faucibus nibh quisque cras orci." wrappingWidth="400.0">
-                          <font>
-                            <Font name="Trebuchet MS" size="16.0"/>
-                          </font>
-                        </Text>
-                      </children>
-                      <padding>
-                        <Insets bottom="12.0" left="16.0" right="16.0" top="12.0"/>
-                      </padding>
-                    </VBox>
-                    <Label text="12:30 PM" textFill="#99adb8"/>
-                    <VBox layoutX="58.0" layoutY="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: #6631C4; -fx-border-radius: 6; -fx-background-radius: 6;">
-                      <children>
-                        <Text boundsType="VISUAL" fill="WHITE" lineSpacing="4.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lorem ipsum dolor sit amet consectetur. Non facilisi habitasse dui amet nunc dictumst quisque iaculis. Natoque nisi amet ultrices faucibus nibh quisque cras orci." wrappingWidth="400.0">
-                          <font>
-                            <Font name="Trebuchet MS" size="16.0"/>
-                          </font>
-                        </Text>
-                      </children>
-                      <padding>
-                        <Insets bottom="12.0" left="16.0" right="16.0" top="12.0"/>
-                      </padding>
-                    </VBox>
-                    <VBox layoutX="58.0" layoutY="140.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: #6631C4; -fx-border-radius: 6; -fx-background-radius: 6;">
-                      <children>
-                        <Text boundsType="VISUAL" fill="WHITE" lineSpacing="4.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lorem ipsum dolor sit amet consectetur. Non facilisi habitasse dui amet nunc dictumst quisque iaculis. Natoque nisi amet ultrices faucibus nibh quisque cras orci." wrappingWidth="400.0">
-                          <font>
-                            <Font name="Trebuchet MS" size="16.0"/>
-                          </font>
-                        </Text>
-                      </children>
-                      <padding>
-                        <Insets bottom="12.0" left="16.0" right="16.0" top="12.0"/>
-                      </padding>
-                    </VBox>
-                    <VBox layoutX="58.0" layoutY="248.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: #6631C4; -fx-border-radius: 6; -fx-background-radius: 6;">
-                      <children>
-                        <Text boundsType="VISUAL" fill="WHITE" lineSpacing="4.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lorem ipsum dolor sit amet consectetur. Non facilisi habitasse dui amet nunc dictumst quisque iaculis. Natoque nisi amet ultrices faucibus nibh quisque cras orci." wrappingWidth="400.0">
-                          <font>
-                            <Font name="Trebuchet MS" size="16.0"/>
-                          </font>
-                        </Text>
-                      </children>
-                      <padding>
-                        <Insets bottom="12.0" left="16.0" right="16.0" top="12.0"/>
-                      </padding>
-                    </VBox>
-                    <VBox layoutX="58.0" layoutY="356.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: #6631C4; -fx-border-radius: 6; -fx-background-radius: 6;">
-                      <children>
-                        <Text boundsType="VISUAL" fill="WHITE" lineSpacing="4.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lorem ipsum dolor sit amet consectetur. Non facilisi habitasse dui amet nunc dictumst quisque iaculis. Natoque nisi amet ultrices faucibus nibh quisque cras orci." wrappingWidth="400.0">
-                          <font>
-                            <Font name="Trebuchet MS" size="16.0"/>
-                          </font>
-                        </Text>
-                      </children>
-                      <padding>
-                        <Insets bottom="12.0" left="16.0" right="16.0" top="12.0"/>
-                      </padding>
-                    </VBox>
-                    <VBox layoutX="58.0" layoutY="464.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" style="-fx-background-color: #6631C4; -fx-border-radius: 6; -fx-background-radius: 6;">
-                      <children>
-                        <Text boundsType="VISUAL" fill="WHITE" lineSpacing="4.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lorem ipsum dolor sit amet consectetur. Non facilisi habitasse dui amet nunc dictumst quisque iaculis. Natoque nisi amet ultrices faucibus nibh quisque cras orci." wrappingWidth="400.0">
-                          <font>
-                            <Font name="Trebuchet MS" size="16.0"/>
-                          </font>
-                        </Text>
-                      </children>
-                      <padding>
-                        <Insets bottom="12.0" left="16.0" right="16.0" top="12.0"/>
-                      </padding>
-                    </VBox>
-                  </children>
-                  <padding>
-                    <Insets left="48.0"/>
-                  </padding>
-                </VBox>
-              </children>
+            <VBox fx:id="conversationHolder" cache="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" spacing="16.0">
               <padding>
-                <Insets bottom="16.0" left="16.0" right="16.0" top="16.0"/>
+                <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
               </padding>
             </VBox>
           </content>
           <VBox.margin>
-            <Insets bottom="1.0" left="1.0" top="1.0"/>
+            <Insets bottom="1.0" left="1.0" top="1.0" />
           </VBox.margin>
         </ScrollPane>
         <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" maxWidth="1.7976931348623157E308" prefWidth="756.0" spacing="16.0" style="-fx-background-color: white;">
           <children>
-            <TextField fx:id="aboutYouTextField" accessibleRole="TEXT_AREA" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" promptText="Enter your message..." styleClass="combo-box" HBox.hgrow="ALWAYS">
+            <TextField fx:id="msgInput" accessibleRole="TEXT_AREA" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="44.0" promptText="Enter your message..." styleClass="combo-box" HBox.hgrow="ALWAYS">
               <cursor>
-                <Cursor fx:constant="TEXT"/>
+                <Cursor fx:constant="TEXT" />
               </cursor>
             </TextField>
-            <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="sendButton" fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
               <image>
-                <Image url="@img/icon/send-icon.png"/>
+                <Image url="@img/icon/send-icon.png" />
               </image>
               <cursor>
-                <Cursor fx:constant="HAND"/>
+                <Cursor fx:constant="HAND" />
               </cursor>
             </ImageView>
           </children>
           <padding>
-            <Insets bottom="16.0" left="16.0" right="16.0" top="16.0"/>
+            <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
           </padding>
         </HBox>
       </children>

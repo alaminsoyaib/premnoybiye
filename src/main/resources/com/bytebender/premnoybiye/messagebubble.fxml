@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox fx:id="messageBox" maxWidth="400.0" spacing="4.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label fx:id="messageContent" text="Message content goes here" wrapText="true">
+         <font>
+            <Font name="Trebuchet MS" size="14.0" />
+         </font>
+         <padding>
+            <Insets bottom="8.0" left="12.0" right="12.0" top="8.0" />
+         </padding>
+      </Label>
+      <Label fx:id="messageTime" text="12:34" textFill="#666666">
+         <font>
+            <Font name="Trebuchet MS" size="10.0" />
+         </font>
+      </Label>
+   </children>
+</VBox>
