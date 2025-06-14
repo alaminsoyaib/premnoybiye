@@ -83,12 +83,12 @@
               <children>
                         <StackPane fx:id="imgStack">
                            <children>
-                              <ImageView fx:id="blurImg" fitHeight="358.0" fitWidth="258.0" pickOnBounds="true" preserveRatio="true" styleClass="card-img">
+                              <ImageView fx:id="blurImg" fitHeight="358.0" fitWidth="258.0" pickOnBounds="true" styleClass="card-img">
                                  <image>
                                     <Image url="@img/icon/card-img.png" />
                                  </image>
                                  <effect>
-                                    <MotionBlur angle="360.0" radius="51.8" />
+                                    <MotionBlur angle="360.0" radius="20.0" />
                                  </effect>
                               </ImageView>
                       <ImageView fx:id="cardImg" fitHeight="358.0" fitWidth="258.0" pickOnBounds="true" preserveRatio="true" styleClass="card-img">

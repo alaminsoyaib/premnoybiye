@@ -9,12 +9,12 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="756.0" spacing="16.0" style="-fx-background-color: white;" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bytebender.premnoybiye.MyMatchesController">
+<VBox alignment="CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="756.0" spacing="16.0" style="-fx-background-color: white;" VBox.vgrow="ALWAYS" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bytebender.premnoybiye.MyMatchesController">
   <padding>
-    <Insets bottom="12.0" left="24.0" right="24.0" top="40.0" />
+    <Insets bottom="12.0" top="40.0" />
   </padding>
   <children>
-    <HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308">
+    <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="-Infinity" prefWidth="708.0">
       <children>
         <Label text="My Matches">
           <font>
@@ -22,10 +22,13 @@
           </font>
         </Label>
       </children>
+         <VBox.margin>
+            <Insets left="24.0" right="24.0" />
+         </VBox.margin>
     </HBox>
-    <ScrollPane prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: white;" VBox.vgrow="ALWAYS">
+    <ScrollPane fx:id="scrollPane" hbarPolicy="NEVER" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" prefHeight="200.0" prefWidth="708.0" style="-fx-background-color: white;" vbarPolicy="NEVER" VBox.vgrow="ALWAYS">
       <content>
-        <GridPane fx:id="cardGrid" hgap="16.0" style="-fx-background-color: white;" vgap="16.0">
+        <GridPane fx:id="cardGrid" alignment="CENTER" hgap="10.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: white;" vgap="16.0">
           <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
             <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -33,6 +36,9 @@
           </columnConstraints>
         </GridPane>
       </content>
+         <VBox.margin>
+            <Insets left="24.0" right="24.0" />
+         </VBox.margin>
     </ScrollPane>
   </children>
 </VBox>

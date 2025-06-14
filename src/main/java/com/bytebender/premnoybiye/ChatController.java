@@ -400,18 +400,18 @@ public class ChatController {
         }
     }
 
-    private void scrollUserListToTop() {
-        // Find the ScrollPane parent of userlistHolder
-        javafx.scene.Node parent = userlistHolder.getParent();
-        while (parent != null && !(parent instanceof ScrollPane)) {
-            parent = parent.getParent();
-        }
+    // private void scrollUserListToTop() {
+    //     // Find the ScrollPane parent of userlistHolder
+    //     javafx.scene.Node parent = userlistHolder.getParent();
+    //     while (parent != null && !(parent instanceof ScrollPane)) {
+    //         parent = parent.getParent();
+    //     }
 
-        if (parent instanceof ScrollPane) {
-            ScrollPane scrollPane = (ScrollPane) parent;
-            scrollPane.setVvalue(0.0);
-        }
-    }
+    //     if (parent instanceof ScrollPane) {
+    //         ScrollPane scrollPane = (ScrollPane) parent;
+    //         scrollPane.setVvalue(0.0);
+    //     }
+    // }
 
     private String calculateAge(String dob) {
         try {
