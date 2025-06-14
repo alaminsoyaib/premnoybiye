@@ -200,19 +200,10 @@ public class FirebaseConnection {
                     .build();
 
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-
             if (response.statusCode() == 200) {
-                // User profile created successfully, now add email to index for faster lookups
-                boolean emailIndexSuccess = addEmailToIndex(email, userId);
-
-                if (emailIndexSuccess) {
-                    System.out.println(
-                            "User registered successfully in Firestore with email index: " + name + " (" + email
-                                    + ") userId: " + userId);
-                } else {
-                    System.out.println("User registered successfully in Firestore, but email index failed: " + name
-                            + " (" + email + ") userId: " + userId);
-                }
+                // User profile created successfully
+                System.out.println(
+                        "User registered successfully in Firestore: " + name + " (" + email + ") userId: " + userId);
                 return userId; // Return the Firebase Auth UID as primary key
             } else {
                 showErrorAlert("Registration Failed",
@@ -243,105 +234,13 @@ public class FirebaseConnection {
      */
     public boolean updateUserProfile(userInfo user, String currentEmail) {
         try {
-            // Use current email to find the userId
-            String targetUserId = getUserIdByEmail(currentEmail);
+            // Use current email to find the userId by querying users collection
+            String targetUserId = getUserIdFromEmail(currentEmail);
 
             if (targetUserId != null) {
-                // Get current user data to check if email is changing
-                String getCurrentUrl = firestoreBaseUrl + "/users/" + targetUserId + "?key=" + apiKey;
-
-                HttpRequest getCurrentRequest = HttpRequest.newBuilder()
-                        .uri(URI.create(getCurrentUrl))
-                        .GET()
-                        .build();
-
-                HttpResponse<String> getCurrentResponse = httpClient.send(getCurrentRequest,
-                        HttpResponse.BodyHandlers.ofString());
-
-                String oldEmail = currentEmail;
-                String newEmail = user.getEmail();
-                boolean emailChanged = false;
-
-                if (getCurrentResponse.statusCode() == 200) {
-                    JsonNode currentUserDoc = objectMapper.readTree(getCurrentResponse.body());
-                    if (currentUserDoc != null && !currentUserDoc.isNull()) {
-                        Map<String, Object> currentData = fromFirestoreDocument(currentUserDoc);
-                        oldEmail = (String) currentData.getOrDefault("email", "");
-                        emailChanged = !oldEmail.equals(newEmail);
-                    }
-                }
-
-                // Create updated user data map
-                Map<String, Object> userData = new HashMap<>();
-                userData.put("name", user.getName());
-                userData.put("email", user.getEmail());
-                userData.put("dob", user.getDob());
-                userData.put("gender", user.getGender());
-                userData.put("religion", user.getReligion());
-                userData.put("city", user.getCity());
-                userData.put("image", user.getImage());
-                userData.put("education", user.getEducation());
-                userData.put("profession", user.getProfession());
-                userData.put("income", user.getIncome());
-                userData.put("bio", user.getBio());
-                userData.put("prefAge", user.getPrefAge());
-                userData.put("prefLocation", user.getPrefLocation());
-                userData.put("prefProfession", user.getPrefProfession());
-                userData.put("userId", targetUserId); // Ensure userId is maintained
-
-                // Convert to Firestore document format
-                Map<String, Object> firestoreDoc = toFirestoreDocument(userData);
-                String jsonData = objectMapper.writeValueAsString(firestoreDoc);
-
-                // Update user data using the found userId
-                String updateUrl = firestoreBaseUrl + "/users/" + targetUserId + "?key=" + apiKey;
-
-                System.out.println("Updating user profile with ID: " + targetUserId);
-                System.out.println("Update URL: " + updateUrl);
-                if (emailChanged) {
-                    System.out.println("Email changing from: " + oldEmail + " to: " + newEmail);
-                }
-
-                HttpRequest updateRequest = HttpRequest.newBuilder()
-                        .uri(URI.create(updateUrl))
-                        .header("Content-Type", "application/json")
-                        .method("PATCH", HttpRequest.BodyPublishers.ofString(jsonData))
-                        .build();
-
-                HttpResponse<String> updateResponse = httpClient.send(updateRequest,
-                        HttpResponse.BodyHandlers.ofString());
-
-                System.out.println("Update response status: " + updateResponse.statusCode());
-                System.out.println("Update response body: " + updateResponse.body());
-
-                if (updateResponse.statusCode() == 200) {
-                    // If email changed, update the email index
-                    if (emailChanged) {
-                        System.out.println("Email changed, updating email index...");
-
-                        // Remove old email index
-                        boolean oldIndexRemoved = removeEmailFromIndex(oldEmail);
-
-                        // Add new email index
-                        boolean newIndexAdded = addEmailToIndex(newEmail, targetUserId);
-
-                        if (oldIndexRemoved && newIndexAdded) {
-                            System.out.println("Email index updated successfully");
-                        } else {
-                            System.err.println("Warning: Email index update may have failed");
-                            System.err.println(
-                                    "Old index removed: " + oldIndexRemoved + ", New index added: " + newIndexAdded);
-                        }
-                    }
-
-                    System.out.println("User profile updated successfully in Firestore: " + user.getName());
-                    return true;
-                } else {
-                    System.err.println("Firestore profile update failed. Status: " + updateResponse.statusCode());
-                    return false;
-                }
+                return updateUserProfileByUserId(user, targetUserId);
             } else {
-                System.err.println("User not found in email index for email: " + currentEmail);
+                System.err.println("User not found for email: " + currentEmail);
                 return false;
             }
 
@@ -446,22 +345,7 @@ public class FirebaseConnection {
 
             System.out.println("Update response status: " + updateResponse.statusCode());
             System.out.println("Update response body: " + updateResponse.body());
-
             if (updateResponse.statusCode() == 200) {
-                // If email changed, update the email index
-                if (emailChanged) {
-                    System.out.println("Email changed, updating email index...");
-
-                    // Remove old email index
-                    boolean oldIndexRemoved = removeEmailFromIndex(oldEmail);
-
-                    // Add new email index
-                    boolean newIndexAdded = addEmailToIndex(newEmail, userId);
-
-                    System.out.println("Old email index removed: " + oldIndexRemoved);
-                    System.out.println("New email index added: " + newIndexAdded);
-                }
-
                 System.out.println("User profile updated successfully in Firestore: " + user.getName());
                 return true;
             } else {
@@ -597,109 +481,56 @@ public class FirebaseConnection {
     }
 
     /**
-     * Adds email to index for faster user lookups in Firestore
-     * 
-     * @param email  The user's email
-     * @param userId The user's ID
-     * @return true if successful, false otherwise
-     */
-    private boolean addEmailToIndex(String email, String userId) {
-        try {
-            // Add to emailIndex collection in Firestore
-            String emailKey = email.replace(".", "_DOT_").replace("@", "_AT_"); // Firestore document IDs can't contain
-                                                                                // . or @
-
-            Map<String, Object> indexData = new HashMap<>();
-            indexData.put("userId", userId);
-            indexData.put("email", email);
-
-            Map<String, Object> firestoreDoc = toFirestoreDocument(indexData);
-            String jsonData = objectMapper.writeValueAsString(firestoreDoc);
-
-            String indexUrl = firestoreBaseUrl + "/emailIndex/" + emailKey + "?key=" + apiKey;
-
-            System.out.println("Adding email to index: " + email + " -> " + userId);
-            System.out.println("Index URL: " + indexUrl);
-
-            HttpRequest indexRequest = HttpRequest.newBuilder()
-                    .uri(URI.create(indexUrl))
-                    .header("Content-Type", "application/json")
-                    .method("PATCH", HttpRequest.BodyPublishers.ofString(jsonData))
-                    .build();
-
-            HttpResponse<String> indexResponse = httpClient.send(indexRequest, HttpResponse.BodyHandlers.ofString());
-
-            System.out.println("Email index response status: " + indexResponse.statusCode());
-            System.out.println("Email index response body: " + indexResponse.body());
-
-            if (indexResponse.statusCode() == 200) {
-                System.out.println("Email index created successfully for: " + email);
-                return true;
-            } else {
-                System.err.println("Failed to create email index. Status: " + indexResponse.statusCode());
-                return false;
-            }
-
-        } catch (Exception e) {
-            System.err.println("Error creating email index: " + e.getMessage());
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    /**
-     * Gets userId from email index for faster lookups in Firestore
-     * 
-     * @param email The user's email
-     * @return userId if found, null otherwise
-     */
-    private String getUserIdByEmail(String email) {
-        try {
-            String emailKey = email.replace(".", "_DOT_").replace("@", "_AT_");
-            String indexUrl = firestoreBaseUrl + "/emailIndex/" + emailKey + "?key=" + apiKey;
-
-            System.out.println("Looking up userId for email: " + email);
-            System.out.println("Index lookup URL: " + indexUrl);
-
-            HttpRequest getRequest = HttpRequest.newBuilder()
-                    .uri(URI.create(indexUrl))
-                    .GET()
-                    .build();
-
-            HttpResponse<String> getResponse = httpClient.send(getRequest, HttpResponse.BodyHandlers.ofString());
-
-            System.out.println("Email lookup response status: " + getResponse.statusCode());
-            System.out.println("Email lookup response body: " + getResponse.body());
-
-            if (getResponse.statusCode() == 200) {
-                String responseBody = getResponse.body();
-                if (!responseBody.equals("null") && !responseBody.isEmpty()) {
-                    JsonNode indexDoc = objectMapper.readTree(responseBody);
-                    if (indexDoc != null && !indexDoc.isNull()) {
-                        Map<String, Object> indexData = fromFirestoreDocument(indexDoc);
-                        String userId = (String) indexData.get("userId");
-                        System.out.println("Found userId from index: " + userId + " for email: " + email);
-                        return userId;
-                    }
-                }
-            }
-            System.out.println("No userId found in index for email: " + email);
-            return null;
-
-        } catch (Exception e) {
-            System.err.println("Error looking up userId by email: " + e.getMessage());
-            return null;
-        }
-    }
-
-    /**
      * Public method to get userId by email for use by controllers
+     * Queries the users collection directly to find the user with matching email
      * 
      * @param email The user's email
      * @return userId if found, null otherwise
      */
     public String getUserIdFromEmail(String email) {
-        return getUserIdByEmail(email);
+        try {
+            // Query all users to find the one with matching email
+            String url = firestoreBaseUrl + "/users";
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == 200) {
+                JsonNode jsonResponse = objectMapper.readTree(response.body());
+
+                if (jsonResponse.has("documents")) {
+                    JsonNode documents = jsonResponse.get("documents");
+
+                    for (JsonNode document : documents) {
+                        try {
+                            Map<String, Object> userData = fromFirestoreDocument(document);
+                            String userEmail = (String) userData.get("email");
+
+                            if (email.equals(userEmail)) {
+                                String userId = (String) userData.get("userId");
+                                System.out.println("Found userId: " + userId + " for email: " + email);
+                                return userId;
+                            }
+                        } catch (Exception e) {
+                            System.err.println("Error processing user document: " + e.getMessage());
+                            continue;
+                        }
+                    }
+                }
+            }
+
+            System.out.println("No userId found for email: " + email);
+            return null;
+
+        } catch (Exception e) {
+            System.err.println("Error looking up userId by email: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
     }
 
     /**
@@ -716,7 +547,7 @@ public class FirebaseConnection {
         }
 
         // Fall back to email lookup
-        return getUserIdByEmail(user.getEmail());
+        return getUserIdFromEmail(user.getEmail());
     }
 
     /**
@@ -1249,44 +1080,6 @@ public class FirebaseConnection {
     }
 
     /**
-     * Removes an email from the email index in Firestore
-     * 
-     * @param email The email to remove from the index
-     * @return true if the removal was successful, false otherwise
-     */
-    private boolean removeEmailFromIndex(String email) {
-        try {
-            // Convert email to a valid Firestore document ID
-            String emailKey = email.replace(".", "_DOT_").replace("@", "_AT_");
-
-            // URL for the email index document
-            String url = firestoreBaseUrl + "/emailIndex/" + emailKey + "?key=" + apiKey;
-
-            // Create DELETE request
-            HttpRequest request = HttpRequest.newBuilder()
-                    .uri(URI.create(url))
-                    .DELETE()
-                    .build();
-
-            // Send request
-            HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
-
-            if (response.statusCode() == 200) {
-                System.out.println("Email removed from index successfully: " + email);
-                return true;
-            } else {
-                System.err.println("Failed to remove email from index. Status: " + response.statusCode());
-                System.err.println("Response: " + response.body());
-                return false;
-            }
-        } catch (Exception e) {
-            System.err.println("Error removing email from index: " + e.getMessage());
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    /**
      * Deletes all user data from Firestore
      * 
      * @param email The email of the user whose data to delete
@@ -1297,11 +1090,8 @@ public class FirebaseConnection {
             // Remove the user from the database
             boolean userRemoved = removeUserFromDatabase(email);
 
-            // Remove the email from the index
-            boolean indexRemoved = removeEmailFromIndex(email);
-
-            // Return true only if both operations succeeded
-            return userRemoved && indexRemoved;
+            // Return true if user removal succeeded
+            return userRemoved;
         } catch (Exception e) {
             System.err.println("Error deleting user data: " + e.getMessage());
             e.printStackTrace();
@@ -1318,7 +1108,7 @@ public class FirebaseConnection {
     private boolean removeUserFromDatabase(String email) {
         try {
             // First get the userId from email
-            String userId = getUserIdByEmail(email);
+            String userId = getUserIdFromEmail(email);
             if (userId == null) {
                 System.err.println("User not found for email: " + email);
                 return false;

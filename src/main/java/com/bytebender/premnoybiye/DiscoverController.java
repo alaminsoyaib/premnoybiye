@@ -156,7 +156,7 @@ public class DiscoverController {
 
             // Load user image
             if (user.getImage() != null && !user.getImage().isEmpty()) {
-                component.setImage(user.getImage(), cardImg, 258, 258, true, 0);
+                component.setImage(user.getImage(), cardImg, 258, 358, true, 0);
                 component.setImage(user.getImage(), blurImg, 258, 358, false, 0);
 
                 javafx.scene.shape.Rectangle clip = new javafx.scene.shape.Rectangle(258, 358);
