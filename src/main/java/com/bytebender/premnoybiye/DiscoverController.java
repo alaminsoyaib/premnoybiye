@@ -264,6 +264,18 @@ public class DiscoverController {
                 // Update local CurrentUser object
                 AuthController.CurrentUser.addLikedUser(currentDisplayUser.getUserId());
 
+                // Check if this creates a match
+                boolean isMatch = firebaseConnection.checkAndCreateMatch(
+                        AuthController.CurrentUser.getUserId(),
+                        currentDisplayUser.getUserId());
+
+                if (isMatch) {
+                    // Update local CurrentUser object with the match
+                    AuthController.CurrentUser.addMatchedUser(currentDisplayUser.getUserId());
+                    System.out.println("🎉 It's a match with: " + currentDisplayUser.getName());
+                    // You could show a match notification here if desired
+                }
+
                 // Show next user
                 showNextUser();
 

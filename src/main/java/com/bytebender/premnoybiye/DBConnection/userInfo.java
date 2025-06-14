@@ -21,6 +21,7 @@ public class userInfo {
     private String userId = ""; // Firebase Authentication UID used as primary key
     private List<String> likedUsers = new ArrayList<>(); // List of liked user IDs
     private List<String> rejectedUsers = new ArrayList<>(); // List of rejected user IDs
+    private List<String> matchedUsers = new ArrayList<>(); // List of matched user IDs
 
     public userInfo(String name, String email, String dob, String gender, String religion,
             String city, String image, String education, String profession, String income, String bio, String prefAge,
@@ -199,7 +200,15 @@ public class userInfo {
         this.rejectedUsers = rejectedUsers;
     }
 
-    // Helper methods to add individual users to liked/rejected lists
+    public List<String> getMatchedUsers() {
+        return matchedUsers;
+    }
+
+    public void setMatchedUsers(List<String> matchedUsers) {
+        this.matchedUsers = matchedUsers;
+    }
+
+    // Helper methods to add individual users to liked/rejected/matched lists
     public void addLikedUser(String userId) {
         if (!this.likedUsers.contains(userId)) {
             this.likedUsers.add(userId);
@@ -209,6 +218,12 @@ public class userInfo {
     public void addRejectedUser(String userId) {
         if (!this.rejectedUsers.contains(userId)) {
             this.rejectedUsers.add(userId);
+        }
+    }
+
+    public void addMatchedUser(String userId) {
+        if (!this.matchedUsers.contains(userId)) {
+            this.matchedUsers.add(userId);
         }
     }
 

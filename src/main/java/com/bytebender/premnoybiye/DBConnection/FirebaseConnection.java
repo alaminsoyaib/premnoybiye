@@ -413,18 +413,20 @@ public class FirebaseConnection {
                             (String) userData.getOrDefault("prefAge", ""),
                             (String) userData.getOrDefault("prefLocation", ""),
                             (String) userData.getOrDefault("prefProfession", ""),
-                            userId);
-
-                    // Set liked and rejected users lists
+                            userId); // Set liked and rejected users lists
                     @SuppressWarnings("unchecked")
                     java.util.List<String> likedUsers = (java.util.List<String>) userData.getOrDefault("likedUsers",
                             new java.util.ArrayList<String>());
                     @SuppressWarnings("unchecked")
                     java.util.List<String> rejectedUsers = (java.util.List<String>) userData
                             .getOrDefault("rejectedUsers", new java.util.ArrayList<String>());
+                    @SuppressWarnings("unchecked")
+                    java.util.List<String> matchedUsers = (java.util.List<String>) userData
+                            .getOrDefault("matchedUsers", new java.util.ArrayList<String>());
 
                     user.setLikedUsers(likedUsers);
                     user.setRejectedUsers(rejectedUsers);
+                    user.setMatchedUsers(matchedUsers);
 
                     System.out.println("User login successful: " + email + " (userId: " + userId + ")");
                     return user;
@@ -1327,7 +1329,121 @@ public class FirebaseConnection {
     }
 
     /**
-     * Helper method to update user interaction lists (liked/rejected)
+     * Add a user to the matched users list
+     */
+    public boolean addToMatchedUsers(String userId, String targetUserId) {
+        return updateUserInteractionList(userId, targetUserId, "matchedUsers", "add");
+    }
+
+    /**
+     * Check if two users have liked each other and create a match
+     */
+    public boolean checkAndCreateMatch(String userId, String targetUserId) {
+        try {
+            // Get the target user's data to check if they liked the current user
+            String getTargetUserUrl = firestoreBaseUrl + "/users/" + targetUserId + "?key=" + apiKey;
+
+            HttpRequest getRequest = HttpRequest.newBuilder()
+                    .uri(URI.create(getTargetUserUrl))
+                    .GET()
+                    .build();
+
+            HttpResponse<String> getResponse = httpClient.send(getRequest, HttpResponse.BodyHandlers.ofString());
+
+            if (getResponse.statusCode() == 200) {
+                JsonNode targetUserDocument = objectMapper.readTree(getResponse.body());
+                Map<String, Object> targetUserData = fromFirestoreDocument(targetUserDocument);
+
+                @SuppressWarnings("unchecked")
+                java.util.List<String> targetUserLikedUsers = (java.util.List<String>) targetUserData
+                        .getOrDefault("likedUsers", new java.util.ArrayList<String>());
+
+                // Check if target user has liked the current user
+                if (targetUserLikedUsers.contains(userId)) {
+                    // It's a match! Add both users to each other's matchedUsers list
+                    boolean match1 = addToMatchedUsers(userId, targetUserId);
+                    boolean match2 = addToMatchedUsers(targetUserId, userId);
+
+                    if (match1 && match2) {
+                        System.out.println("Match created between users: " + userId + " and " + targetUserId);
+                        return true;
+                    }
+                }
+            }
+            return false;
+        } catch (Exception e) {
+            System.err.println("Error checking for match: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    /**
+     * Get user information by user ID
+     */
+    public userInfo getUserById(String userId) {
+        try {
+            String getUserUrl = firestoreBaseUrl + "/users/" + userId + "?key=" + apiKey;
+
+            HttpRequest getRequest = HttpRequest.newBuilder()
+                    .uri(URI.create(getUserUrl))
+                    .GET()
+                    .build();
+
+            HttpResponse<String> getResponse = httpClient.send(getRequest, HttpResponse.BodyHandlers.ofString());
+
+            if (getResponse.statusCode() == 200) {
+                JsonNode userDocument = objectMapper.readTree(getResponse.body());
+                Map<String, Object> userData = fromFirestoreDocument(userDocument);
+
+                // Convert the map to userInfo object
+                userInfo user = new userInfo(
+                        (String) userData.getOrDefault("name", ""),
+                        (String) userData.getOrDefault("email", ""),
+                        (String) userData.getOrDefault("dob", ""),
+                        (String) userData.getOrDefault("gender", ""),
+                        (String) userData.getOrDefault("religion", ""),
+                        (String) userData.getOrDefault("city", ""),
+                        (String) userData.getOrDefault("image", ""),
+                        (String) userData.getOrDefault("education", ""),
+                        (String) userData.getOrDefault("profession", ""),
+                        (String) userData.getOrDefault("income", ""),
+                        (String) userData.getOrDefault("bio", ""),
+                        (String) userData.getOrDefault("prefAge", ""),
+                        (String) userData.getOrDefault("prefLocation", ""),
+                        (String) userData.getOrDefault("prefProfession", ""),
+                        userId);
+
+                // Set the interaction lists if they exist
+                @SuppressWarnings("unchecked")
+                java.util.List<String> likedUsers = (java.util.List<String>) userData.getOrDefault("likedUsers",
+                        new java.util.ArrayList<>());
+                user.setLikedUsers(likedUsers);
+
+                @SuppressWarnings("unchecked")
+                java.util.List<String> rejectedUsers = (java.util.List<String>) userData.getOrDefault("rejectedUsers",
+                        new java.util.ArrayList<>());
+                user.setRejectedUsers(rejectedUsers);
+
+                @SuppressWarnings("unchecked")
+                java.util.List<String> matchedUsers = (java.util.List<String>) userData.getOrDefault("matchedUsers",
+                        new java.util.ArrayList<>());
+                user.setMatchedUsers(matchedUsers);
+
+                return user;
+            } else {
+                System.err.println("Failed to get user by ID. Status: " + getResponse.statusCode());
+                return null;
+            }
+        } catch (Exception e) {
+            System.err.println("Error getting user by ID: " + e.getMessage());
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    /**
+     * Helper method to update user interaction lists (liked/rejected/matched)
      */
     private boolean updateUserInteractionList(String userId, String targetUserId, String listType, String action) {
         try {
