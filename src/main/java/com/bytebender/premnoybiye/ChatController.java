@@ -12,6 +12,8 @@ import com.bytebender.premnoybiye.DBConnection.Message;
 import com.bytebender.premnoybiye.DBConnection.userInfo;
 import com.bytebender.premnoybiye.Component.Component;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -20,6 +22,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.OverrunStyle;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -27,20 +30,23 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public class ChatController {
-
     private FirebaseConnection firebaseConnection = new FirebaseConnection();
     private Component component = new Component();
     private List<userInfo> matchedUsersList = new ArrayList<>();
     private userInfo selectedUser = null;
     private List<Message> currentConversation = new ArrayList<>();
+    private Timeline messagePollingTimer;
+    private int lastMessageCount = 0;
 
     @FXML
     private VBox userlistHolder;
@@ -63,6 +69,9 @@ public class ChatController {
         displayUserList();
         setupEventHandlers();
         showInitialState();
+
+        // Ensure polling is stopped when initializing
+        stopMessagePolling();
     }
 
     private void setupEventHandlers() {
@@ -175,10 +184,14 @@ public class ChatController {
     }
 
     private void selectUser(userInfo user) {
+        // Stop any existing polling
+        stopMessagePolling();
+
         selectedUser = user;
         updateChatHeader();
         loadConversation();
         enableChatInput();
+        startMessagePolling();
     }
 
     private void updateChatHeader() {
@@ -215,20 +228,41 @@ public class ChatController {
             conversationHolder.getChildren().add(messageBox);
         }
 
+        // Force layout refresh
+        conversationHolder.autosize();
+        conversationHolder.applyCss();
+        conversationHolder.layout();
+
         // Scroll to bottom after loading messages
         Platform.runLater(this::scrollToBottom);
     }
 
     private VBox createMessageBox(Message message) {
+        // Create main container for the entire message row
+        HBox messageRow = new HBox();
+        messageRow.setMaxWidth(Double.MAX_VALUE);
+        messageRow.setFillHeight(false);
+
+        // Create message content container
         VBox messageBox = new VBox();
         messageBox.setSpacing(4);
-        messageBox.setMaxWidth(400);
+        messageBox.setMaxWidth(350); // Max width for individual message bubble
+        messageBox.setMinWidth(80); // Min width to prevent too narrow bubbles
 
         // Create message content
         Label contentLabel = new Label(message.getContent());
         contentLabel.setWrapText(true);
-        contentLabel.setPadding(new Insets(8, 12, 8, 12));
+        contentLabel.setPadding(new Insets(10, 14, 10, 14));
         contentLabel.setFont(Font.font("Trebuchet MS", 14));
+        contentLabel.setMaxWidth(350); // Match messageBox max width
+        contentLabel.setMinWidth(80); // Match messageBox min width
+        contentLabel.setMinHeight(Label.USE_PREF_SIZE); // Use preferred height
+        contentLabel.setMaxHeight(Double.MAX_VALUE); // Allow unlimited height
+        contentLabel.setEllipsisString(""); // Remove ellipsis
+        contentLabel.setTextOverrun(OverrunStyle.CLIP); // Don't use ellipsis
+
+        // Set HBox grow properties to ensure proper width distribution
+        HBox.setHgrow(contentLabel, Priority.ALWAYS);
 
         // Create time label
         Label timeLabel = new Label(message.getFormattedTime());
@@ -238,21 +272,38 @@ public class ChatController {
         boolean isMyMessage = message.getSenderId().equals(AuthController.CurrentUser.getUserId());
 
         if (isMyMessage) {
-            // My message - align right, blue background
+            // My message - align right, purple background
+            messageRow.setAlignment(Pos.CENTER_RIGHT);
             messageBox.setAlignment(Pos.CENTER_RIGHT);
-            contentLabel.setStyle("-fx-background-color: #6631c4; -fx-text-fill: white; -fx-background-radius: 12;");
-            timeLabel.setStyle("-fx-text-fill: #666666; -fx-alignment: center-right;");
-            VBox.setMargin(messageBox, new Insets(0, 0, 0, 50));
+            contentLabel.setStyle(
+                    "-fx-background-color: #6631c4; -fx-text-fill: white; -fx-background-radius: 18 18 4 18; -fx-label-padding: 0; -fx-text-overrun: clip;");
+            timeLabel.setStyle("-fx-text-fill: #666666;");
+            timeLabel.setAlignment(Pos.CENTER_RIGHT);
+
+            // Add margin to push message to the right and leave space on left
+            HBox.setMargin(messageBox, new Insets(5, 16, 5, 80));
         } else {
             // Their message - align left, gray background
+            messageRow.setAlignment(Pos.CENTER_LEFT);
             messageBox.setAlignment(Pos.CENTER_LEFT);
-            contentLabel.setStyle("-fx-background-color: #f0f0f0; -fx-text-fill: #333333; -fx-background-radius: 12;");
-            timeLabel.setStyle("-fx-text-fill: #666666; -fx-alignment: center-left;");
-            VBox.setMargin(messageBox, new Insets(0, 50, 0, 0));
+            contentLabel.setStyle(
+                    "-fx-background-color: #E5E5EA; -fx-text-fill: #000000; -fx-background-radius: 18 18 18 4; -fx-label-padding: 0; -fx-text-overrun: clip;");
+            timeLabel.setStyle("-fx-text-fill: #666666;");
+            timeLabel.setAlignment(Pos.CENTER_LEFT);
+
+            // Add margin to push message to the left and leave space on right
+            HBox.setMargin(messageBox, new Insets(5, 80, 5, 16));
         }
 
         messageBox.getChildren().addAll(contentLabel, timeLabel);
-        return messageBox;
+        messageRow.getChildren().add(messageBox);
+
+        // Create a VBox wrapper to return (since the method signature expects VBox)
+        VBox wrapper = new VBox();
+        wrapper.setMaxWidth(Double.MAX_VALUE);
+        wrapper.getChildren().add(messageRow);
+
+        return wrapper;
     }
 
     private void handleSendMessage(MouseEvent event) {
@@ -266,17 +317,30 @@ public class ChatController {
                 AuthController.CurrentUser.getUserId(),
                 selectedUser.getUserId(),
                 messageText);
-
         boolean success = firebaseConnection.sendMessage(message);
         if (success) {
             // Add to current conversation and display
             currentConversation.add(message);
+            lastMessageCount = currentConversation.size(); // Update message count
+
+            // Create and add the message box
             VBox messageBox = createMessageBox(message);
             conversationHolder.getChildren().add(messageBox);
 
+            // Force layout refresh
+            conversationHolder.autosize();
+            conversationHolder.applyCss();
+            conversationHolder.layout();
+
             // Clear input and scroll to bottom
             msgInput.clear();
-            Platform.runLater(this::scrollToBottom);
+            Platform.runLater(() -> {
+                scrollToBottom();
+                // Double check the scroll after a brief delay to ensure it works
+                Platform.runLater(this::scrollToBottom);
+            });
+
+            System.out.println("Message sent and displayed: " + messageText);
         } else {
             System.err.println("Failed to send message");
         }
@@ -337,7 +401,10 @@ public class ChatController {
         initialLabel.setStyle("-fx-text-fill: #666666; -fx-font-size: 16px;");
         VBox initialBox = new VBox(initialLabel);
         initialBox.setAlignment(Pos.CENTER);
+        initialBox.setMaxWidth(Double.MAX_VALUE);
+        initialBox.setMaxHeight(Double.MAX_VALUE);
         initialBox.setSpacing(10);
+        VBox.setVgrow(initialBox, Priority.ALWAYS);
         conversationHolder.getChildren().add(initialBox);
     }
 
@@ -370,7 +437,10 @@ public class ChatController {
 
         VBox emptyBox = new VBox(startLabel, subLabel);
         emptyBox.setAlignment(Pos.CENTER);
+        emptyBox.setMaxWidth(Double.MAX_VALUE);
+        emptyBox.setMaxHeight(Double.MAX_VALUE);
         emptyBox.setSpacing(8);
+        VBox.setVgrow(emptyBox, Priority.ALWAYS);
 
         conversationHolder.getChildren().add(emptyBox);
     }
@@ -396,21 +466,27 @@ public class ChatController {
 
         if (parent instanceof ScrollPane) {
             ScrollPane scrollPane = (ScrollPane) parent;
-            scrollPane.setVvalue(1.0);
+            // Force layout update first
+            scrollPane.applyCss();
+            scrollPane.layout();
+            // Then scroll to bottom
+            Platform.runLater(() -> {
+                scrollPane.setVvalue(1.0);
+            });
         }
     }
 
     // private void scrollUserListToTop() {
-    //     // Find the ScrollPane parent of userlistHolder
-    //     javafx.scene.Node parent = userlistHolder.getParent();
-    //     while (parent != null && !(parent instanceof ScrollPane)) {
-    //         parent = parent.getParent();
-    //     }
+    // // Find the ScrollPane parent of userlistHolder
+    // javafx.scene.Node parent = userlistHolder.getParent();
+    // while (parent != null && !(parent instanceof ScrollPane)) {
+    // parent = parent.getParent();
+    // }
 
-    //     if (parent instanceof ScrollPane) {
-    //         ScrollPane scrollPane = (ScrollPane) parent;
-    //         scrollPane.setVvalue(0.0);
-    //     }
+    // if (parent instanceof ScrollPane) {
+    // ScrollPane scrollPane = (ScrollPane) parent;
+    // scrollPane.setVvalue(0.0);
+    // }
     // }
 
     private String calculateAge(String dob) {
@@ -425,14 +501,90 @@ public class ChatController {
             System.err.println("Error calculating age: " + e.getMessage());
         }
         return "N/A";
-    }
+    } // Method to refresh the chat (can be called when returning to this page)
 
-    // Method to refresh the chat (can be called when returning to this page)
     public void refreshChat() {
         loadMatchedUsers();
         displayUserList();
         if (selectedUser != null) {
             loadConversation();
         }
+    }
+
+    // Real-time message polling methods
+    private void startMessagePolling() {
+        if (selectedUser == null)
+            return;
+
+        // Stop any existing polling first
+        stopMessagePolling();
+
+        // Set initial message count
+        lastMessageCount = currentConversation.size();
+
+        // Create timeline for polling every 2 seconds
+        messagePollingTimer = new Timeline(new KeyFrame(
+                Duration.seconds(2),
+                e -> checkForNewMessages()));
+        messagePollingTimer.setCycleCount(Timeline.INDEFINITE);
+        messagePollingTimer.play();
+
+        System.out.println("Started message polling for user: " + selectedUser.getName());
+    }
+
+    private void stopMessagePolling() {
+        if (messagePollingTimer != null) {
+            messagePollingTimer.stop();
+            messagePollingTimer = null;
+            System.out.println("Stopped message polling");
+        }
+    }
+
+    private void checkForNewMessages() {
+        if (selectedUser == null)
+            return;
+
+        try {
+            // Get latest conversation
+            List<Message> latestConversation = firebaseConnection.getConversation(
+                    AuthController.CurrentUser.getUserId(),
+                    selectedUser.getUserId());
+
+            // Check if there are new messages
+            if (latestConversation.size() > lastMessageCount) {
+                System.out.println("New messages detected: " + (latestConversation.size() - lastMessageCount));
+
+                // Add only the new messages to avoid flickering
+                for (int i = lastMessageCount; i < latestConversation.size(); i++) {
+                    Message newMessage = latestConversation.get(i);
+                    currentConversation.add(newMessage);
+
+                    // Update UI on JavaFX thread
+                    Platform.runLater(() -> {
+                        VBox messageBox = createMessageBox(newMessage);
+                        conversationHolder.getChildren().add(messageBox);
+
+                        // Force layout refresh and scroll to bottom
+                        conversationHolder.autosize();
+                        conversationHolder.applyCss();
+                        conversationHolder.layout();
+
+                        Platform.runLater(() -> {
+                            scrollToBottom();
+                        });
+                    });
+                }
+
+                // Update message count
+                lastMessageCount = latestConversation.size();
+            }
+        } catch (Exception e) {
+            System.err.println("Error checking for new messages: " + e.getMessage());
+        }
+    }
+
+    // Cleanup method to stop polling when controller is destroyed
+    public void cleanup() {
+        stopMessagePolling();
     }
 }
