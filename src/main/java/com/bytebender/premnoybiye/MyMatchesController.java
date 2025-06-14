@@ -16,6 +16,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -216,6 +217,9 @@ public class MyMatchesController {
             // Create a new stage for the modal
             Stage modalStage = new Stage();
             modalController.setModalStage(modalStage);
+
+            Image icon = new Image(App.class.getResourceAsStream("/com/bytebender/premnoybiye/img/Main-Logo.png"));
+            modalStage.getIcons().add(icon);
 
             modalStage.setTitle(user.getName() + "'s Profile");
             modalStage.initModality(Modality.APPLICATION_MODAL);
