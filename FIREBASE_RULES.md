@@ -12,19 +12,19 @@ service cloud.firestore {
       // Allow other authenticated users to read basic profile info (for matching)
       allow read: if request.auth != null;
     }
-    
+
     // Conversations collection - only participants can access
     match /conversations/{conversationId} {
       // Allow access if user is part of the conversation
-      allow read, write: if request.auth != null && 
-        (conversationId.split('_')[0] == request.auth.uid || 
+      allow read, write: if request.auth != null &&
+        (conversationId.split('_')[0] == request.auth.uid ||
          conversationId.split('_')[1] == request.auth.uid);
-      
+
       // Messages subcollection
       match /messages/{messageId} {
         // Allow read/write if user is part of the conversation
-        allow read, write: if request.auth != null && 
-          (conversationId.split('_')[0] == request.auth.uid || 
+        allow read, write: if request.auth != null &&
+          (conversationId.split('_')[0] == request.auth.uid ||
            conversationId.split('_')[1] == request.auth.uid);
       }
     }
@@ -43,6 +43,7 @@ service cloud.firestore {
 4. **Authentication Required**: All operations require authentication.
 
 ## For Firebase Authentication (if needed):
+
 - Enable Email/Password authentication
 - Consider enabling additional providers if needed (Google, Facebook, etc.)
 

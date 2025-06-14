@@ -23,7 +23,8 @@ public class Message {
         this.isRead = false;
     }
 
-    public Message(String messageId, String senderId, String receiverId, String content, String timestamp, boolean isRead) {
+    public Message(String messageId, String senderId, String receiverId, String content, String timestamp,
+            boolean isRead) {
         this.messageId = messageId;
         this.senderId = senderId;
         this.receiverId = receiverId;

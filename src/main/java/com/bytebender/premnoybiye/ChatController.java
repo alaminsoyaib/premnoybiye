@@ -67,10 +67,10 @@ public class ChatController {
     private void setupEventHandlers() {
         // Send button click
         sendButton.setOnMouseClicked(this::handleSendMessage);
-        
+
         // Info button click
         infoButton.setOnMouseClicked(this::handleInfoButton);
-        
+
         // Enter key in message input
         msgInput.setOnKeyPressed(event -> {
             if (event.getCode() == KeyCode.ENTER) {
@@ -82,10 +82,10 @@ public class ChatController {
     private void loadMatchedUsers() {
         if (AuthController.CurrentUser != null && AuthController.CurrentUser.getMatchedUsers() != null) {
             matchedUsersList.clear();
-            
+
             // Get the list of matched user IDs
             List<String> matchedUserIds = AuthController.CurrentUser.getMatchedUsers();
-            
+
             // Fetch user details for each matched user ID
             for (String userId : matchedUserIds) {
                 userInfo matchedUser = firebaseConnection.getUserById(userId);
@@ -93,14 +93,14 @@ public class ChatController {
                     matchedUsersList.add(matchedUser);
                 }
             }
-            
+
             System.out.println("Loaded " + matchedUsersList.size() + " matched users for chat");
         }
     }
 
     private void displayUserList() {
         userlistHolder.getChildren().clear();
-        
+
         if (matchedUsersList.isEmpty()) {
             showEmptyMatchesState();
             return;
@@ -111,15 +111,15 @@ public class ChatController {
                 // Load userchatlist.fxml for each user
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("userchatlist.fxml"));
                 HBox chatListItem = loader.load();
-                
+
                 // Populate the chat list item with user data
                 populateChatListItem(chatListItem, user);
-                
+
                 // Add click handler
                 chatListItem.setOnMouseClicked(event -> selectUser(user));
-                
+
                 userlistHolder.getChildren().add(chatListItem);
-                
+
             } catch (IOException e) {
                 System.err.println("Error loading chat list item for user: " + user.getName());
                 e.printStackTrace();
@@ -140,7 +140,7 @@ public class ChatController {
             if (userName != null) {
                 userName.setText(user.getName());
             }
-            
+
             if (userLocationAge != null) {
                 String age = calculateAge(user.getDob());
                 userLocationAge.setText(user.getCity() + ", " + age);
@@ -153,8 +153,10 @@ public class ChatController {
                     component.setImage(user.getImage(), blurImg, 48, 48, false, 24);
                 } else {
                     // Set default image if no image available
-                    userImg.setImage(new javafx.scene.image.Image(getClass().getResourceAsStream("img/icon/profile-image.png")));
-                    blurImg.setImage(new javafx.scene.image.Image(getClass().getResourceAsStream("img/icon/profile-image.png")));
+                    userImg.setImage(
+                            new javafx.scene.image.Image(getClass().getResourceAsStream("img/icon/profile-image.png")));
+                    blurImg.setImage(
+                            new javafx.scene.image.Image(getClass().getResourceAsStream("img/icon/profile-image.png")));
                 }
 
                 if (imgStack != null) {
@@ -188,20 +190,20 @@ public class ChatController {
     }
 
     private void loadConversation() {
-        if (selectedUser == null) return;
-        
+        if (selectedUser == null)
+            return;
+
         // Load messages between current user and selected user
         currentConversation = firebaseConnection.getConversation(
-            AuthController.CurrentUser.getUserId(), 
-            selectedUser.getUserId()
-        );
-        
+                AuthController.CurrentUser.getUserId(),
+                selectedUser.getUserId());
+
         displayConversation();
     }
 
     private void displayConversation() {
         conversationHolder.getChildren().clear();
-        
+
         if (currentConversation.isEmpty()) {
             showEmptyConversationState();
             return;
@@ -211,7 +213,7 @@ public class ChatController {
             VBox messageBox = createMessageBox(message);
             conversationHolder.getChildren().add(messageBox);
         }
-        
+
         // Scroll to bottom after loading messages
         Platform.runLater(this::scrollToBottom);
     }
@@ -220,20 +222,20 @@ public class ChatController {
         VBox messageBox = new VBox();
         messageBox.setSpacing(4);
         messageBox.setMaxWidth(400);
-        
+
         // Create message content
         Label contentLabel = new Label(message.getContent());
         contentLabel.setWrapText(true);
         contentLabel.setPadding(new Insets(8, 12, 8, 12));
         contentLabel.setFont(Font.font("Trebuchet MS", 14));
-        
+
         // Create time label
         Label timeLabel = new Label(message.getFormattedTime());
         timeLabel.setFont(Font.font("Trebuchet MS", 10));
         timeLabel.setStyle("-fx-text-fill: #666666;");
-        
+
         boolean isMyMessage = message.getSenderId().equals(AuthController.CurrentUser.getUserId());
-        
+
         if (isMyMessage) {
             // My message - align right, blue background
             messageBox.setAlignment(Pos.CENTER_RIGHT);
@@ -247,7 +249,7 @@ public class ChatController {
             timeLabel.setStyle("-fx-text-fill: #666666; -fx-alignment: center-left;");
             VBox.setMargin(messageBox, new Insets(0, 50, 0, 0));
         }
-        
+
         messageBox.getChildren().addAll(contentLabel, timeLabel);
         return messageBox;
     }
@@ -260,10 +262,9 @@ public class ChatController {
 
         // Create and send message
         Message message = new Message(
-            AuthController.CurrentUser.getUserId(),
-            selectedUser.getUserId(),
-            messageText
-        );
+                AuthController.CurrentUser.getUserId(),
+                selectedUser.getUserId(),
+                messageText);
 
         boolean success = firebaseConnection.sendMessage(message);
         if (success) {
@@ -271,7 +272,7 @@ public class ChatController {
             currentConversation.add(message);
             VBox messageBox = createMessageBox(message);
             conversationHolder.getChildren().add(messageBox);
-            
+
             // Clear input and scroll to bottom
             msgInput.clear();
             Platform.runLater(this::scrollToBottom);
@@ -296,23 +297,23 @@ public class ChatController {
             // Load the user profile FXML
             FXMLLoader loader = new FXMLLoader(getClass().getResource("userprofile.fxml"));
             Parent modalRoot = loader.load();
-            
+
             // Get the controller and set the user data
             UserProfileController modalController = loader.getController();
             modalController.setDisplayUser(user);
-            
+
             // Create a new stage for the modal
             Stage modalStage = new Stage();
             modalController.setModalStage(modalStage);
-            
+
             modalStage.setTitle(user.getName() + "'s Profile");
             modalStage.initModality(Modality.APPLICATION_MODAL);
             modalStage.setScene(new Scene(modalRoot));
             modalStage.setResizable(false);
-            
+
             // Show the modal and wait for it to close
             modalStage.showAndWait();
-            
+
         } catch (IOException e) {
             System.err.println("Error loading user profile modal: " + e.getMessage());
             e.printStackTrace();
@@ -326,7 +327,7 @@ public class ChatController {
         infoButton.setVisible(false);
         disableChatInput();
         conversationHolder.getChildren().clear();
-        
+
         // Show initial message
         Label initialLabel = new Label("Select a user from the list to start chatting");
         initialLabel.setStyle("-fx-text-fill: #666666; -fx-font-size: 16px;");
@@ -339,16 +340,16 @@ public class ChatController {
     private void showEmptyMatchesState() {
         Label noMatchesLabel = new Label("No matches yet!");
         noMatchesLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: #666666;");
-        
+
         Label subLabel = new Label("Find your perfect match in the Discover section");
         subLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #999999;");
-        
+
         VBox emptyBox = new VBox(noMatchesLabel, subLabel);
         emptyBox.setAlignment(Pos.CENTER);
         emptyBox.setSpacing(8);
-        
+
         userlistHolder.getChildren().add(emptyBox);
-        
+
         // Update right side
         userName.setText("No matches");
         userLocationAge.setText("Find matches in Discover");
@@ -359,14 +360,14 @@ public class ChatController {
     private void showEmptyConversationState() {
         Label startLabel = new Label("Start your conversation!");
         startLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: #666666;");
-        
+
         Label subLabel = new Label("Say hello to " + selectedUser.getName());
         subLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #999999;");
-        
+
         VBox emptyBox = new VBox(startLabel, subLabel);
         emptyBox.setAlignment(Pos.CENTER);
         emptyBox.setSpacing(8);
-        
+
         conversationHolder.getChildren().add(emptyBox);
     }
 
@@ -380,13 +381,15 @@ public class ChatController {
         msgInput.setDisable(true);
         sendButton.setDisable(true);
         msgInput.setPromptText("Select a user to start chatting");
-    }    private void scrollToBottom() {
+    }
+
+    private void scrollToBottom() {
         // Find the ScrollPane parent of conversationHolder
         javafx.scene.Node parent = conversationHolder.getParent();
         while (parent != null && !(parent instanceof ScrollPane)) {
             parent = parent.getParent();
         }
-        
+
         if (parent instanceof ScrollPane) {
             ScrollPane scrollPane = (ScrollPane) parent;
             scrollPane.setVvalue(1.0);
@@ -399,7 +402,7 @@ public class ChatController {
         while (parent != null && !(parent instanceof ScrollPane)) {
             parent = parent.getParent();
         }
-        
+
         if (parent instanceof ScrollPane) {
             ScrollPane scrollPane = (ScrollPane) parent;
             scrollPane.setVvalue(0.0);

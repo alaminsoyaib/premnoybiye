@@ -1538,7 +1538,8 @@ public class FirebaseConnection {
             String jsonData = objectMapper.writeValueAsString(firestoreDoc);
 
             // Send to Firestore
-            String url = firestoreBaseUrl + "/conversations/" + conversationId + "/messages/" + messageId + "?key=" + apiKey;
+            String url = firestoreBaseUrl + "/conversations/" + conversationId + "/messages/" + messageId + "?key="
+                    + apiKey;
 
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(url))
@@ -1566,9 +1567,10 @@ public class FirebaseConnection {
     /**
      * Get conversation between two users
      */
-    public java.util.List<com.bytebender.premnoybiye.DBConnection.Message> getConversation(String userId1, String userId2) {
+    public java.util.List<com.bytebender.premnoybiye.DBConnection.Message> getConversation(String userId1,
+            String userId2) {
         java.util.List<com.bytebender.premnoybiye.DBConnection.Message> messages = new java.util.ArrayList<>();
-        
+
         try {
             String conversationId = createConversationId(userId1, userId2);
             String url = firestoreBaseUrl + "/conversations/" + conversationId + "/messages?key=" + apiKey;
@@ -1582,27 +1584,26 @@ public class FirebaseConnection {
 
             if (response.statusCode() == 200) {
                 JsonNode documentsNode = objectMapper.readTree(response.body());
-                
+
                 if (documentsNode.has("documents")) {
                     for (JsonNode messageDoc : documentsNode.get("documents")) {
                         Map<String, Object> messageData = fromFirestoreDocument(messageDoc);
-                        
+
                         com.bytebender.premnoybiye.DBConnection.Message message = new com.bytebender.premnoybiye.DBConnection.Message(
-                            (String) messageData.getOrDefault("messageId", ""),
-                            (String) messageData.getOrDefault("senderId", ""),
-                            (String) messageData.getOrDefault("receiverId", ""),
-                            (String) messageData.getOrDefault("content", ""),
-                            (String) messageData.getOrDefault("timestamp", ""),
-                            Boolean.parseBoolean(messageData.getOrDefault("isRead", "false").toString())
-                        );
-                        
+                                (String) messageData.getOrDefault("messageId", ""),
+                                (String) messageData.getOrDefault("senderId", ""),
+                                (String) messageData.getOrDefault("receiverId", ""),
+                                (String) messageData.getOrDefault("content", ""),
+                                (String) messageData.getOrDefault("timestamp", ""),
+                                Boolean.parseBoolean(messageData.getOrDefault("isRead", "false").toString()));
+
                         messages.add(message);
                     }
                 }
-                
+
                 // Sort messages by timestamp
                 messages.sort((m1, m2) -> m1.getTimestamp().compareTo(m2.getTimestamp()));
-                
+
             } else if (response.statusCode() == 404) {
                 // No conversation exists yet, return empty list
                 System.out.println("No conversation found between users");
@@ -1614,7 +1615,7 @@ public class FirebaseConnection {
             System.err.println("Error getting conversation: " + e.getMessage());
             e.printStackTrace();
         }
-        
+
         return messages;
     }
 
