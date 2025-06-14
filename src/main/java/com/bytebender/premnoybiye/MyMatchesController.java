@@ -16,6 +16,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
@@ -28,6 +29,9 @@ public class MyMatchesController {
     private FirebaseConnection firebaseConnection = new FirebaseConnection();
     private Component component = new Component();
     private List<userInfo> matchedUsersList = new ArrayList<>();
+
+    @FXML
+    private ScrollPane scrollPane;
 
     @FXML
     private GridPane cardGrid;
@@ -59,6 +63,9 @@ public class MyMatchesController {
 
     private void displayMatchedUsers() {
         // Clear existing content
+        scrollPane.setClip(null);
+        cardGrid.setClip(null);
+
         cardGrid.getChildren().clear();
         cardGrid.getColumnConstraints().clear();
         cardGrid.getRowConstraints().clear();
@@ -140,15 +147,15 @@ public class MyMatchesController {
             // Load user image
             if (cardImg != null) {
                 if (user.getImage() != null && !user.getImage().isEmpty()) {
-                    component.setImage(user.getImage(), cardImg, 258, 358, true, 0);
-                    component.setImage(user.getImage(), blurImg, 258, 358, false, 0);
+                    component.setImage(user.getImage(), cardImg, 200, 298, true, 0);
+                    component.setImage(user.getImage(), blurImg, 200, 298, false, 0);
                 } else {
                     // Set default image if no image available
                     cardImg.setImage(
                             new javafx.scene.image.Image(getClass().getResourceAsStream("img/icon/card-img.png")));
                 }
 
-                javafx.scene.shape.Rectangle clip = new javafx.scene.shape.Rectangle(258, 358);
+                javafx.scene.shape.Rectangle clip = new javafx.scene.shape.Rectangle(200, 298);
                 clip.setArcWidth(20);
                 clip.setArcHeight(20);
                 imgStack.setClip(clip);
