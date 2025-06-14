@@ -185,12 +185,12 @@
                                              <children>
                                                 <StackPane fx:id="imgStack" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="80.0" prefWidth="80.0">
                                                    <children>
-                                                      <ImageView fx:id="blurImg" fitHeight="84.0" fitWidth="84.0" pickOnBounds="true" preserveRatio="true">
+                                                      <ImageView fx:id="blurImg" fitHeight="84.0" fitWidth="84.0" pickOnBounds="true">
                                                          <effect>
-                                                            <MotionBlur angle="360.0" radius="51.8" />
+                                                            <MotionBlur angle="360.0" radius="20.0" />
                                                          </effect>
                                                       </ImageView>
-                                                      <ImageView fx:id="img_inside_imgPicker" fitHeight="84.0" fitWidth="84.0" pickOnBounds="true" />
+                                                      <ImageView fx:id="img_inside_imgPicker" fitHeight="84.0" fitWidth="84.0" pickOnBounds="true" preserveRatio="true" />
                                                    </children>
                                                 </StackPane>
                                              </children>
