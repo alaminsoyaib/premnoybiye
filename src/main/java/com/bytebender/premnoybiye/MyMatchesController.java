@@ -67,7 +67,7 @@ public class MyMatchesController {
 
         VBox loadingContainer = new VBox(15);
         loadingContainer.getChildren().addAll(loadingIndicator, loadingLabel);
-        loadingContainer.setStyle("-fx-alignment: center; -fx-padding: 50px;");
+        loadingContainer.setStyle("-fx-alignment: left; -fx-padding: 24px;");
 
         cardGrid.add(loadingContainer, 0, 0);
     }
