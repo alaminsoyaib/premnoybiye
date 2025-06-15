@@ -254,9 +254,9 @@ public class DiscoverController {
 
     private void showNoMoreUsersMessage() {
         cardName.setText("No More Users");
-        cardBio.setText("You've seen all available users. Check back later for new profiles!");
+        cardBio.setText("Sabr until you find your soulmate");
         cardLocation.setText("N/A");
-        discoverBio.setText("You've seen all available users. Check back later for new profiles!");
+        discoverBio.setText("Sabr until you find your soulmate");
         discoverAge.setText("N/A");
         discoverGender.setText("N/A");
         discoverReligion.setText("N/A");

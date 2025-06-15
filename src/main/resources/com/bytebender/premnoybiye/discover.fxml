@@ -115,7 +115,7 @@
                                                       <Font name="Trebuchet MS Bold" size="16.0" />
                                                    </font>
                                                 </Label>
-                                                <Label fx:id="cardBio" maxWidth="1.7976931348623157E308" opacity="0.5" styleClass="card-subtitle" text="This is a bioThis is a bioThis is a bioThis is a bioThis is a bioThis is a bioThis is a bioThis is a bioThis is a bioThis is a bio" wrapText="true">
+                                                <Label fx:id="cardBio" maxWidth="1.7976931348623157E308" opacity="0.5" styleClass="card-subtitle" text="Sabr until you find your soulmate" wrapText="true">
                                                    <font>
                                                       <Font name="Trebuchet MS" size="14.0" />
                                                    </font>
