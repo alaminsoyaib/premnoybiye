@@ -11,6 +11,11 @@ import java.net.http.HttpResponse;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.function.Consumer;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -24,6 +29,17 @@ public class FirebaseConnection {
     private ObjectMapper objectMapper;
     private HttpClient httpClient;
     private String firestoreBaseUrl;
+    
+    // Cache instance
+    private final DataCache cache = DataCache.getInstance();
+    
+    // Background thread executor for async operations
+    private final Executor backgroundExecutor = Executors.newCachedThreadPool(r -> {
+        Thread t = new Thread(r);
+        t.setDaemon(true);
+        t.setName("Firebase-Background-Thread");
+        return t;
+    });
 
     public FirebaseConnection() {
         loadFirebaseConfig();
@@ -1376,12 +1392,16 @@ public class FirebaseConnection {
             e.printStackTrace();
             return false;
         }
-    }
-
-    /**
-     * Get user information by user ID
+    }    /**
+     * Get user information by user ID with caching
      */
     public userInfo getUserById(String userId) {
+        // Check cache first
+        userInfo cachedUser = cache.getCachedUser(userId);
+        if (cachedUser != null) {
+            return cachedUser;
+        }
+        
         try {
             String getUserUrl = firestoreBaseUrl + "/users/" + userId + "?key=" + apiKey;
 
@@ -1427,8 +1447,10 @@ public class FirebaseConnection {
 
                 @SuppressWarnings("unchecked")
                 java.util.List<String> matchedUsers = (java.util.List<String>) userData.getOrDefault("matchedUsers",
-                        new java.util.ArrayList<>());
-                user.setMatchedUsers(matchedUsers);
+                        new java.util.ArrayList<>());                user.setMatchedUsers(matchedUsers);
+
+                // Cache the user for future requests
+                cache.cacheUser(userId, user);
 
                 return user;
             } else {
@@ -1627,5 +1649,322 @@ public class FirebaseConnection {
         java.util.List<String> userIds = java.util.Arrays.asList(userId1, userId2);
         java.util.Collections.sort(userIds);
         return userIds.get(0) + "_" + userIds.get(1);
+    }
+
+    /**
+     * Asynchronous version of user registration
+     */
+    public CompletableFuture<String> registerUserAsync(String name, String email, String password) {
+        CompletableFuture<String> future = new CompletableFuture<>();
+
+        backgroundExecutor.execute(() -> {
+            try {
+                String userId = registerUser(name, email, password);
+                future.complete(userId);
+            } catch (Exception e) {
+                future.completeExceptionally(e);
+            }
+        });
+
+        return future;
+    }
+
+    /**
+     * Asynchronous user profile update
+     */
+    public CompletableFuture<Boolean> updateUserProfileAsync(userInfo user, String currentEmail) {
+        CompletableFuture<Boolean> future = new CompletableFuture<>();
+
+        backgroundExecutor.execute(() -> {
+            try {
+                boolean result = updateUserProfile(user, currentEmail);
+                future.complete(result);
+            } catch (Exception e) {
+                future.completeExceptionally(e);
+            }
+        });
+
+        return future;
+    }
+
+    /**
+     * Asynchronous user login
+     */
+    public CompletableFuture<userInfo> loginUserAsync(String email, String password) {
+        CompletableFuture<userInfo> future = new CompletableFuture<>();
+
+        backgroundExecutor.execute(() -> {
+            try {
+                userInfo user = loginUser(email, password);
+                future.complete(user);
+            } catch (Exception e) {
+                future.completeExceptionally(e);
+            }
+        });
+
+        return future;
+    }
+
+    /**
+     * Asynchronous image upload
+     */
+    public CompletableFuture<String> uploadImageToStorageAsync(File imageFile, String userId) {
+        CompletableFuture<String> future = new CompletableFuture<>();
+
+        backgroundExecutor.execute(() -> {
+            try {
+                String downloadUrl = uploadImageToStorage(imageFile, userId);
+                future.complete(downloadUrl);
+            } catch (Exception e) {
+                future.completeExceptionally(e);
+            }
+        });
+
+        return future;
+    }
+
+    /**
+     * Asynchronous image upload with token
+     */
+    public CompletableFuture<String> uploadImageToStorageWithTokenAsync(File imageFile, String userId, String idToken) {
+        CompletableFuture<String> future = new CompletableFuture<>();
+
+        backgroundExecutor.execute(() -> {
+            try {
+                String downloadUrl = uploadImageToStorageWithToken(imageFile, userId, idToken);
+                future.complete(downloadUrl);
+            } catch (Exception e) {
+                future.completeExceptionally(e);
+            }
+        });
+
+        return future;
+    }
+
+    /**
+     * Asynchronous password change
+     */
+    public CompletableFuture<Boolean> changePasswordAsync(userInfo user, String currentPassword, String newPassword) {
+        CompletableFuture<Boolean> future = new CompletableFuture<>();
+
+        backgroundExecutor.execute(() -> {
+            try {
+                boolean result = changePassword(user, currentPassword, newPassword);
+                future.complete(result);
+            } catch (Exception e) {
+                future.completeExceptionally(e);
+            }
+        });
+
+        return future;
+    }
+
+    /**
+     * Asynchronous user deletion
+     */
+    public CompletableFuture<Boolean> deleteUserAsync(userInfo user, String password) {
+        CompletableFuture<Boolean> future = new CompletableFuture<>();
+
+        backgroundExecutor.execute(() -> {
+            try {
+                boolean result = deleteUser(user, password);
+                future.complete(result);
+            } catch (Exception e) {
+                future.completeExceptionally(e);
+            }
+        });
+
+        return future;
+    }
+
+    /**
+     * Asynchronous retrieval of users by gender
+     */
+    public CompletableFuture<List<userInfo>> getUsersByGenderAsync(String desiredGender) {
+        CompletableFuture<List<userInfo>> future = new CompletableFuture<>();
+
+        backgroundExecutor.execute(() -> {
+            try {
+                List<userInfo> users = getUsersByGender(desiredGender);
+                future.complete(users);
+            } catch (Exception e) {
+                future.completeExceptionally(e);
+            }
+        });
+
+        return future;
+    }
+
+    /**
+     * Asynchronous message sending
+     */
+    public CompletableFuture<Boolean> sendMessageAsync(com.bytebender.premnoybiye.DBConnection.Message message) {
+        CompletableFuture<Boolean> future = new CompletableFuture<>();
+
+        backgroundExecutor.execute(() -> {
+            try {
+                boolean result = sendMessage(message);
+                future.complete(result);
+            } catch (Exception e) {
+                future.completeExceptionally(e);
+            }
+        });
+
+        return future;
+    }
+
+    /**
+     * Asynchronous conversation retrieval
+     */
+    public CompletableFuture<List<com.bytebender.premnoybiye.DBConnection.Message>> getConversationAsync(String userId1, String userId2) {
+        CompletableFuture<List<com.bytebender.premnoybiye.DBConnection.Message>> future = new CompletableFuture<>();
+
+        backgroundExecutor.execute(() -> {
+            try {
+                List<com.bytebender.premnoybiye.DBConnection.Message> messages = getConversation(userId1, userId2);
+                future.complete(messages);
+            } catch (Exception e) {
+                future.completeExceptionally(e);
+            }
+        });
+
+        return future;
+    }    // ========== ASYNC METHODS FOR PERFORMANCE OPTIMIZATION ==========
+    
+    /**
+     * Async version of getUserById with caching
+     */
+    public void getUserByIdAsync(String userId, Consumer<userInfo> onSuccess, Consumer<String> onError) {
+        // Check cache first
+        userInfo cachedUser = cache.getCachedUser(userId);
+        if (cachedUser != null) {
+            Platform.runLater(() -> onSuccess.accept(cachedUser));
+            return;
+        }
+        
+        CompletableFuture.supplyAsync(() -> {
+            try {
+                return getUserById(userId);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }, backgroundExecutor).thenAccept(user -> {
+            Platform.runLater(() -> {
+                if (user != null) {
+                    cache.cacheUser(userId, user);
+                    onSuccess.accept(user);
+                } else {
+                    onError.accept("User not found");
+                }
+            });
+        }).exceptionally(throwable -> {
+            Platform.runLater(() -> {
+                String errorMsg = throwable.getCause() != null ? 
+                    throwable.getCause().getMessage() : "Unknown error";
+                onError.accept(errorMsg);
+            });
+            return null;
+        });
+    }
+    
+    /**
+     * Async version of getUsersByGender with caching
+     */
+    public void getUsersByGenderAsync(String gender, Consumer<List<userInfo>> onSuccess, Consumer<String> onError) {
+        // Check cache first
+        List<userInfo> cachedUsers = cache.getCachedUsersByGender(gender);
+        if (cachedUsers != null) {
+            Platform.runLater(() -> onSuccess.accept(cachedUsers));
+            return;
+        }
+        
+        CompletableFuture.supplyAsync(() -> {
+            try {
+                return getUsersByGender(gender);
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }, backgroundExecutor).thenAccept(users -> {
+            Platform.runLater(() -> {
+                if (users != null && !users.isEmpty()) {
+                    cache.cacheUsersByGender(gender, users);
+                    onSuccess.accept(users);
+                } else {
+                    onSuccess.accept(new java.util.ArrayList<>());
+                }
+            });
+        }).exceptionally(throwable -> {
+            Platform.runLater(() -> {
+                String errorMsg = throwable.getCause() != null ? 
+                    throwable.getCause().getMessage() : "Unknown error";
+                onError.accept(errorMsg);
+            });
+            return null;
+        });
+    }
+    
+    /**
+     * Load multiple users by IDs async - optimized for matched users
+     */
+    public void loadMultipleUsersAsync(List<String> userIds, Consumer<List<userInfo>> onSuccess, 
+                                     Consumer<String> onError, Consumer<Integer> onProgress) {
+        if (userIds == null || userIds.isEmpty()) {
+            Platform.runLater(() -> onSuccess.accept(new java.util.ArrayList<>()));
+            return;
+        }
+        
+        CompletableFuture.supplyAsync(() -> {
+            List<userInfo> users = new java.util.ArrayList<>();
+            int total = userIds.size();
+            int completed = 0;
+            
+            for (String userId : userIds) {
+                try {
+                    // Check cache first
+                    userInfo cachedUser = cache.getCachedUser(userId);
+                    userInfo user = cachedUser != null ? cachedUser : getUserById(userId);
+                    
+                    if (user != null) {
+                        users.add(user);
+                        // Cache the user if it wasn't cached
+                        if (cachedUser == null) {
+                            cache.cacheUser(userId, user);
+                        }
+                    }
+                    
+                    completed++;
+                    final int progress = (completed * 100) / total;
+                    
+                    // Update progress on UI thread
+                    if (onProgress != null) {
+                        Platform.runLater(() -> onProgress.accept(progress));
+                    }
+                    
+                } catch (Exception e) {
+                    System.err.println("Error loading user " + userId + ": " + e.getMessage());
+                }
+            }
+            
+            return users;
+        }, backgroundExecutor).thenAccept(users -> {
+            Platform.runLater(() -> {
+                onSuccess.accept(users != null ? users : new java.util.ArrayList<>());
+            });
+        }).exceptionally(throwable -> {
+            Platform.runLater(() -> {
+                String errorMsg = throwable.getCause() != null ? 
+                    throwable.getCause().getMessage() : "Unknown error loading users";
+                onError.accept(errorMsg);
+            });
+            return null;
+        });
+    }    
+    /**
+     * Method to clear cache when user data is updated - can be called externally
+     */
+    public void clearUserCacheOnUpdate(userInfo user) {
+        if (user != null) {
+            cache.clearUserCache(user.getUserId());
+        }
     }
 }

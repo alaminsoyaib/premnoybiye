@@ -61,17 +61,65 @@ public class ChatController {
     @FXML
     private Text userName;
     @FXML
-    private Text userLocationAge;
-
-    @FXML
+    private Text userLocationAge;    @FXML
     public void initialize() {
-        loadMatchedUsers();
-        displayUserList();
         setupEventHandlers();
         showInitialState();
+        showLoadingState();
+        loadMatchedUsersAsync();
 
         // Ensure polling is stopped when initializing
         stopMessagePolling();
+    }
+      private void showLoadingState() {
+        userlistHolder.getChildren().clear();
+        
+        Label loadingLabel = new Label("Loading conversations...");
+        loadingLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: #666666;");
+        
+        VBox loadingBox = new VBox(loadingLabel);
+        loadingBox.setAlignment(Pos.CENTER);
+        loadingBox.setMaxWidth(Double.MAX_VALUE);
+        loadingBox.setMaxHeight(Double.MAX_VALUE);
+        VBox.setVgrow(loadingBox, Priority.ALWAYS);
+        
+        userlistHolder.getChildren().add(loadingBox);
+    }
+
+    private void loadMatchedUsersAsync() {
+        if (AuthController.CurrentUser != null && AuthController.CurrentUser.getMatchedUsers() != null) {
+            List<String> matchedUserIds = AuthController.CurrentUser.getMatchedUsers();
+            
+            if (matchedUserIds.isEmpty()) {
+                Platform.runLater(this::showEmptyMatchesState);
+                return;
+            }
+
+            // Load users asynchronously
+            firebaseConnection.loadMultipleUsersAsync(
+                matchedUserIds,
+                this::onMatchedUsersLoaded,
+                this::onMatchedUsersLoadError,
+                null // No progress callback needed for chat
+            );
+        } else {
+            Platform.runLater(this::showEmptyMatchesState);
+        }
+    }
+    
+    private void onMatchedUsersLoaded(List<userInfo> users) {
+        Platform.runLater(() -> {
+            matchedUsersList = new ArrayList<>(users);
+            System.out.println("Loaded " + matchedUsersList.size() + " matched users for chat");
+            displayUserList();
+        });
+    }
+    
+    private void onMatchedUsersLoadError(String error) {
+        Platform.runLater(() -> {
+            System.err.println("Error loading matched users for chat: " + error);
+            showEmptyMatchesState();
+        });
     }
 
     private void setupEventHandlers() {
@@ -87,25 +135,6 @@ public class ChatController {
                 handleSendMessage(null);
             }
         });
-    }
-
-    private void loadMatchedUsers() {
-        if (AuthController.CurrentUser != null && AuthController.CurrentUser.getMatchedUsers() != null) {
-            matchedUsersList.clear();
-
-            // Get the list of matched user IDs
-            List<String> matchedUserIds = AuthController.CurrentUser.getMatchedUsers();
-
-            // Fetch user details for each matched user ID
-            for (String userId : matchedUserIds) {
-                userInfo matchedUser = firebaseConnection.getUserById(userId);
-                if (matchedUser != null) {
-                    matchedUsersList.add(matchedUser);
-                }
-            }
-
-            System.out.println("Loaded " + matchedUsersList.size() + " matched users for chat");
-        }
     }
 
     private void displayUserList() {
@@ -499,13 +528,13 @@ public class ChatController {
             }
         } catch (Exception e) {
             System.err.println("Error calculating age: " + e.getMessage());
-        }
-        return "N/A";
-    } // Method to refresh the chat (can be called when returning to this page)
+        }        return "N/A";
+    }
 
+    // Method to refresh the chat (can be called when returning to this page)
     public void refreshChat() {
-        loadMatchedUsers();
-        displayUserList();
+        showLoadingState();
+        loadMatchedUsersAsync();
         if (selectedUser != null) {
             loadConversation();
         }

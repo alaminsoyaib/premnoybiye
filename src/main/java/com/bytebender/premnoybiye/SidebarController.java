@@ -58,13 +58,36 @@ public class SidebarController {
     private HBox logoutButton;
 
     @FXML
-    private VBox container;
-
-    private void loadCardIntoContainer(String fxml) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml + ".fxml")); // card, chatUI,
-        Parent cardContent = loader.load();
+    private VBox container;    private void loadCardIntoContainer(String fxml) throws IOException {
+        // Show loading state briefly to give user feedback
+        showLoadingInContainer();
+        
+        // Load the new content asynchronously to avoid UI blocking
+        javafx.application.Platform.runLater(() -> {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml + ".fxml"));
+                Parent cardContent = loader.load();
+                container.getChildren().clear();
+                container.getChildren().add(cardContent);
+            } catch (IOException e) {
+                System.err.println("Error loading " + fxml + ": " + e.getMessage());
+                e.printStackTrace();
+            }
+        });
+    }
+    
+    private void showLoadingInContainer() {
+        javafx.scene.control.Label loadingLabel = new javafx.scene.control.Label("Loading...");
+        loadingLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: #666666; -fx-alignment: center;");
+        
+        javafx.scene.layout.VBox loadingBox = new javafx.scene.layout.VBox(loadingLabel);
+        loadingBox.setAlignment(javafx.geometry.Pos.CENTER);
+        loadingBox.setMaxWidth(Double.MAX_VALUE);
+        loadingBox.setMaxHeight(Double.MAX_VALUE);
+        javafx.scene.layout.VBox.setVgrow(loadingBox, javafx.scene.layout.Priority.ALWAYS);
+        
         container.getChildren().clear();
-        container.getChildren().add(cardContent);
+        container.getChildren().add(loadingBox);
     }
 
     @FXML

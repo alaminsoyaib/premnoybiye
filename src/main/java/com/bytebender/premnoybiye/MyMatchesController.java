@@ -11,6 +11,7 @@ import com.bytebender.premnoybiye.DBConnection.FirebaseConnection;
 import com.bytebender.premnoybiye.DBConnection.userInfo;
 import com.bytebender.premnoybiye.Component.Component;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -35,31 +36,80 @@ public class MyMatchesController {
     private ScrollPane scrollPane;
 
     @FXML
-    private GridPane cardGrid;
-
-    @FXML
+    private GridPane cardGrid;    @FXML
     public void initialize() {
-        loadMatchedUsers();
-        displayMatchedUsers();
+        showLoadingState();
+        loadMatchedUsersAsync();
+    }    private void showLoadingState() {
+        // Clear existing content
+        cardGrid.getChildren().clear();
+        cardGrid.getColumnConstraints().clear();
+        cardGrid.getRowConstraints().clear();
+        
+        // Show loading message
+        Label loadingLabel = new Label("Loading your matches...");
+        loadingLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: #666666; -fx-alignment: center;");
+        cardGrid.add(loadingLabel, 0, 0);
     }
 
-    private void loadMatchedUsers() {
+    private void loadMatchedUsersAsync() {
         if (AuthController.CurrentUser != null && AuthController.CurrentUser.getMatchedUsers() != null) {
-            matchedUsersList.clear();
-
-            // Get the list of matched user IDs
             List<String> matchedUserIds = AuthController.CurrentUser.getMatchedUsers();
-
-            // Fetch user details for each matched user ID
-            for (String userId : matchedUserIds) {
-                userInfo matchedUser = firebaseConnection.getUserById(userId);
-                if (matchedUser != null) {
-                    matchedUsersList.add(matchedUser);
-                }
+            
+            if (matchedUserIds.isEmpty()) {
+                Platform.runLater(this::showNoMatchesMessage);
+                return;
             }
 
-            System.out.println("Loaded " + matchedUsersList.size() + " matched users");
+            // Load users asynchronously with progress
+            firebaseConnection.loadMultipleUsersAsync(
+                matchedUserIds,
+                this::onMatchedUsersLoaded,
+                this::onMatchedUsersLoadError,
+                this::onLoadingProgress
+            );
+        } else {
+            Platform.runLater(this::showNoMatchesMessage);
         }
+    }
+    
+    private void onMatchedUsersLoaded(List<userInfo> users) {
+        Platform.runLater(() -> {
+            matchedUsersList = new ArrayList<>(users);
+            System.out.println("Loaded " + matchedUsersList.size() + " matched users");
+            displayMatchedUsers();
+        });
+    }
+    
+    private void onMatchedUsersLoadError(String error) {
+        Platform.runLater(() -> {
+            System.err.println("Error loading matched users: " + error);
+            showErrorMessage(error);
+        });
+    }
+    
+    private void onLoadingProgress(int percentage) {
+        // Progress updates are handled by LoadingIndicator
+    }
+    
+    private void showNoMatchesMessage() {
+        cardGrid.getChildren().clear();
+        cardGrid.getColumnConstraints().clear();
+        cardGrid.getRowConstraints().clear();
+        
+        Label noMatchesLabel = new Label("No matches yet! Keep discovering to find your perfect match.");
+        noMatchesLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: #666666; -fx-alignment: center;");
+        cardGrid.add(noMatchesLabel, 0, 0);
+    }
+    
+    private void showErrorMessage(String error) {
+        cardGrid.getChildren().clear();
+        cardGrid.getColumnConstraints().clear();
+        cardGrid.getRowConstraints().clear();
+        
+        Label errorLabel = new Label("Error loading matches: " + error);
+        errorLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #cc0000; -fx-alignment: center;");
+        cardGrid.add(errorLabel, 0, 0);
     }
 
     private void displayMatchedUsers() {
@@ -199,13 +249,11 @@ public class MyMatchesController {
             System.err.println("Error calculating age: " + e.getMessage());
         }
         return "N/A";
-    }
-
-    // Method to refresh the matches display (can be called when returning to this
+    }    // Method to refresh the matches display (can be called when returning to this
     // page)
     public void refreshMatches() {
-        loadMatchedUsers();
-        displayMatchedUsers();
+        showLoadingState();
+        loadMatchedUsersAsync();
     }
 
     /**

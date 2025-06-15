@@ -11,6 +11,7 @@ import com.bytebender.premnoybiye.DBConnection.userInfo;
 import com.bytebender.premnoybiye.DBConnection.FirebaseConnection;
 import com.bytebender.premnoybiye.Component.Component;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
@@ -76,22 +77,36 @@ public class DiscoverController {
     @FXML
     private Label discoverProfession;
     @FXML
-    private Label discoverIncome;
-
-    @FXML
+    private Label discoverIncome;    @FXML
     public void initialize() {
         // Initially hide back button and user details, show button holder
         hideUserDetails();
         showButtonHolder();
 
-        // Load available users
-        loadAvailableUsers();
+        // Show loading indicator while loading users
+        showLoadingState();
 
-        // Show first user
-        showNextUser();
+        // Load available users asynchronously
+        loadAvailableUsersAsync();
     }
 
-    private void loadAvailableUsers() {
+    private void showLoadingState() {
+        cardName.setText("Loading...");
+        cardBio.setText("Finding amazing people for you!");
+        cardLocation.setText("Please wait...");
+        
+        // Hide buttons while loading
+        hideButtonHolder();
+        
+        // Set a default loading image
+        try {
+            cardImg.setImage(new javafx.scene.image.Image(getClass().getResourceAsStream("img/icon/card-img.png")));
+        } catch (Exception e) {
+            System.err.println("Error loading default image: " + e.getMessage());
+        }
+    }
+
+    private void loadAvailableUsersAsync() {
         if (AuthController.CurrentUser != null) {
             String currentUserGender = AuthController.CurrentUser.getGender();
             String desiredGender = "";
@@ -104,15 +119,46 @@ public class DiscoverController {
             }
 
             if (!desiredGender.isEmpty()) {
-                availableUsers = firebaseConnection.getUsersByGender(desiredGender);
-                // Remove current user if somehow included
-                availableUsers.removeIf(user -> user.getUserId().equals(AuthController.CurrentUser.getUserId()));
-                // Shuffle for random order
-                Collections.shuffle(availableUsers);
-
-                System.out.println("Loaded " + availableUsers.size() + " available users for discover");
+                // Use async method with callbacks
+                firebaseConnection.getUsersByGenderAsync(
+                    desiredGender,
+                    this::onUsersLoaded,
+                    this::onUsersLoadError
+                );
+            } else {
+                showNoMoreUsersMessage();
             }
+        } else {
+            showNoMoreUsersMessage();
         }
+    }
+    
+    private void onUsersLoaded(List<userInfo> users) {
+        Platform.runLater(() -> {
+            availableUsers = new ArrayList<>(users);
+            // Remove current user if somehow included
+            if (AuthController.CurrentUser != null) {
+                availableUsers.removeIf(user -> user.getUserId().equals(AuthController.CurrentUser.getUserId()));
+            }
+            // Shuffle for random order
+            Collections.shuffle(availableUsers);
+
+            System.out.println("Loaded " + availableUsers.size() + " available users for discover");
+            
+            // Show first user or no users message
+            showNextUser();
+            showButtonHolder();
+        });
+    }
+    
+    private void onUsersLoadError(String error) {
+        Platform.runLater(() -> {
+            System.err.println("Error loading users: " + error);
+            cardName.setText("Connection Error");
+            cardBio.setText("Unable to load profiles. Please check your connection and try again.");
+            cardLocation.setText("Tap to retry");
+            hideButtonHolder();
+        });
     }
 
     private void showNextUser() {
