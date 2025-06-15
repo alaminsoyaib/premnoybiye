@@ -63,6 +63,16 @@ public class DiscoverController {
     @FXML
     private ImageView cardInfo;
 
+    // Loading overlay elements
+    @FXML
+    private StackPane cardContainer;
+    @FXML
+    private VBox cardLoadingOverlay;
+    @FXML
+    private ProgressIndicator cardLoadingSpinner;
+    @FXML
+    private Label cardLoadingText;
+
     // Detail elements
     @FXML
     private Label discoverBio;
@@ -288,60 +298,174 @@ public class DiscoverController {
         buttonHolder.setVisible(true);
     }
 
+    // Methods to handle card loading state
+    private void showCardLoadingState(String message) {
+        if (cardLoadingOverlay != null && cardLoadingText != null) {
+            cardLoadingText.setText(message);
+            cardLoadingOverlay.setVisible(true);
+            cardLoadingOverlay.setManaged(true);
+        }
+
+        // Hide button holder during loading
+        hideButtonHolder();
+    }
+
+    private void hideCardLoadingState() {
+        if (cardLoadingOverlay != null) {
+            cardLoadingOverlay.setVisible(false);
+            cardLoadingOverlay.setManaged(false);
+        }
+
+        // Show button holder after loading
+        showButtonHolder();
+    }
+
     @FXML
     void handleReject(MouseEvent event) {
         if (currentDisplayUser != null && AuthController.CurrentUser != null) {
-            // Add to rejected users in database
-            boolean success = firebaseConnection.addToRejectedUsers(
-                    AuthController.CurrentUser.getUserId(),
-                    currentDisplayUser.getUserId());
+            // Show loading state
+            showCardLoadingState("Rejecting...");
 
-            if (success) {
-                // Update local CurrentUser object
-                AuthController.CurrentUser.addRejectedUser(currentDisplayUser.getUserId());
+            // Create background task for rejection
+            Task<Boolean> rejectTask = new Task<Boolean>() {
+                @Override
+                protected Boolean call() throws Exception {
+                    // Add to rejected users in database
+                    return firebaseConnection.addToRejectedUsers(
+                            AuthController.CurrentUser.getUserId(),
+                            currentDisplayUser.getUserId());
+                }
+            };
 
-                // Show next user
-                showNextUser();
+            rejectTask.setOnSucceeded(e -> {
+                Platform.runLater(() -> {
+                    Boolean success = rejectTask.getValue();
+                    if (success) {
+                        // Update local CurrentUser object
+                        AuthController.CurrentUser.addRejectedUser(currentDisplayUser.getUserId());
 
-                System.out.println("Rejected user: " + currentDisplayUser.getName());
-            } else {
-                System.err.println("Failed to save rejection to database");
-            }
+                        // Hide loading state
+                        hideCardLoadingState();
+
+                        // Show next user
+                        showNextUser();
+
+                        System.out.println("Rejected user: " + currentDisplayUser.getName());
+                    } else {
+                        // Hide loading state
+                        hideCardLoadingState();
+                        System.err.println("Failed to save rejection to database");
+                    }
+                });
+            });
+
+            rejectTask.setOnFailed(e -> {
+                Platform.runLater(() -> {
+                    // Hide loading state
+                    hideCardLoadingState();
+                    System.err.println("Error during rejection: " + rejectTask.getException().getMessage());
+                });
+            });
+
+            Thread rejectThread = new Thread(rejectTask);
+            rejectThread.setDaemon(true);
+            rejectThread.start();
         }
     }
 
     @FXML
     void handleLove(MouseEvent event) {
         if (currentDisplayUser != null && AuthController.CurrentUser != null) {
-            // Add to liked users in database
-            boolean success = firebaseConnection.addToLikedUsers(
-                    AuthController.CurrentUser.getUserId(),
-                    currentDisplayUser.getUserId());
+            // Show loading state
+            showCardLoadingState("Liking...");
 
-            if (success) {
-                // Update local CurrentUser object
-                AuthController.CurrentUser.addLikedUser(currentDisplayUser.getUserId());
+            // Create background task for liking
+            Task<Boolean> loveTask = new Task<Boolean>() {
+                @Override
+                protected Boolean call() throws Exception {
+                    // Add to liked users in database
+                    boolean success = firebaseConnection.addToLikedUsers(
+                            AuthController.CurrentUser.getUserId(),
+                            currentDisplayUser.getUserId());
 
-                // Check if this creates a match
-                boolean isMatch = firebaseConnection.checkAndCreateMatch(
-                        AuthController.CurrentUser.getUserId(),
-                        currentDisplayUser.getUserId());
-
-                if (isMatch) {
-                    // Update local CurrentUser object with the match
-                    AuthController.CurrentUser.addMatchedUser(currentDisplayUser.getUserId());
-                    System.out.println("🎉 It's a match with: " + currentDisplayUser.getName());
-                    // You could show a match notification here if desired
+                    return success;
                 }
+            };
 
-                // Show next user
-                showNextUser();
+            loveTask.setOnSucceeded(e -> {
+                Platform.runLater(() -> {
+                    Boolean success = loveTask.getValue();
+                    if (success) {
+                        // Update local CurrentUser object
+                        AuthController.CurrentUser.addLikedUser(currentDisplayUser.getUserId());
 
-                System.out.println("Liked user: " + currentDisplayUser.getName());
-                System.out.println("Total liked users: " + AuthController.CurrentUser.getLikedUsers().size());
-            } else {
-                System.err.println("Failed to save like to database");
-            }
+                        // Check if this creates a match (run in background)
+                        Task<Boolean> matchTask = new Task<Boolean>() {
+                            @Override
+                            protected Boolean call() throws Exception {
+                                return firebaseConnection.checkAndCreateMatch(
+                                        AuthController.CurrentUser.getUserId(),
+                                        currentDisplayUser.getUserId());
+                            }
+                        };
+
+                        matchTask.setOnSucceeded(matchEvent -> {
+                            Platform.runLater(() -> {
+                                Boolean isMatch = matchTask.getValue();
+                                if (isMatch) {
+                                    AuthController.CurrentUser.addMatchedUser(currentDisplayUser.getUserId());
+                                    System.out.println("🎉 It's a match with: " + currentDisplayUser.getName());
+                                }
+
+                                // Hide loading state
+                                hideCardLoadingState();
+
+                                // Show next user
+                                showNextUser();
+
+                                System.out.println("Liked user: " + currentDisplayUser.getName());
+                                System.out.println(
+                                        "Total liked users: " + AuthController.CurrentUser.getLikedUsers().size());
+                            });
+                        });
+
+                        matchTask.setOnFailed(matchEvent -> {
+                            Platform.runLater(() -> {
+                                // Hide loading state even if match check fails
+                                hideCardLoadingState();
+
+                                // Show next user anyway
+                                showNextUser();
+
+                                System.out.println("Liked user: " + currentDisplayUser.getName());
+                                System.out.println(
+                                        "Total liked users: " + AuthController.CurrentUser.getLikedUsers().size());
+                                System.err.println("Failed to check match status, but like was saved");
+                            });
+                        });
+
+                        Thread matchThread = new Thread(matchTask);
+                        matchThread.setDaemon(true);
+                        matchThread.start();
+                    } else {
+                        // Hide loading state
+                        hideCardLoadingState();
+                        System.err.println("Failed to save like to database");
+                    }
+                });
+            });
+
+            loveTask.setOnFailed(e -> {
+                Platform.runLater(() -> {
+                    // Hide loading state
+                    hideCardLoadingState();
+                    System.err.println("Error during liking: " + loveTask.getException().getMessage());
+                });
+            });
+
+            Thread loveThread = new Thread(loveTask);
+            loveThread.setDaemon(true);
+            loveThread.start();
         }
     }
 

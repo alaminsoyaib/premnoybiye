@@ -241,6 +241,26 @@
   -fx-effect: dropshadow(gaussian, #25242d, 22, 0.15, 4, 0);
 }
 
+/* Card loading overlay styles */
+.card-loading-overlay {
+  -fx-background-color: rgba(255, 255, 255, 0.9);
+  -fx-alignment: center;
+  -fx-border-radius: 16;
+  -fx-background-radius: 16;
+}
+
+.card-loading-text {
+  -fx-font-family: "Trebuchet MS";
+  -fx-font-size: 14px;
+  -fx-text-fill: #6631c4;
+  -fx-alignment: center;
+}
+
+.card-loading-spinner {
+  -fx-progress-color: #6631c4;
+  -fx-control-inner-background: transparent;
+}
+
 .card-img {
   -fx-background-radius: 8;
   -fx-border-radius: 8;
