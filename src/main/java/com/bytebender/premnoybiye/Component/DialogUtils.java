@@ -12,8 +12,6 @@ import com.bytebender.premnoybiye.App;
  */
 public class DialogUtils {
 
-    private static final String APP_ICON_PATH = "/com/bytebender/premnoybiye/img/Main-Logo.png";
-
     /**
      * Sets the application icon for any dialog or window
      * 
@@ -22,7 +20,7 @@ public class DialogUtils {
     public static void setDialogIcon(Dialog<?> dialog) {
         try {
             Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
-            Image icon = new Image(App.class.getResourceAsStream(APP_ICON_PATH));
+            Image icon = new Image(App.class.getResourceAsStream("/com/bytebender/premnoybiye/img/Main-Logo.png"));
             stage.getIcons().add(icon);
         } catch (Exception e) {
             System.err.println("Warning: Could not set dialog icon: " + e.getMessage());

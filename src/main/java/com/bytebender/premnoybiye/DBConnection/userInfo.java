@@ -1,5 +1,8 @@
 package com.bytebender.premnoybiye.DBConnection;
 
+import java.util.List;
+import java.util.ArrayList;
+
 public class userInfo {
     private String name = "";
     private String email = "";
@@ -16,6 +19,9 @@ public class userInfo {
     private String prefLocation = "";
     private String prefProfession = "";
     private String userId = ""; // Firebase Authentication UID used as primary key
+    private List<String> likedUsers = new ArrayList<>(); // List of liked user IDs
+    private List<String> rejectedUsers = new ArrayList<>(); // List of rejected user IDs
+    private List<String> matchedUsers = new ArrayList<>(); // List of matched user IDs
 
     public userInfo(String name, String email, String dob, String gender, String religion,
             String city, String image, String education, String profession, String income, String bio, String prefAge,
@@ -176,5 +182,53 @@ public class userInfo {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public List<String> getLikedUsers() {
+        return likedUsers;
+    }
+
+    public void setLikedUsers(List<String> likedUsers) {
+        this.likedUsers = likedUsers;
+    }
+
+    public List<String> getRejectedUsers() {
+        return rejectedUsers;
+    }
+
+    public void setRejectedUsers(List<String> rejectedUsers) {
+        this.rejectedUsers = rejectedUsers;
+    }
+
+    public List<String> getMatchedUsers() {
+        return matchedUsers;
+    }
+
+    public void setMatchedUsers(List<String> matchedUsers) {
+        this.matchedUsers = matchedUsers;
+    }
+
+    // Helper methods to add individual users to liked/rejected/matched lists
+    public void addLikedUser(String userId) {
+        if (!this.likedUsers.contains(userId)) {
+            this.likedUsers.add(userId);
+        }
+    }
+
+    public void addRejectedUser(String userId) {
+        if (!this.rejectedUsers.contains(userId)) {
+            this.rejectedUsers.add(userId);
+        }
+    }
+
+    public void addMatchedUser(String userId) {
+        if (!this.matchedUsers.contains(userId)) {
+            this.matchedUsers.add(userId);
+        }
+    }
+
+    // Helper method to check if user has been seen (liked or rejected)
+    public boolean hasSeenUser(String userId) {
+        return this.likedUsers.contains(userId) || this.rejectedUsers.contains(userId);
     }
 }

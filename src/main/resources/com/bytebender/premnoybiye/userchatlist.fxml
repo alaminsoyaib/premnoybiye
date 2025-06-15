@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.MotionBlur?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<HBox alignment="CENTER_LEFT" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="48.0" prefWidth="218.0" spacing="12.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <padding>
+      <Insets bottom="12.0" top="12.0" />
+   </padding>
+   <children>
+      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="48.0" prefWidth="48.0">
+         <children>
+            <StackPane fx:id="imgStack" maxHeight="-Infinity" maxWidth="-Infinity">
+               <children>
+                  <ImageView fx:id="blurImg" fitHeight="48.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@img/icon/profile-image.png" />
+                     </image>
+                     <effect>
+                        <MotionBlur angle="360.0" radius="15.29" />
+                     </effect>
+                  </ImageView>
+                  <ImageView fx:id="userImg" fitHeight="48.0" fitWidth="48.0" pickOnBounds="true">
+                     <image>
+                        <Image url="@img/icon/profile-image.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </StackPane>
+         </children>
+      </VBox>
+      <VBox maxWidth="1.7976931348623157E308" spacing="4.0" HBox.hgrow="ALWAYS">
+         <children>
+            <Label fx:id="userName" maxWidth="1.7976931348623157E308" text="Kuddus Begum" VBox.vgrow="NEVER">
+               <font>
+                  <Font name="Trebuchet MS Bold" size="16.0" />
+               </font>
+            </Label>
+            <Label fx:id="userLocationAge" maxWidth="1.7976931348623157E308" text="Noakhali, 24" textFill="#94a0b2" VBox.vgrow="NEVER" />
+         </children>
+      </VBox>
+   </children>
+   <cursor>
+      <Cursor fx:constant="HAND" />
+   </cursor>
+</HBox>

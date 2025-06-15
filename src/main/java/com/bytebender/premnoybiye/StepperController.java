@@ -3,6 +3,7 @@ package com.bytebender.premnoybiye;
 import javafx.fxml.FXML;
 import java.io.IOException;
 
+import com.bytebender.premnoybiye.Component.Component;
 import com.bytebender.premnoybiye.DBConnection.FirebaseConnection;
 
 import javafx.scene.control.ComboBox;
@@ -11,11 +12,15 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.input.MouseEvent;
 
 public class StepperController {
 	int flag = 0;
+
+	private Component component = new Component();
+
 	private FirebaseConnection firebaseConnection = new FirebaseConnection();
 	private java.io.File selectedImageFile = null; // Store the selected image file for upload
 
@@ -30,6 +35,11 @@ public class StepperController {
 	private VBox imagePicker;
 	@FXML
 	private ImageView img_inside_imgPicker;
+	@FXML
+	private ImageView blurImg;
+
+	@FXML
+	private StackPane imgStack;
 
 	@FXML
 	private ImageView stepperIcon_1;
@@ -102,20 +112,13 @@ public class StepperController {
 					// Store the selected file for later upload
 					this.selectedImageFile = selectedFile;
 
-					// Display the image in the UI
-					Image image = new Image(selectedFile.toURI().toString());
-					img_inside_imgPicker.setImage(image);
+					component.setImage(selectedFile.toURI().toString(), img_inside_imgPicker, 80, 80, true, 0);
+					component.setImage(selectedFile.toURI().toString(), blurImg, 80, 80, false, 0);
 
-					// Set size to 80x80
-					img_inside_imgPicker.setFitWidth(80);
-					img_inside_imgPicker.setFitHeight(80);
-					img_inside_imgPicker.setPreserveRatio(false);
-
-					// Set rounded corners
 					javafx.scene.shape.Rectangle clip = new javafx.scene.shape.Rectangle(80, 80);
 					clip.setArcWidth(20);
 					clip.setArcHeight(20);
-					img_inside_imgPicker.setClip(clip);
+					imgStack.setClip(clip);
 
 					System.out.println("Image selected for upload: " + selectedFile.getName());
 				}
@@ -207,9 +210,12 @@ public class StepperController {
 
 				// Get the actual userId from the user object (which now includes userId)
 				String userId = firebaseConnection.getUserId(AuthController.CurrentUser);
-
 				if (userId != null) {
-					String imageUrl = firebaseConnection.uploadImageToStorage(selectedImageFile, userId);
+					// Use authenticated upload with user credentials
+					String idToken = firebaseConnection.getIdTokenForUser(AuthController.CurrentUserEmail,
+							AuthController.CurrentUserPassword);
+					String imageUrl = firebaseConnection.uploadImageToStorageWithToken(selectedImageFile, userId,
+							idToken);
 
 					if (imageUrl != null) {
 						AuthController.CurrentUser.setImage(imageUrl);

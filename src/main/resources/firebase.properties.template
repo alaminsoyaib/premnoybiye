@@ -1,3 +1,3 @@
 apiKey=your_api_key_here
-databaseUrl=your_database_url_here
+projectId=your_project_id_here
 storageBucket=your_storage_bucket_here

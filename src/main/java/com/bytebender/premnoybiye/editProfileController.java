@@ -14,6 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
@@ -23,6 +24,12 @@ public class editProfileController {
     private java.io.File selectedImageFile = null; // Store the selected image file for upload
     @FXML
     private ImageView editProfileImg;
+    @FXML
+    private ImageView blurImg;
+
+    @FXML
+    private StackPane imgStack;
+
     @FXML
     private Button changePicture;
     @FXML
@@ -36,7 +43,8 @@ public class editProfileController {
     @FXML
     private Label editProfileName;
     @FXML
-    private Label editEmailLabel;    @FXML
+    private Label editEmailLabel;
+    @FXML
     private TextField editNameTextField;
 
     @FXML
@@ -72,7 +80,8 @@ public class editProfileController {
                 if (user.getName() != "") {
                     editProfileName.setText(user.getName());
                     editNameTextField.setText(user.getName());
-                }                if (user.getEmail() != "") {
+                }
+                if (user.getEmail() != "") {
                     editEmailLabel.setText(user.getEmail());
                 }
                 if (user.getReligion() != "") {
@@ -91,7 +100,13 @@ public class editProfileController {
                     editCityComboBox.setPromptText(user.getCity());
                 }
                 if (user.getImage() != "") {
-                    component.setImage(user.getImage(), editProfileImg, 84, 84, false, 20);
+                    component.setImage(user.getImage(), editProfileImg, 84, 84, true, 0);
+                    component.setImage(user.getImage(), blurImg, 84, 84, false, 0);
+
+                    javafx.scene.shape.Rectangle clip = new javafx.scene.shape.Rectangle(84, 84);
+                    clip.setArcWidth(20);
+                    clip.setArcHeight(20);
+                    imgStack.setClip(clip);
                 }
                 if (user.getEducation() != "") {
                     editHighestEduComboBox.setPromptText(user.getEducation());
@@ -169,9 +184,12 @@ public class editProfileController {
 
                     // Get the actual userId from the user object (which now includes userId)
                     String userId = firebaseConnection.getUserId(user);
-
                     if (userId != null) {
-                        String imageUrl = firebaseConnection.uploadImageToStorage(selectedImageFile, userId);
+                        // Use authenticated upload with user credentials
+                        String idToken = firebaseConnection.getIdTokenForUser(AuthController.CurrentUserEmail,
+                                AuthController.CurrentUserPassword);
+                        String imageUrl = firebaseConnection.uploadImageToStorageWithToken(selectedImageFile, userId,
+                                idToken);
 
                         if (imageUrl != null) {
                             user.setImage(imageUrl);

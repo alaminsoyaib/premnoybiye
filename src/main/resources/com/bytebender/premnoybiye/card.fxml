@@ -1,35 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.MotionBlur?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxWidth="-Infinity" prefWidth="200.0" spacing="16.0" styleClass="card" stylesheets="@application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="CENTER" maxWidth="-Infinity" prefWidth="212.0" spacing="16.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <VBox>
+      <VBox alignment="CENTER" maxHeight="-Infinity" maxWidth="286.0" minWidth="-Infinity" prefWidth="200.0">
          <children>
-            <ImageView fitHeight="358.0" fitWidth="258.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@img/icon/card-img.png" />
-               </image>
-            </ImageView>
-            <VBox spacing="12.0">
+            <StackPane fx:id="imgStack" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="298.0" prefWidth="200.0">
+               <children>
+                  <ImageView fx:id="blurImg" fitHeight="298.0" fitWidth="200.0" pickOnBounds="true" styleClass="card-img">
+                     <image>
+                        <Image url="@img/icon/card-img.png" />
+                     </image>
+                     <effect>
+                        <MotionBlur angle="360.0" radius="20.0" />
+                     </effect>
+                  </ImageView>
+                  <ImageView fx:id="cardImg" fitHeight="298.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" styleClass="card-img">
+                     <image>
+                        <Image url="@img/icon/card-img.png" />
+                     </image>
+                  </ImageView>
+               </children>
+            </StackPane>
+            <VBox maxWidth="-Infinity" minWidth="200.0" prefWidth="200.0" spacing="12.0">
                <VBox.margin>
                   <Insets bottom="7.0" left="14.0" right="14.0" top="14.0" />
                </VBox.margin>
                <children>
-                  <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" spacing="4.0">
+                  <VBox maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefHeight="72.0" prefWidth="176.0" spacing="4.0">
                      <children>
-                        <Label styleClass="card-title" text="Label">
+                        <Label fx:id="cardName" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" styleClass="card-title" text="N/A">
                            <font>
-                              <Font name="Trebuchet MS Bold" size="20.0" />
+                              <Font name="Trebuchet MS Bold" size="16.0" />
                            </font>
                         </Label>
-                        <Label maxWidth="300.0" minWidth="200.0" opacity="0.5" prefWidth="200.0" styleClass="card-subtitle" text="Lorem ipsum dolor sit amet consectetur. Odio posuere risus ac lacus tellus at. Quis donec viverra dictumst etiam purus." textOverrun="CLIP" wrapText="true">
+                        <Label fx:id="cardBio" maxWidth="1.7976931348623157E308" opacity="0.5" styleClass="card-subtitle" text="Lorem ipsum dolor sit amet consectetur. Odio posuere risus ac lacus tellus at. Quis donec viverra dictumst etiam purus." wrapText="true">
                            <font>
                               <Font name="Trebuchet MS" size="12.0" />
                            </font>
@@ -45,7 +61,7 @@
                                     <Image url="@img/icon/location-icon.png" />
                                  </image>
                               </ImageView>
-                              <Label text="Noakhali">
+                              <Label fx:id="cardLocation" text="N/A">
                                  <font>
                                     <Font name="Trebuchet MS" size="12.0" />
                                  </font>
@@ -59,7 +75,7 @@
                                     <Image url="@img/icon/baby-icon.png" />
                                  </image>
                               </ImageView>
-                              <Label text="24">
+                              <Label fx:id="cardAge" text="N/A">
                                  <font>
                                     <Font name="Trebuchet MS" size="12.0" />
                                  </font>
@@ -69,11 +85,21 @@
                      </children>
                   </HBox>
                </children>
+               <padding>
+                  <Insets left="12.0" right="12.0" />
+               </padding>
             </VBox>
          </children>
       </VBox>
    </children>
    <padding>
-      <Insets bottom="14.0" left="8.0" right="8.0" top="8.0" />
+      <Insets bottom="12.0" left="8.0" right="8.0" top="8.0" />
    </padding>
+   <styleClass>
+      <String fx:value="card-shadow" />
+      <String fx:value="card-stack" />
+   </styleClass>
+   <cursor>
+      <Cursor fx:constant="HAND" />
+   </cursor>
 </VBox>
