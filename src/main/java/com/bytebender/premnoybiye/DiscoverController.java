@@ -11,8 +11,11 @@ import com.bytebender.premnoybiye.DBConnection.userInfo;
 import com.bytebender.premnoybiye.DBConnection.FirebaseConnection;
 import com.bytebender.premnoybiye.Component.Component;
 
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
@@ -20,12 +23,12 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 public class DiscoverController {
-
     private FirebaseConnection firebaseConnection = new FirebaseConnection();
     private Component component = new Component(); // Available users to show
     private List<userInfo> availableUsers = new ArrayList<>();
     // Current user being displayed
     private userInfo currentDisplayUser;
+    private boolean isDataLoaded = false; // Flag to check if data is already loaded
 
     @FXML
     private VBox buttonHolder;
@@ -82,13 +85,66 @@ public class DiscoverController {
     public void initialize() {
         // Initially hide back button and user details, show button holder
         hideUserDetails();
-        showButtonHolder();
+        // showButtonHolder();
 
-        // Load available users
-        loadAvailableUsers();
+        // Load available users asynchronously if not already loaded
+        if (!isDataLoaded) {
+            showLoadingState();
+            loadAvailableUsersAsync();
+        } else {
+            showNextUser();
+        }
+    }
 
-        // Show first user
-        showNextUser();
+    private void showLoadingState() {
+        // Show loading indicator on the card
+        cardName.setText("Loading...");
+        cardBio.setText("");
+        cardLocation.setText("");
+
+        hideButtonHolder();
+
+        // You could also add a ProgressIndicator here if needed
+        if (cardImg != null) {
+            cardImg.setImage(null); // Clear existing image
+        }
+    }
+
+    private void loadAvailableUsersAsync() {
+        Task<Void> loadTask = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                loadAvailableUsers();
+                return null;
+            }
+        };
+
+        loadTask.setOnSucceeded(e -> {
+            Platform.runLater(() -> {
+                isDataLoaded = true;
+                showNextUser();
+            });
+        });
+
+        loadTask.setOnFailed(e -> {
+            Platform.runLater(() -> {
+                showErrorState();
+            });
+        });
+
+        Thread loadThread = new Thread(loadTask);
+        loadThread.setDaemon(true);
+        loadThread.start();
+    }
+
+    private void showErrorState() {
+        cardName.setText("Error loading users");
+        cardBio.setText("Please try again later");
+        cardLocation.setText("");
+        hideButtonHolder();
+        if (cardImg != null) {
+            cardImg.setImage(null); // Clear existing image
+        }
     }
 
     private void loadAvailableUsers() {
@@ -167,6 +223,8 @@ public class DiscoverController {
                 // Set default image if no image available
                 cardImg.setImage(new javafx.scene.image.Image(getClass().getResourceAsStream("img/icon/card-img.png")));
             }
+
+            showButtonHolder();
         }
     }
 

@@ -15,6 +15,7 @@ import com.bytebender.premnoybiye.Component.Component;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
@@ -23,6 +24,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.control.OverrunStyle;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -47,6 +49,7 @@ public class ChatController {
     private List<Message> currentConversation = new ArrayList<>();
     private Timeline messagePollingTimer;
     private int lastMessageCount = 0;
+    private boolean isDataLoaded = false; // Flag to check if data is already loaded
 
     @FXML
     private VBox userlistHolder;
@@ -65,13 +68,71 @@ public class ChatController {
 
     @FXML
     public void initialize() {
-        loadMatchedUsers();
-        displayUserList();
         setupEventHandlers();
         showInitialState();
 
+        // Load data asynchronously if not already loaded
+        if (!isDataLoaded) {
+            showLoadingUserList();
+            loadMatchedUsersAsync();
+        } else {
+            displayUserList();
+        }
+
         // Ensure polling is stopped when initializing
         stopMessagePolling();
+    }
+
+    private void showLoadingUserList() {
+        userlistHolder.getChildren().clear();
+
+        ProgressIndicator loadingIndicator = new ProgressIndicator();
+        loadingIndicator.setProgress(-1);
+        loadingIndicator.setPrefSize(40, 40);
+        loadingIndicator.getStyleClass().add("loading-spinner");
+
+        Label loadingLabel = new Label("Loading conversations...");
+        loadingLabel.getStyleClass().add("loading-text");
+
+        VBox loadingContainer = new VBox(10);
+        loadingContainer.getChildren().addAll(loadingIndicator, loadingLabel);
+        loadingContainer.setStyle("-fx-alignment: center; -fx-padding: 20px;");
+
+        userlistHolder.getChildren().add(loadingContainer);
+    }
+
+    private void loadMatchedUsersAsync() {
+        Task<Void> loadTask = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                loadMatchedUsers();
+                return null;
+            }
+        };
+
+        loadTask.setOnSucceeded(e -> {
+            Platform.runLater(() -> {
+                isDataLoaded = true;
+                displayUserList();
+            });
+        });
+
+        loadTask.setOnFailed(e -> {
+            Platform.runLater(() -> {
+                showErrorUserList();
+            });
+        });
+
+        Thread loadThread = new Thread(loadTask);
+        loadThread.setDaemon(true);
+        loadThread.start();
+    }
+
+    private void showErrorUserList() {
+        userlistHolder.getChildren().clear();
+        Label errorLabel = new Label("Failed to load conversations");
+        errorLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #ea0000; -fx-alignment: center; -fx-padding: 20px;");
+        userlistHolder.getChildren().add(errorLabel);
     }
 
     private void setupEventHandlers() {

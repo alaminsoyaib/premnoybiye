@@ -3,11 +3,10 @@ package com.bytebender.premnoybiye;
 import java.io.IOException;
 
 import com.bytebender.premnoybiye.Component.Component;
+import com.bytebender.premnoybiye.Component.PageLoader;
 // import com.bytebender.premnoybiye.DBConnection.userInfo; 
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -56,16 +55,8 @@ public class SidebarController {
     private HBox messageButton;
     @FXML
     private HBox logoutButton;
-
     @FXML
     private VBox container;
-
-    private void loadCardIntoContainer(String fxml) throws IOException {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml + ".fxml")); // card, chatUI,
-        Parent cardContent = loader.load();
-        container.getChildren().clear();
-        container.getChildren().add(cardContent);
-    }
 
     @FXML
     void menuItemSwitch(MouseEvent event) throws IOException {
@@ -73,19 +64,19 @@ public class SidebarController {
         clearAllSelectedStates();
 
         if (event.getSource() == discoverButton) {
-            loadCardIntoContainer("discover");
+            PageLoader.loadPageWithAnimation(container, "com/bytebender/premnoybiye/discover", "Loading Discover...");
             discoverButton.getStyleClass().add("selected");
 
         } else if (event.getSource() == profileButton) {
-            loadCardIntoContainer("editProfile");
+            PageLoader.loadPageWithAnimation(container, "com/bytebender/premnoybiye/editProfile", "Loading Profile...");
             profileButton.getStyleClass().add("selected");
 
         } else if (event.getSource() == mymatchesButton) {
-            loadCardIntoContainer("mymatches");
+            PageLoader.loadPageWithAnimation(container, "com/bytebender/premnoybiye/mymatches", "Loading Matches...");
             mymatchesButton.getStyleClass().add("selected");
 
         } else if (event.getSource() == messageButton) {
-            loadCardIntoContainer("chatUI");
+            PageLoader.loadPageWithAnimation(container, "com/bytebender/premnoybiye/chatUI", "Loading Messages...");
             messageButton.getStyleClass().add("selected");
 
         } else if (event.getSource() == logoutButton) {
@@ -110,7 +101,7 @@ public class SidebarController {
     }
 
     public void initialize() throws IOException {
-        loadCardIntoContainer("discover");
+        PageLoader.loadPageWithAnimation(container, "com/bytebender/premnoybiye/discover", "Loading Discover...");
 
         clearAllSelectedStates();
         discoverButton.getStyleClass().add("selected");

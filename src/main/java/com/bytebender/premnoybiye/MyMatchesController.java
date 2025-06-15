@@ -11,11 +11,14 @@ import com.bytebender.premnoybiye.DBConnection.FirebaseConnection;
 import com.bytebender.premnoybiye.DBConnection.userInfo;
 import com.bytebender.premnoybiye.Component.Component;
 
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Label;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -26,10 +29,10 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class MyMatchesController {
-
     private FirebaseConnection firebaseConnection = new FirebaseConnection();
     private Component component = new Component();
     private List<userInfo> matchedUsersList = new ArrayList<>();
+    private boolean isDataLoaded = false; // Flag to check if data is already loaded
 
     @FXML
     private ScrollPane scrollPane;
@@ -39,8 +42,68 @@ public class MyMatchesController {
 
     @FXML
     public void initialize() {
-        loadMatchedUsers();
-        displayMatchedUsers();
+        // Show initial loading state
+        showLoadingState();
+
+        // Load data asynchronously if not already loaded
+        if (!isDataLoaded) {
+            loadMatchedUsersAsync();
+        } else {
+            displayMatchedUsers();
+        }
+    }
+
+    private void showLoadingState() {
+        cardGrid.getChildren().clear();
+
+        // Create loading indicator
+        ProgressIndicator loadingIndicator = new ProgressIndicator();
+        loadingIndicator.setProgress(-1); // Indeterminate progress
+        loadingIndicator.setPrefSize(60, 60);
+        loadingIndicator.getStyleClass().add("loading-spinner");
+
+        Label loadingLabel = new Label("Loading your matches...");
+        loadingLabel.getStyleClass().add("loading-text");
+
+        VBox loadingContainer = new VBox(15);
+        loadingContainer.getChildren().addAll(loadingIndicator, loadingLabel);
+        loadingContainer.setStyle("-fx-alignment: center; -fx-padding: 50px;");
+
+        cardGrid.add(loadingContainer, 0, 0);
+    }
+
+    private void loadMatchedUsersAsync() {
+        Task<Void> loadTask = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                loadMatchedUsers();
+                return null;
+            }
+        };
+
+        loadTask.setOnSucceeded(e -> {
+            Platform.runLater(() -> {
+                isDataLoaded = true;
+                displayMatchedUsers();
+            });
+        });
+
+        loadTask.setOnFailed(e -> {
+            Platform.runLater(() -> {
+                showErrorState();
+            });
+        });
+
+        Thread loadThread = new Thread(loadTask);
+        loadThread.setDaemon(true);
+        loadThread.start();
+    }
+
+    private void showErrorState() {
+        cardGrid.getChildren().clear();
+        Label errorLabel = new Label("Failed to load matches. Please try again later.");
+        errorLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: #ea0000; -fx-alignment: center; -fx-padding: 50px;");
+        cardGrid.add(errorLabel, 0, 0);
     }
 
     private void loadMatchedUsers() {
@@ -226,7 +289,7 @@ public class MyMatchesController {
             modalController.setModalStage(modalStage);
 
             modalStage.setTitle(user.getName() + "'s Profile");
-            
+
             Image icon = new Image(App.class.getResourceAsStream("/com/bytebender/premnoybiye/img/Main-Logo.png"));
             modalStage.getIcons().add(icon);
 

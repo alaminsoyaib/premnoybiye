@@ -282,3 +282,29 @@
   -fx-font-size: 16px;
   -fx-font-family: "Trebuchet MS", sans-serif;
 }
+
+/* Loading Animation Styles */
+.loading-spinner {
+  -fx-progress-color: #6631c4;
+  -fx-background-color: transparent;
+}
+
+.loading-spinner .percentage {
+  -fx-fill: transparent;
+}
+
+.loading-text {
+  -fx-text-fill: #6631c4;
+  -fx-font-family: "Trebuchet MS", sans-serif;
+  -fx-font-size: 16px;
+  -fx-font-weight: 600;
+}
+
+/* Fade transition classes */
+.fade-out {
+  -fx-opacity: 0;
+}
+
+.fade-in {
+  -fx-opacity: 1;
+}
