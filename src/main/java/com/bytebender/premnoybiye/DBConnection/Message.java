@@ -85,7 +85,7 @@ public class Message {
     public String getFormattedTime() {
         try {
             LocalDateTime dateTime = LocalDateTime.parse(timestamp, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-            return dateTime.format(DateTimeFormatter.ofPattern("HH:mm"));
+            return dateTime.format(DateTimeFormatter.ofPattern("hh:mm a"));
         } catch (Exception e) {
             return timestamp;
         }
