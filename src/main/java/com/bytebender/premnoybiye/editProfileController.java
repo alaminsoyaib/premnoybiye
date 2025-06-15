@@ -426,12 +426,7 @@ public class editProfileController {
                 }
 
                 // Call the password change method
-                boolean success = changeUserPassword(currentPass, newPass);
-
-                if (success) {
-                    // Clear the password field in the UI for security
-                    passwordTextField.clear();
-                }
+                changeUserPassword(currentPass, newPass);
             });
 
         } catch (Exception e) {
