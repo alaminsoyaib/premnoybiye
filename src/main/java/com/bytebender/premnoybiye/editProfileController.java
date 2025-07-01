@@ -2,6 +2,7 @@ package com.bytebender.premnoybiye;
 
 import com.bytebender.premnoybiye.Component.Component;
 import com.bytebender.premnoybiye.Component.DialogUtils;
+import com.bytebender.premnoybiye.Component.ImageProcessingService;
 import com.bytebender.premnoybiye.DBConnection.userInfo;
 import com.bytebender.premnoybiye.DBConnection.FirebaseConnection;
 import javafx.fxml.FXML;
@@ -17,6 +18,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import java.io.File;
 
 public class editProfileController {
     private Component component = new Component();
@@ -144,11 +146,22 @@ public class editProfileController {
                     new javafx.stage.FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg",
                             "*.jpeg", "*.gif"));
 
-            java.io.File selectedFile = fileChooser.showOpenDialog(editProfileImg.getScene().getWindow());
+            File selectedFile = fileChooser.showOpenDialog(editProfileImg.getScene().getWindow());
 
             if (selectedFile != null) {
                 // Store the selected file for later upload
                 this.selectedImageFile = selectedFile;
+
+                // Show file size info to user
+                long fileSizeKB = ImageProcessingService.getFileSizeKB(selectedFile);
+                System.out.println("Selected image: " + selectedFile.getName() + " (" + fileSizeKB + " KB)");
+
+                // Show info to user if file is large
+                if (fileSizeKB > 500) {
+                    System.out.println("Large Image Selected, The selected image is " + fileSizeKB
+                            + " KB. It will be automatically compressed to reduce upload time and storage usage.");
+
+                }
 
                 // Display the image in the UI
                 Image image = new Image(selectedFile.toURI().toString());
@@ -157,7 +170,7 @@ public class editProfileController {
                 // Set size to 80x80
                 editProfileImg.setFitWidth(80);
                 editProfileImg.setFitHeight(80);
-                editProfileImg.setPreserveRatio(false);
+                editProfileImg.setPreserveRatio(true);
 
                 // Set rounded corners
                 javafx.scene.shape.Rectangle clip = new javafx.scene.shape.Rectangle(80, 80);
@@ -169,6 +182,10 @@ public class editProfileController {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            javafx.application.Platform.runLater(() -> {
+                DialogUtils.showErrorAlert("Image Selection Error",
+                        "Failed to select image. Please try again.");
+            });
         }
     }
 
@@ -178,36 +195,54 @@ public class editProfileController {
             // Get current user from AuthController
             userInfo user = AuthController.CurrentUser;
 
-            if (user != null) { // Handle image upload if a new image was selected
+            if (user != null) {
+                // Handle image upload if a new image was selected
                 if (selectedImageFile != null) {
-                    System.out.println("Uploading image to Firebase Storage...");
+                    System.out.println("Processing and uploading image to Firebase Storage...");
 
-                    // Get the actual userId from the user object (which now includes userId)
-                    String userId = firebaseConnection.getUserId(user);
-                    if (userId != null) {
-                        // Use authenticated upload with user credentials
-                        String idToken = firebaseConnection.getIdTokenForUser(AuthController.CurrentUserEmail,
-                                AuthController.CurrentUserPassword);
-                        String imageUrl = firebaseConnection.uploadImageToStorageWithToken(selectedImageFile, userId,
-                                idToken);
+                    // First, process the image to reduce size if needed
+                    File processedImageFile = processImageForUpload(selectedImageFile);
 
-                        if (imageUrl != null) {
-                            user.setImage(imageUrl);
-                            System.out.println("Image uploaded successfully. URL: " + imageUrl);
-                            // Clear the selected file after successful upload
-                            selectedImageFile = null;
+                    if (processedImageFile != null) {
+                        // Get the actual userId from the user object (which now includes userId)
+                        String userId = firebaseConnection.getUserId(user);
+                        if (userId != null) {
+                            // Use authenticated upload with user credentials
+                            String idToken = firebaseConnection.getIdTokenForUser(AuthController.CurrentUserEmail,
+                                    AuthController.CurrentUserPassword);
+                            String imageUrl = firebaseConnection.uploadImageToStorageWithToken(processedImageFile,
+                                    userId,
+                                    idToken);
+
+                            if (imageUrl != null) {
+                                user.setImage(imageUrl);
+                                System.out.println("Image uploaded successfully. URL: " + imageUrl);
+                                // Clear the selected file after successful upload
+                                selectedImageFile = null;
+
+                                // Clean up temporary processed file if it's different from original
+                                if (!processedImageFile.equals(selectedImageFile)) {
+                                    processedImageFile.delete();
+                                }
+                            } else {
+                                System.err.println("Failed to upload image to Firebase Storage");
+                                javafx.application.Platform.runLater(() -> {
+                                    DialogUtils.showWarningAlert("Image Upload Failed",
+                                            "Failed to upload the image. Your profile will be saved without the new image.");
+                                });
+                            }
                         } else {
-                            System.err.println("Failed to upload image to Firebase Storage");
+                            System.err.println("Could not find userId for user: " + user.getEmail());
                             javafx.application.Platform.runLater(() -> {
                                 DialogUtils.showWarningAlert("Image Upload Failed",
-                                        "Failed to upload the image. Your profile will be saved without the new image.");
+                                        "Could not identify user for image upload. Your profile will be saved without the new image.");
                             });
                         }
                     } else {
-                        System.err.println("Could not find userId for user: " + user.getEmail());
+                        System.err.println("Failed to process image");
                         javafx.application.Platform.runLater(() -> {
-                            DialogUtils.showWarningAlert("Image Upload Failed",
-                                    "Could not identify user for image upload. Your profile will be saved without the new image.");
+                            DialogUtils.showWarningAlert("Image Processing Failed",
+                                    "Failed to process the image. Your profile will be saved without the new image.");
                         });
                     }
                 }
@@ -283,6 +318,52 @@ public class editProfileController {
                 DialogUtils.showErrorAlert("Update Error",
                         "An unexpected error occurred while updating your profile. Please try again.");
             });
+        }
+    }
+
+    /**
+     * Process an image file for upload - compress if needed
+     * 
+     * @param imageFile The original image file
+     * @return Processed image file ready for upload, or null if processing failed
+     */
+    private File processImageForUpload(File imageFile) {
+        if (imageFile == null || !imageFile.exists()) {
+            System.err.println("Invalid image file for processing");
+            return null;
+        }
+
+        try {
+            // Define target size in KB (e.g., 500KB for profile images)
+            int targetSizeKB = 500;
+
+            // Check current file size
+            long currentSizeKB = ImageProcessingService.getFileSizeKB(imageFile);
+            System.out.println("Original image size: " + currentSizeKB + " KB");
+
+            // If file is already under the target size, return original
+            if (!ImageProcessingService.needsProcessing(imageFile, targetSizeKB)) {
+                System.out.println("Image is already under target size, no processing needed");
+                return imageFile;
+            }
+
+            // Process the image to reduce size
+            System.out.println("Processing image to reduce size...");
+            File processedFile = ImageProcessingService.processImageSync(imageFile, targetSizeKB);
+
+            if (processedFile != null) {
+                long processedSizeKB = ImageProcessingService.getFileSizeKB(processedFile);
+                System.out.println("Processed image size: " + processedSizeKB + " KB");
+                return processedFile;
+            } else {
+                System.err.println("Failed to process image, using original");
+                return imageFile; // Fallback to original if processing fails
+            }
+
+        } catch (Exception e) {
+            System.err.println("Error processing image: " + e.getMessage());
+            e.printStackTrace();
+            return imageFile; // Fallback to original if error occurs
         }
     }
 
