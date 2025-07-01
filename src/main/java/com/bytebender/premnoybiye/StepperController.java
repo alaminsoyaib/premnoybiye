@@ -2,12 +2,9 @@ package com.bytebender.premnoybiye;
 
 import javafx.fxml.FXML;
 import java.io.IOException;
-
 import com.bytebender.premnoybiye.Component.Component;
 import com.bytebender.premnoybiye.Component.ImageProcessingService;
-// import com.bytebender.premnoybiye.Component.DialogUtils;
 import com.bytebender.premnoybiye.DBConnection.FirebaseConnection;
-
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.TextField;
@@ -19,400 +16,263 @@ import javafx.scene.layout.VBox;
 import javafx.scene.input.MouseEvent;
 
 public class StepperController {
-	int flag = 0;
-
+	private int flag = 0;
 	private Component component = new Component();
-
 	private FirebaseConnection firebaseConnection = new FirebaseConnection();
-	private java.io.File selectedImageFile = null; // Store the selected image file for upload
-	private java.io.File processedImageFile = null; // Store the processed/compressed image file
+	private java.io.File selectedImageFile = null;
+	private java.io.File processedImageFile = null;
 
 	@FXML
-	private VBox Stepper1;
+	private VBox Stepper1, Stepper2, Stepper3, imagePicker;
 	@FXML
-	private VBox Stepper2;
-	@FXML
-	private VBox Stepper3;
-
-	@FXML
-	private VBox imagePicker;
-	@FXML
-	private ImageView img_inside_imgPicker;
-	@FXML
-	private ImageView blurImg;
-
+	private ImageView img_inside_imgPicker, blurImg;
 	@FXML
 	private StackPane imgStack;
-
 	@FXML
-	private ImageView stepperIcon_1;
+	private ImageView stepperIcon_1, stepperIcon_2, stepperIcon_3;
 	@FXML
-	private ImageView stepperIcon_2;
+	private ImageView stepperLine_12, stepperLine_23;
 	@FXML
-	private ImageView stepperIcon_3;
+	private ImageView stepperProgress_1, stepperProgress_2, stepperProgress_3;
 	@FXML
-	private ImageView stepperLine_12;
-	@FXML
-	private ImageView stepperLine_23;
-	@FXML
-	private ImageView stepperProgress_1;
-	@FXML
-	private ImageView stepperProgress_2;
-	@FXML
-	private ImageView stepperProgress_3;
-
-	@FXML
-	private HBox nextButton;
-	@FXML
-	private HBox prevButton;
-
+	private HBox nextButton, prevButton;
 	@FXML
 	private DatePicker dobComboBox;
 	@FXML
-	private ComboBox<?> genderComboBox;
+	private ComboBox<?> genderComboBox, religionComboBox, cityComboBox;
 	@FXML
-	private ComboBox<?> religionComboBox;
-	@FXML
-	private ComboBox<?> cityComboBox;
-
-	@FXML
-	private ComboBox<?> highestEduComboBox;
-	@FXML
-	private ComboBox<?> professionComboBox;
-	@FXML
-	private ComboBox<?> monthlyIncomeComboBox;
-
+	private ComboBox<?> highestEduComboBox, professionComboBox, monthlyIncomeComboBox;
 	@FXML
 	private TextField aboutYouTextField;
 	@FXML
-	private ComboBox<?> prefPartnerAgeComboBox;
-	@FXML
-	private ComboBox<?> prefLocationComboBox;
-	@FXML
-	private ComboBox<?> prefProfessionComboBox;
+	private ComboBox<?> prefPartnerAgeComboBox, prefLocationComboBox, prefProfessionComboBox;
 
 	@FXML
 	private void initialize() {
-		// Initialize: Show Stepper1, hide Stepper2
-		Stepper1.setVisible(true);
-		Stepper1.setManaged(true);
-		Stepper2.setVisible(false);
-		Stepper2.setManaged(false);
-		Stepper3.setVisible(false);
-		Stepper3.setManaged(false);
-		// image picker starts
+		showStep(1);
+		setupImagePicker();
+	}
+
+	private void setupImagePicker() {
 		img_inside_imgPicker.setOnMouseClicked((MouseEvent event) -> {
 			try {
 				javafx.stage.FileChooser fileChooser = new javafx.stage.FileChooser();
 				fileChooser.setTitle("Select Image");
-				fileChooser.getExtensionFilters().addAll(
-						new javafx.stage.FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg",
-								"*.jpeg", "*.gif"));
+				fileChooser.getExtensionFilters().add(
+						new javafx.stage.FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg",
+								"*.gif"));
 
 				java.io.File selectedFile = fileChooser.showOpenDialog(img_inside_imgPicker.getScene().getWindow());
-
 				if (selectedFile != null) {
-					// Store the selected file for later processing and upload
-					this.selectedImageFile = selectedFile;
-
-					// Show file size info to user
-					long fileSizeKB = ImageProcessingService.getFileSizeKB(selectedFile);
-					System.out.println("Selected image: " + selectedFile.getName() + " (" + fileSizeKB + " KB)");
-
-					// Process the image immediately to compress if needed
-					processedImageFile = processImageForUpload(selectedFile);
-
-					if (processedImageFile != null) {
-						long processedSizeKB = ImageProcessingService.getFileSizeKB(processedImageFile);
-						System.out.println("Image processed. Final size: " + processedSizeKB + " KB");
-
-						// Show info to user if file was compressed
-						if (fileSizeKB > 500 && processedSizeKB < fileSizeKB) {
-							System.out.println("Image compressed from " + fileSizeKB + " KB to " + processedSizeKB);
-						}
-					}
-
-					// Display the image in the UI (use original for preview)
-					component.setImage(selectedFile.toURI().toString(), img_inside_imgPicker, 80, 80, true, 0);
-					component.setImage(selectedFile.toURI().toString(), blurImg, 80, 80, false, 0);
-
-					javafx.scene.shape.Rectangle clip = new javafx.scene.shape.Rectangle(80, 80);
-					clip.setArcWidth(20);
-					clip.setArcHeight(20);
-					imgStack.setClip(clip);
-
-					System.out.println("Image selected for upload: " + selectedFile.getName());
+					handleImageSelection(selectedFile);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
-				javafx.application.Platform.runLater(() -> {
-					System.out.println("Image Selection Error - Failed to select or process image. Please try again.");
-				});
+				System.out.println("Image Selection Error - Failed to select or process image. Please try again.");
 			}
 		});
+	}
 
-		// image picker ends
+	private void handleImageSelection(java.io.File selectedFile) {
+		selectedImageFile = selectedFile;
+		long fileSizeKB = ImageProcessingService.getFileSizeKB(selectedFile);
+		System.out.println("Selected image: " + selectedFile.getName() + " (" + fileSizeKB + " KB)");
+
+		processedImageFile = processImageForUpload(selectedFile);
+		if (processedImageFile != null) {
+			long processedSizeKB = ImageProcessingService.getFileSizeKB(processedImageFile);
+			System.out.println("Image processed. Final size: " + processedSizeKB + " KB");
+			if (fileSizeKB > 500 && processedSizeKB < fileSizeKB) {
+				System.out.println("Image compressed from " + fileSizeKB + " KB to " + processedSizeKB);
+			}
+		}
+
+		component.setImageWithClip(selectedFile.toURI().toString(), img_inside_imgPicker, blurImg, imgStack, 80, 80);
+		System.out.println("Image selected for upload: " + selectedFile.getName());
 	}
 
 	@FXML
 	private void nextButtonClicked() throws IOException {
-		// flag 0 means Stepper1 is visible
-		// flag 1 means Stepper2 is visible
-		// flag 2 means Stepper3 is visible
-		// flag 3 means done
-		if (flag == 0) {
-			Stepper1.setVisible(false);
-			Stepper1.setManaged(false);
-			Stepper2.setVisible(true);
-			Stepper2.setManaged(true);
-			stepperIcon_1.setImage(new Image(
-					App.class.getResourceAsStream(
-							"/com/bytebender/premnoybiye/img/icon/Checkbox_Complete.png")));
-			stepperProgress_1.setImage(new Image(
-					App.class.getResourceAsStream(
-							"/com/bytebender/premnoybiye/img/icon/Tag_Complete.png")));
-			stepperLine_12.setImage(new Image(
-					App.class.getResourceAsStream(
-							"/com/bytebender/premnoybiye/img/icon/Stepper_Line_Enable.png")));
-			stepperIcon_2.setImage(new Image(
-					App.class.getResourceAsStream(
-							"/com/bytebender/premnoybiye/img/icon/Checkbox_Progress.png")));
-			stepperProgress_2.setImage(new Image(
-					App.class.getResourceAsStream(
-							"/com/bytebender/premnoybiye/img/icon/Tag_Progress.png")));
-
-			stepperIcon_1.scaleXProperty().set(1.0);
-			stepperIcon_1.scaleYProperty().set(1.0);
-			stepperIcon_2.scaleXProperty().set(1.27);
-			stepperIcon_2.scaleYProperty().set(1.27);
-
-			prevButton.setOpacity(1);
-
-			flag = 1;
-		} else if (flag == 1) {
-			Stepper2.setVisible(false);
-			Stepper2.setManaged(false);
-			Stepper3.setVisible(true);
-			Stepper3.setManaged(true);
-			stepperIcon_2.setImage(new Image(
-					App.class.getResourceAsStream(
-							"/com/bytebender/premnoybiye/img/icon/Checkbox_Complete.png")));
-			stepperProgress_2.setImage(new Image(
-					App.class.getResourceAsStream(
-							"/com/bytebender/premnoybiye/img/icon/Tag_Complete.png")));
-			stepperLine_23.setImage(new Image(
-					App.class.getResourceAsStream(
-							"/com/bytebender/premnoybiye/img/icon/Stepper_Line_Enable.png")));
-			stepperIcon_3.setImage(new Image(
-					App.class.getResourceAsStream(
-							"/com/bytebender/premnoybiye/img/icon/Checkbox_Progress.png")));
-			stepperProgress_3.setImage(new Image(
-					App.class.getResourceAsStream(
-							"/com/bytebender/premnoybiye/img/icon/Tag_Progress.png")));
-
-			stepperIcon_2.scaleXProperty().set(1.0);
-			stepperIcon_2.scaleYProperty().set(1.0);
-			stepperIcon_3.scaleXProperty().set(1.27);
-			stepperIcon_3.scaleYProperty().set(1.27);
-
-			prevButton.setOpacity(1);
-			flag = 2;
-		} else if (flag == 2) {
-			if (dobComboBox.getValue() != null) {
-				AuthController.CurrentUser.setDob(dobComboBox.getValue().toString());
-			}
-			if (genderComboBox.getValue() != null) {
-				AuthController.CurrentUser.setGender(genderComboBox.getValue().toString());
-			}
-			if (religionComboBox.getValue() != null) {
-				AuthController.CurrentUser.setReligion(religionComboBox.getValue().toString());
-			}
-			if (cityComboBox.getValue() != null) {
-				AuthController.CurrentUser.setCity(cityComboBox.getValue().toString());
-			} // Handle image upload if a new image was selected
-			if (selectedImageFile != null) {
-				System.out.println("Uploading image to Firebase Storage...");
-
-				// Get the actual userId from the user object (which now includes userId)
-				String userId = firebaseConnection.getUserId(AuthController.CurrentUser);
-				if (userId != null) {
-					// Use authenticated upload with user credentials
-					String idToken = firebaseConnection.getIdTokenForUser(AuthController.CurrentUserEmail,
-							AuthController.CurrentUserPassword);
-
-					// Use processed image if available, otherwise fall back to original
-					java.io.File imageToUpload = (processedImageFile != null) ? processedImageFile : selectedImageFile;
-					String imageUrl = firebaseConnection.uploadImageToStorageWithToken(imageToUpload, userId,
-							idToken);
-
-					if (imageUrl != null) {
-						AuthController.CurrentUser.setImage(imageUrl);
-						System.out.println("Image uploaded successfully. URL: " + imageUrl);
-
-						// Clean up temporary processed file if it's different from the original
-						if (processedImageFile != null && !processedImageFile.equals(selectedImageFile)) {
-							try {
-								if (processedImageFile.exists()) {
-									processedImageFile.delete();
-									System.out.println("Temporary processed image file cleaned up");
-								}
-							} catch (Exception e) {
-								System.err.println("Failed to clean up temporary file: " + e.getMessage());
-							}
-						}
-
-						// Clear the selected files after successful upload
-						selectedImageFile = null;
-						processedImageFile = null;
-					} else {
-						System.err.println("Failed to upload image to Firebase Storage");
-
-						// Clean up temporary processed file even on failure
-						if (processedImageFile != null && !processedImageFile.equals(selectedImageFile)) {
-							try {
-								if (processedImageFile.exists()) {
-									processedImageFile.delete();
-									System.out
-											.println("Temporary processed image file cleaned up after upload failure");
-								}
-							} catch (Exception e) {
-								System.err.println("Failed to clean up temporary file: " + e.getMessage());
-							}
-						}
-
-						// Continue with profile update even if image upload fails
-					}
-				} else {
-					System.err.println("Could not find userId for user: " + AuthController.CurrentUser.getEmail());
-					// Continue with profile update even if image upload fails
-				}
-			}
-
-			if (highestEduComboBox.getValue() != null) {
-				AuthController.CurrentUser.setEducation(highestEduComboBox.getValue().toString());
-			}
-			if (professionComboBox.getValue() != null) {
-				AuthController.CurrentUser.setProfession(professionComboBox.getValue().toString());
-			}
-			if (monthlyIncomeComboBox.getValue() != null) {
-				AuthController.CurrentUser.setIncome(monthlyIncomeComboBox.getValue().toString());
-			}
-			if (aboutYouTextField.getText() != null) {
-				AuthController.CurrentUser.setBio(aboutYouTextField.getText());
-			}
-			if (prefPartnerAgeComboBox.getValue() != null) {
-				AuthController.CurrentUser.setPrefAge(prefPartnerAgeComboBox.getValue().toString());
-			}
-			if (prefLocationComboBox.getValue() != null) {
-				AuthController.CurrentUser.setPrefLocation(prefLocationComboBox.getValue().toString());
-			}
-			if (prefProfessionComboBox.getValue() != null) {
-				AuthController.CurrentUser.setPrefProfession(prefProfessionComboBox.getValue().toString());
-			}
-
-			// Update user profile in Firebase with all collected data
-			boolean updateSuccess = firebaseConnection.updateUserProfile(AuthController.CurrentUser);
-
-			if (updateSuccess) {
-				System.out.println("User profile updated successfully in Firebase!");
-				App.setRoot("sidebar");
-			} else {
-				System.err.println("Failed to update user profile in Firebase, but proceeding to sidebar");
-				App.setRoot("sidebar"); // Still proceed even if Firebase update fails
-			}
-			// App.setRoot("editProfile");
-			// App.setRoot("mymatches");
-
+		switch (flag) {
+			case 0:
+				transitionStep(1, 2, "Complete", "Progress");
+				break;
+			case 1:
+				transitionStep(2, 3, "Complete", "Progress");
+				break;
+			case 2:
+				saveUserDataAndFinish();
+				break;
 		}
 	}
 
 	@FXML
 	private void prevButtonClicked() throws IOException {
-		if (flag == 1) {
-			Stepper2.setVisible(false);
-			Stepper2.setManaged(false);
-			Stepper1.setVisible(true);
-			Stepper1.setManaged(true);
-			stepperIcon_1.setImage(new Image(
-					App.class.getResourceAsStream(
-							"/com/bytebender/premnoybiye/img/icon/Checkbox_Progress.png")));
-			stepperProgress_1.setImage(new Image(
-					App.class.getResourceAsStream(
-							"/com/bytebender/premnoybiye/img/icon/Tag_Progress.png")));
-			stepperLine_12.setImage(new Image(
-					App.class.getResourceAsStream(
-							"/com/bytebender/premnoybiye/img/icon/Stepper_Line_Disable.png")));
-			stepperIcon_2.setImage(new Image(
-					App.class.getResourceAsStream(
-							"/com/bytebender/premnoybiye/img/icon/Checkbox_Pending.png")));
-			stepperProgress_2.setImage(new Image(
-					App.class.getResourceAsStream(
-							"/com/bytebender/premnoybiye/img/icon/Tag_Pending.png")));
-
-			stepperIcon_2.scaleXProperty().set(1.0);
-			stepperIcon_2.scaleYProperty().set(1.0);
-			stepperIcon_1.scaleXProperty().set(1.27);
-			stepperIcon_1.scaleYProperty().set(1.27);
-
-			prevButton.setOpacity(0.3);
-
-			flag = 0;
-		} else if (flag == 2) {
-			Stepper3.setVisible(false);
-			Stepper3.setManaged(false);
-			Stepper2.setVisible(true);
-			Stepper2.setManaged(true);
-			stepperIcon_2.setImage(new Image(
-					App.class.getResourceAsStream(
-							"/com/bytebender/premnoybiye/img/icon/Checkbox_Progress.png")));
-			stepperProgress_2.setImage(new Image(
-					App.class.getResourceAsStream(
-							"/com/bytebender/premnoybiye/img/icon/Tag_Progress.png")));
-			stepperLine_23.setImage(new Image(
-					App.class.getResourceAsStream(
-							"/com/bytebender/premnoybiye/img/icon/Stepper_Line_Disable.png")));
-			stepperIcon_3.setImage(new Image(
-					App.class.getResourceAsStream(
-							"/com/bytebender/premnoybiye/img/icon/Checkbox_Pending.png")));
-			stepperProgress_3.setImage(new Image(
-					App.class.getResourceAsStream(
-							"/com/bytebender/premnoybiye/img/icon/Tag_Pending.png")));
-
-			stepperIcon_3.scaleXProperty().set(1.0);
-			stepperIcon_3.scaleYProperty().set(1.0);
-			stepperIcon_2.scaleXProperty().set(1.27);
-			stepperIcon_2.scaleYProperty().set(1.27);
-
-			flag = 1;
+		switch (flag) {
+			case 1:
+				transitionStep(2, 1, "Progress", "Pending");
+				prevButton.setOpacity(0.3);
+				break;
+			case 2:
+				transitionStep(3, 2, "Progress", "Pending");
+				break;
 		}
-
 	}
 
-	/**
-	 * Process an image file for upload - compress JPEG or convert PNG to JPEG
-	 * 
-	 * @param imageFile The original image file
-	 * @return The processed image file ready for upload
-	 */
-	private java.io.File processImageForUpload(java.io.File imageFile) {
-		if (imageFile == null) {
-			return null;
+	private void transitionStep(int fromStep, int toStep, String fromState, String toState) {
+		showStep(toStep);
+		updateStepperUI(fromStep, toStep, fromState, toState);
+		flag = toStep == 1 ? 0 : toStep == 2 ? 1 : 2;
+		if (toStep > 1)
+			prevButton.setOpacity(1);
+	}
+
+	private void showStep(int step) {
+		component.toggleVisibility(step == 1, Stepper1);
+		component.toggleVisibility(step == 2, Stepper2);
+		component.toggleVisibility(step == 3, Stepper3);
+	}
+
+	private void updateStepperUI(int fromStep, int toStep, String fromState, String toState) {
+		ImageView fromIcon = getStepperIcon(fromStep);
+		ImageView toIcon = getStepperIcon(toStep);
+		ImageView fromProgress = getStepperProgress(fromStep);
+		ImageView toProgress = getStepperProgress(toStep);
+		ImageView line = getStepperLine(fromStep, toStep);
+
+		setStepperImages(fromIcon, fromProgress, fromState);
+		setStepperImages(toIcon, toProgress, toState);
+
+		if (line != null) {
+			String lineState = toStep > fromStep ? "Enable" : "Disable";
+			line.setImage(createImage("Stepper_Line_" + lineState + ".png"));
 		}
 
-		try {
-			// Use 500KB as the target size for compression
-			java.io.File processedFile = ImageProcessingService.processImageSync(imageFile, 500);
+		resetScale(fromIcon);
+		setScale(toIcon, 1.27);
+	}
 
-			if (processedFile == null) {
-				System.out.println("Image processing failed, using original file");
-				return imageFile;
+	private ImageView getStepperIcon(int step) {
+		return step == 1 ? stepperIcon_1 : step == 2 ? stepperIcon_2 : stepperIcon_3;
+	}
+
+	private ImageView getStepperProgress(int step) {
+		return step == 1 ? stepperProgress_1 : step == 2 ? stepperProgress_2 : stepperProgress_3;
+	}
+
+	private ImageView getStepperLine(int fromStep, int toStep) {
+		if ((fromStep == 1 && toStep == 2) || (fromStep == 2 && toStep == 1))
+			return stepperLine_12;
+		if ((fromStep == 2 && toStep == 3) || (fromStep == 3 && toStep == 2))
+			return stepperLine_23;
+		return null;
+	}
+
+	private void setStepperImages(ImageView icon, ImageView progress, String state) {
+		String iconFile = "Checkbox_" + state + ".png";
+		String progressFile = "Tag_" + state + ".png";
+		icon.setImage(createImage(iconFile));
+		progress.setImage(createImage(progressFile));
+	}
+
+	private Image createImage(String filename) {
+		return new Image(App.class.getResourceAsStream("/com/bytebender/premnoybiye/img/icon/" + filename));
+	}
+
+	private void resetScale(ImageView imageView) {
+		setScale(imageView, 1.0);
+	}
+
+	private void setScale(ImageView imageView, double scale) {
+		imageView.setScaleX(scale);
+		imageView.setScaleY(scale);
+	}
+
+	private void saveUserDataAndFinish() throws IOException {
+		updateUserProfileData();
+		handleImageUpload();
+
+		boolean updateSuccess = firebaseConnection.updateUserProfile(AuthController.CurrentUser);
+		if (updateSuccess) {
+			System.out.println("User profile updated successfully in Firebase!");
+		} else {
+			System.err.println("Failed to update user profile in Firebase, but proceeding to sidebar");
+		}
+		App.setRoot("sidebar");
+	}
+
+	private void updateUserProfileData() {
+		setUserFieldIfNotNull(dobComboBox.getValue(), v -> AuthController.CurrentUser.setDob(v.toString()));
+		setUserFieldIfNotNull(genderComboBox.getValue(), v -> AuthController.CurrentUser.setGender(v.toString()));
+		setUserFieldIfNotNull(religionComboBox.getValue(), v -> AuthController.CurrentUser.setReligion(v.toString()));
+		setUserFieldIfNotNull(cityComboBox.getValue(), v -> AuthController.CurrentUser.setCity(v.toString()));
+		setUserFieldIfNotNull(highestEduComboBox.getValue(),
+				v -> AuthController.CurrentUser.setEducation(v.toString()));
+		setUserFieldIfNotNull(professionComboBox.getValue(),
+				v -> AuthController.CurrentUser.setProfession(v.toString()));
+		setUserFieldIfNotNull(monthlyIncomeComboBox.getValue(),
+				v -> AuthController.CurrentUser.setIncome(v.toString()));
+		setUserFieldIfNotNull(aboutYouTextField.getText(), v -> AuthController.CurrentUser.setBio((String) v));
+		setUserFieldIfNotNull(prefPartnerAgeComboBox.getValue(),
+				v -> AuthController.CurrentUser.setPrefAge(v.toString()));
+		setUserFieldIfNotNull(prefLocationComboBox.getValue(),
+				v -> AuthController.CurrentUser.setPrefLocation(v.toString()));
+		setUserFieldIfNotNull(prefProfessionComboBox.getValue(),
+				v -> AuthController.CurrentUser.setPrefProfession(v.toString()));
+	}
+
+	private void setUserFieldIfNotNull(Object value, java.util.function.Consumer<Object> setter) {
+		if (value != null)
+			setter.accept(value);
+	}
+
+	private void handleImageUpload() {
+		if (selectedImageFile == null)
+			return;
+
+		System.out.println("Uploading image to Firebase Storage...");
+		String userId = firebaseConnection.getUserId(AuthController.CurrentUser);
+		if (userId != null) {
+			String idToken = firebaseConnection.getIdTokenForUser(AuthController.CurrentUserEmail,
+					AuthController.CurrentUserPassword);
+			java.io.File imageToUpload = processedImageFile != null ? processedImageFile : selectedImageFile;
+			String imageUrl = firebaseConnection.uploadImageToStorageWithToken(imageToUpload, userId, idToken);
+
+			if (imageUrl != null) {
+				AuthController.CurrentUser.setImage(imageUrl);
+				System.out.println("Image uploaded successfully. URL: " + imageUrl);
+			} else {
+				System.err.println("Failed to upload image to Firebase Storage");
 			}
+			cleanupTempFiles();
+		} else {
+			System.err.println("Could not find userId for user: " + AuthController.CurrentUser.getEmail());
+		}
+	}
 
-			return processedFile;
+	private void cleanupTempFiles() {
+		if (processedImageFile != null && !processedImageFile.equals(selectedImageFile)) {
+			try {
+				if (processedImageFile.exists() && processedImageFile.delete()) {
+					System.out.println("Temporary processed image file cleaned up");
+				}
+			} catch (Exception e) {
+				System.err.println("Failed to clean up temporary file: " + e.getMessage());
+			}
+		}
+		selectedImageFile = null;
+		processedImageFile = null;
+	}
+
+	private java.io.File processImageForUpload(java.io.File imageFile) {
+		if (imageFile == null)
+			return null;
+		try {
+			java.io.File processedFile = ImageProcessingService.processImageSync(imageFile, 500);
+			return processedFile != null ? processedFile : imageFile;
 		} catch (Exception e) {
 			System.err.println("Error processing image: " + e.getMessage());
-			e.printStackTrace();
-			return imageFile; // Return original file if processing fails
+			return imageFile;
 		}
 	}
 }

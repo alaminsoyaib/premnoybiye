@@ -1,25 +1,19 @@
 package com.bytebender.premnoybiye;
 
 import java.io.IOException;
-
 import com.bytebender.premnoybiye.DBConnection.userInfo;
 import com.bytebender.premnoybiye.DBConnection.FirebaseConnection;
-
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 
 public class AuthController {
     static userInfo CurrentUser;
-    static String CurrentUserEmail; // Store email for getting fresh tokens
-    static String CurrentUserPassword; // Temporarily store password (not recommended for production)
+    static String CurrentUserEmail;
+    static String CurrentUserPassword;
     private FirebaseConnection firebaseConnection = new FirebaseConnection();
 
     @FXML
-    private TextField emailTextField;
-    @FXML
-    private TextField nameTextField;
-    @FXML
-    private TextField passwordTextField;
+    private TextField emailTextField, nameTextField, passwordTextField;
 
     @FXML
     private void switchToLogin() throws IOException {
@@ -36,40 +30,31 @@ public class AuthController {
         String email = emailTextField.getText();
         String password = passwordTextField.getText();
 
-        // Use Firebase connection to login user (similar to Component.setImage pattern)
         userInfo loggedInUser = firebaseConnection.loginUser(email, password);
         if (loggedInUser != null) {
             CurrentUser = loggedInUser;
-            // Store credentials for authenticated operations
             CurrentUserEmail = email;
             CurrentUserPassword = password;
             App.setRoot("sidebar");
         } else {
-            // Handle login failure (Firebase connection already shows error alerts)
             System.err.println("Login failed. Please check your credentials and try again.");
         }
     }
 
-    @FXML // Register user and switch to stepper
+    @FXML
     private void switchToStepper() throws IOException {
         String name = nameTextField.getText();
         String email = emailTextField.getText();
         String password = passwordTextField.getText();
 
-        // Use Firebase connection to register user and get the userId
         String userId = firebaseConnection.registerUser(name, email, password);
         if (userId != null) {
-            // Create CurrentUser with the userId from registration (no password needed
-            // since Firebase Auth handles it)
             CurrentUser = new userInfo(name, email, "", "", "", "", "", "", "", "", "", "", "", "", userId);
-            // Store credentials for authenticated operations during profile setup
             CurrentUserEmail = email;
             CurrentUserPassword = password;
             App.setRoot("stepper");
         } else {
-            // Handle registration failure (Firebase connection already shows error alerts)
             System.err.println("Registration failed. Please try again.");
         }
     }
-
 }
