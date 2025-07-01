@@ -5,7 +5,7 @@ import java.io.IOException;
 
 import com.bytebender.premnoybiye.Component.Component;
 import com.bytebender.premnoybiye.Component.ImageProcessingService;
-import com.bytebender.premnoybiye.Component.DialogUtils;
+// import com.bytebender.premnoybiye.Component.DialogUtils;
 import com.bytebender.premnoybiye.DBConnection.FirebaseConnection;
 
 import javafx.scene.control.ComboBox;
@@ -128,11 +128,7 @@ public class StepperController {
 
 						// Show info to user if file was compressed
 						if (fileSizeKB > 500 && processedSizeKB < fileSizeKB) {
-							javafx.application.Platform.runLater(() -> {
-								DialogUtils.showInfoAlert("Image Compressed",
-										"Image compressed from " + fileSizeKB + " KB to " + processedSizeKB
-												+ " KB for optimal upload.");
-							});
+							System.out.println("Image compressed from " + fileSizeKB + " KB to " + processedSizeKB);
 						}
 					}
 
@@ -150,11 +146,11 @@ public class StepperController {
 			} catch (Exception e) {
 				e.printStackTrace();
 				javafx.application.Platform.runLater(() -> {
-					DialogUtils.showErrorAlert("Image Selection Error",
-							"Failed to select or process image. Please try again.");
+					System.out.println("Image Selection Error - Failed to select or process image. Please try again.");
 				});
 			}
 		});
+
 		// image picker ends
 	}
 
