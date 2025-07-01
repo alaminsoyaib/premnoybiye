@@ -4,6 +4,8 @@ import javafx.fxml.FXML;
 import java.io.IOException;
 
 import com.bytebender.premnoybiye.Component.Component;
+import com.bytebender.premnoybiye.Component.ImageProcessingService;
+import com.bytebender.premnoybiye.Component.DialogUtils;
 import com.bytebender.premnoybiye.DBConnection.FirebaseConnection;
 
 import javafx.scene.control.ComboBox;
@@ -23,6 +25,7 @@ public class StepperController {
 
 	private FirebaseConnection firebaseConnection = new FirebaseConnection();
 	private java.io.File selectedImageFile = null; // Store the selected image file for upload
+	private java.io.File processedImageFile = null; // Store the processed/compressed image file
 
 	@FXML
 	private VBox Stepper1;
@@ -109,9 +112,31 @@ public class StepperController {
 				java.io.File selectedFile = fileChooser.showOpenDialog(img_inside_imgPicker.getScene().getWindow());
 
 				if (selectedFile != null) {
-					// Store the selected file for later upload
+					// Store the selected file for later processing and upload
 					this.selectedImageFile = selectedFile;
 
+					// Show file size info to user
+					long fileSizeKB = ImageProcessingService.getFileSizeKB(selectedFile);
+					System.out.println("Selected image: " + selectedFile.getName() + " (" + fileSizeKB + " KB)");
+
+					// Process the image immediately to compress if needed
+					processedImageFile = processImageForUpload(selectedFile);
+
+					if (processedImageFile != null) {
+						long processedSizeKB = ImageProcessingService.getFileSizeKB(processedImageFile);
+						System.out.println("Image processed. Final size: " + processedSizeKB + " KB");
+
+						// Show info to user if file was compressed
+						if (fileSizeKB > 500 && processedSizeKB < fileSizeKB) {
+							javafx.application.Platform.runLater(() -> {
+								DialogUtils.showInfoAlert("Image Compressed",
+										"Image compressed from " + fileSizeKB + " KB to " + processedSizeKB
+												+ " KB for optimal upload.");
+							});
+						}
+					}
+
+					// Display the image in the UI (use original for preview)
 					component.setImage(selectedFile.toURI().toString(), img_inside_imgPicker, 80, 80, true, 0);
 					component.setImage(selectedFile.toURI().toString(), blurImg, 80, 80, false, 0);
 
@@ -124,6 +149,10 @@ public class StepperController {
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
+				javafx.application.Platform.runLater(() -> {
+					DialogUtils.showErrorAlert("Image Selection Error",
+							"Failed to select or process image. Please try again.");
+				});
 			}
 		});
 		// image picker ends
@@ -214,16 +243,47 @@ public class StepperController {
 					// Use authenticated upload with user credentials
 					String idToken = firebaseConnection.getIdTokenForUser(AuthController.CurrentUserEmail,
 							AuthController.CurrentUserPassword);
-					String imageUrl = firebaseConnection.uploadImageToStorageWithToken(selectedImageFile, userId,
+
+					// Use processed image if available, otherwise fall back to original
+					java.io.File imageToUpload = (processedImageFile != null) ? processedImageFile : selectedImageFile;
+					String imageUrl = firebaseConnection.uploadImageToStorageWithToken(imageToUpload, userId,
 							idToken);
 
 					if (imageUrl != null) {
 						AuthController.CurrentUser.setImage(imageUrl);
 						System.out.println("Image uploaded successfully. URL: " + imageUrl);
-						// Clear the selected file after successful upload
+
+						// Clean up temporary processed file if it's different from the original
+						if (processedImageFile != null && !processedImageFile.equals(selectedImageFile)) {
+							try {
+								if (processedImageFile.exists()) {
+									processedImageFile.delete();
+									System.out.println("Temporary processed image file cleaned up");
+								}
+							} catch (Exception e) {
+								System.err.println("Failed to clean up temporary file: " + e.getMessage());
+							}
+						}
+
+						// Clear the selected files after successful upload
 						selectedImageFile = null;
+						processedImageFile = null;
 					} else {
 						System.err.println("Failed to upload image to Firebase Storage");
+
+						// Clean up temporary processed file even on failure
+						if (processedImageFile != null && !processedImageFile.equals(selectedImageFile)) {
+							try {
+								if (processedImageFile.exists()) {
+									processedImageFile.delete();
+									System.out
+											.println("Temporary processed image file cleaned up after upload failure");
+								}
+							} catch (Exception e) {
+								System.err.println("Failed to clean up temporary file: " + e.getMessage());
+							}
+						}
+
 						// Continue with profile update even if image upload fails
 					}
 				} else {
@@ -330,5 +390,33 @@ public class StepperController {
 			flag = 1;
 		}
 
+	}
+
+	/**
+	 * Process an image file for upload - compress JPEG or convert PNG to JPEG
+	 * 
+	 * @param imageFile The original image file
+	 * @return The processed image file ready for upload
+	 */
+	private java.io.File processImageForUpload(java.io.File imageFile) {
+		if (imageFile == null) {
+			return null;
+		}
+
+		try {
+			// Use 500KB as the target size for compression
+			java.io.File processedFile = ImageProcessingService.processImageSync(imageFile, 500);
+
+			if (processedFile == null) {
+				System.out.println("Image processing failed, using original file");
+				return imageFile;
+			}
+
+			return processedFile;
+		} catch (Exception e) {
+			System.err.println("Error processing image: " + e.getMessage());
+			e.printStackTrace();
+			return imageFile; // Return original file if processing fails
+		}
 	}
 }
