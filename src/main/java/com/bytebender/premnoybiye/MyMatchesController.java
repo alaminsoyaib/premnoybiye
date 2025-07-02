@@ -192,11 +192,6 @@ public class MyMatchesController {
         cardNode.setOnMouseExited(event -> cardNode.setStyle("-fx-cursor: default;"));
     }
 
-    public void refreshMatches() {
-        loadMatchedUsers();
-        displayMatchedUsers();
-    }
-
     private void showUserProfileModal(userInfo user) throws IOException {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("userprofile.fxml"));
