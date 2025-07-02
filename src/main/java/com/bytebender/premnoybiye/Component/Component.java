@@ -99,9 +99,10 @@ public class Component {
         ProgressIndicator indicator = new ProgressIndicator();
         indicator.setProgress(-1);
         indicator.setPrefSize(50, 50);
+        indicator.setStyle("-fx-progress-color: #6631c4;-fx-control-inner-background: transparent;");
 
         Label label = new Label(message);
-        label.setStyle("-fx-font-size: 14px; -fx-text-fill: #666666;");
+        label.setStyle("-fx-font-size: 14px; -fx-text-fill: #6631c4;");
 
         VBox container = new VBox(15, indicator, label);
         container.setAlignment(Pos.CENTER);
