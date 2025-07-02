@@ -110,11 +110,11 @@ public class StepperController {
 	private void prevButtonClicked() throws IOException {
 		switch (flag) {
 			case 1:
-				transitionStep(2, 1, "Progress", "Pending");
+				transitionStep(2, 1, "Pending", "Progress");
 				prevButton.setOpacity(0.3);
 				break;
 			case 2:
-				transitionStep(3, 2, "Progress", "Pending");
+				transitionStep(3, 2, "Pending", "Progress");
 				break;
 		}
 	}
