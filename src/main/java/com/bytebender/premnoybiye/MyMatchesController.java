@@ -163,7 +163,7 @@ public class MyMatchesController {
             setLabelText(cardAge, component.calculateAge(user.getDob()));
 
             if (cardImg != null) {
-                component.setImageWithClip(user.getImage(), cardImg, blurImg, imgStack, 200, 298);
+                component.setImageWithClipCached(user, cardImg, blurImg, imgStack, 200, 298);
             }
 
             setupCardInteraction(cardNode, user);

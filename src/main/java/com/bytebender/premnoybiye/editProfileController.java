@@ -87,7 +87,7 @@ public class editProfileController {
 
     private void setupUserImage(userInfo user) {
         if (user.getImage() != null && !user.getImage().isEmpty()) {
-            component.setImageWithClip(user.getImage(), editProfileImg, blurImg, imgStack, 84, 84);
+            component.setImageWithClipCached(user, editProfileImg, blurImg, imgStack, 84, 84);
         }
     }
 

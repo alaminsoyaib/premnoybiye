@@ -2,6 +2,7 @@ package com.bytebender.premnoybiye.DBConnection;
 
 import java.util.List;
 import java.util.ArrayList;
+import javafx.scene.image.Image;
 
 public class userInfo {
     private String name = "";
@@ -22,6 +23,9 @@ public class userInfo {
     private List<String> likedUsers = new ArrayList<>(); // List of liked user IDs
     private List<String> rejectedUsers = new ArrayList<>(); // List of rejected user IDs
     private List<String> matchedUsers = new ArrayList<>(); // List of matched user IDs
+
+    // Cached image object for performance optimization
+    private transient Image cachedImage = null;
 
     public userInfo(String name, String email, String dob, String gender, String religion,
             String city, String image, String education, String profession, String income, String bio, String prefAge,
@@ -229,5 +233,18 @@ public class userInfo {
 
     public boolean hasSeenUser(String userId) {
         return this.likedUsers.contains(userId) || this.rejectedUsers.contains(userId);
+    }
+
+    // Image caching methods for performance optimization
+    public Image getCachedImage() {
+        return cachedImage;
+    }
+
+    public void setCachedImage(Image cachedImage) {
+        this.cachedImage = cachedImage;
+    }
+
+    public boolean hasCachedImage() {
+        return cachedImage != null;
     }
 }

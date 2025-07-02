@@ -121,7 +121,7 @@ public class DiscoverController {
         updateCardLabels(user.getName(), user.getBio(), user.getCity());
         updateDetailLabels(user);
 
-        component.setImageWithClip(user.getImage(), cardImg, blurImg, imgStack, 258, 358);
+        component.setImageWithClipCached(user, cardImg, blurImg, imgStack, 258, 358);
         component.toggleVisibility(true, buttonHolder);
     }
 

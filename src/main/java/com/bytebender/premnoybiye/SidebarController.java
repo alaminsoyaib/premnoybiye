@@ -112,14 +112,8 @@ public class SidebarController {
                     sidebarUserName.setText(AuthController.CurrentUser.getName());
                 }
                 if (AuthController.CurrentUser.getImage() != "") {
-                    // component.setImage(user.getImage(), demoProfileImg, 84, 84, false, 20);
-                    component.setImage(AuthController.CurrentUser.getImage(), sidebarProfileImage, 40, 40, true, 20);
-                    component.setImage(AuthController.CurrentUser.getImage(), sidebarBlurImg, 40, 40, false, 20);
-
-                    javafx.scene.shape.Rectangle clip = new javafx.scene.shape.Rectangle(84, 84);
-                    clip.setArcWidth(20);
-                    clip.setArcHeight(20);
-                    imgStack.setClip(clip);
+                    component.setImageCachedWithCustomClip(AuthController.CurrentUser, sidebarProfileImage,
+                            sidebarBlurImg, imgStack, 40, 40, 20);
                 }
             }
         } catch (Exception e) {

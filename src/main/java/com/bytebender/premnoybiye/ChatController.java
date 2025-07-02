@@ -162,21 +162,7 @@ public class ChatController {
             }
 
             if (userImg != null && blurImg != null) {
-                String defaultImage = "img/icon/profile-image.png";
-                if (user.getImage() != null && !user.getImage().isEmpty()) {
-                    component.setImage(user.getImage(), userImg, 48, 48, true, 24);
-                    component.setImage(user.getImage(), blurImg, 48, 48, false, 24);
-                } else {
-                    userImg.setImage(new Image(getClass().getResourceAsStream(defaultImage)));
-                    blurImg.setImage(new Image(getClass().getResourceAsStream(defaultImage)));
-                }
-
-                if (imgStack != null) {
-                    javafx.scene.shape.Rectangle clip = new javafx.scene.shape.Rectangle(48, 48);
-                    clip.setArcWidth(24);
-                    clip.setArcHeight(24);
-                    imgStack.setClip(clip);
-                }
+                component.setImageCachedWithCustomClip(user, userImg, blurImg, imgStack, 48, 48, 24);
             }
         } catch (Exception e) {
             System.err.println("Error populating chat list item for user: " + user.getName());

@@ -71,7 +71,7 @@ public class UserProfileController {
     }
 
     private void updateUserImage() {
-        component.setImageWithClip(displayUser.getImage(), cardImg, blurImg, imgStack, 258, 358);
+        component.setImageWithClipCached(displayUser, cardImg, blurImg, imgStack, 258, 358);
     }
 
     @FXML
