@@ -32,7 +32,6 @@ public class UserProfileController {
 
     @FXML
     public void initialize() {
-        // Initialize any default settings if needed
     }
 
     public void setDisplayUser(userInfo user) {
@@ -45,8 +44,9 @@ public class UserProfileController {
     }
 
     private void updateProfileDisplay() {
-        if (displayUser == null)
+        if (displayUser == null) {
             return;
+        }
 
         updateCardElements();
         updateDetailElements();

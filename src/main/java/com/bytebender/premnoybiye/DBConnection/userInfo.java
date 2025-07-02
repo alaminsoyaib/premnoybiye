@@ -18,7 +18,7 @@ public class userInfo {
     private String prefAge = "";
     private String prefLocation = "";
     private String prefProfession = "";
-    private String userId = ""; // Firebase Authentication UID used as primary key
+    private String userId = ""; // Firebase primary key
     private List<String> likedUsers = new ArrayList<>(); // List of liked user IDs
     private List<String> rejectedUsers = new ArrayList<>(); // List of rejected user IDs
     private List<String> matchedUsers = new ArrayList<>(); // List of matched user IDs
@@ -227,7 +227,6 @@ public class userInfo {
         }
     }
 
-    // Helper method to check if user has been seen (liked or rejected)
     public boolean hasSeenUser(String userId) {
         return this.likedUsers.contains(userId) || this.rejectedUsers.contains(userId);
     }

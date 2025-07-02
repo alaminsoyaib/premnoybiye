@@ -543,12 +543,10 @@ public class FirebaseConnection {
      * @return userId if found, null otherwise
      */
     public String getUserId(userInfo user) {
-        // First, try to get userId from the user object itself
         if (user.getUserId() != null && !user.getUserId().trim().isEmpty()) {
             return user.getUserId();
         }
 
-        // Fall back to email lookup
         return getUserIdFromEmail(user.getEmail());
     }
 
@@ -708,14 +706,6 @@ public class FirebaseConnection {
         }
     }
 
-    /**
-     * Public method to get Firebase ID token for a user (used for authenticated
-     * operations)
-     * 
-     * @param email    User's email
-     * @param password User's password
-     * @return String ID token if successful, null if failed
-     */
     public String getIdTokenForUser(String email, String password) {
         return getFirebaseIdToken(email, password);
     }

@@ -201,7 +201,7 @@ public class StepperController {
 		App.setRoot("sidebar");
 	}
 
-	private void updateUserProfileData() {
+	private void updateUserProfileData() { // lamda function
 		setUserFieldIfNotNull(dobComboBox.getValue(), v -> AuthController.CurrentUser.setDob(v.toString()));
 		setUserFieldIfNotNull(genderComboBox.getValue(), v -> AuthController.CurrentUser.setGender(v.toString()));
 		setUserFieldIfNotNull(religionComboBox.getValue(), v -> AuthController.CurrentUser.setReligion(v.toString()));
@@ -222,13 +222,15 @@ public class StepperController {
 	}
 
 	private void setUserFieldIfNotNull(Object value, java.util.function.Consumer<Object> setter) {
-		if (value != null)
+		if (value != null) {
 			setter.accept(value);
+		}
 	}
 
 	private void handleImageUpload() {
-		if (selectedImageFile == null)
+		if (selectedImageFile == null) {
 			return;
+		}
 
 		System.out.println("Uploading image to Firebase Storage...");
 		String userId = firebaseConnection.getUserId(AuthController.CurrentUser);
