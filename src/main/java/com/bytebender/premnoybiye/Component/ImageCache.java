@@ -12,11 +12,6 @@ import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.util.function.Consumer;
 
-/**
- * ImageCache provides local caching for remote images to improve performance
- * and reduce network requests. Images are cached locally using a hash-based
- * file naming system.
- */
 public class ImageCache {
     private static final String CACHE_DIR = System.getProperty("user.home") + File.separator + ".premnoybiye"
             + File.separator + "cache";
@@ -24,7 +19,6 @@ public class ImageCache {
     private static final ConcurrentHashMap<String, CompletableFuture<Image>> loadingImages = new ConcurrentHashMap<>();
 
     static {
-        // Initialize cache directory
         try {
             Path cacheDir = Paths.get(CACHE_DIR);
             if (!Files.exists(cacheDir)) {
@@ -36,27 +30,18 @@ public class ImageCache {
         }
     }
 
-    /**
-     * Gets an image from cache or loads it asynchronously if not cached
-     * 
-     * @param imageUrl  The URL of the image to load
-     * @param onSuccess Callback when image is successfully loaded
-     * @param onError   Callback when image loading fails
-     */
     public static void getImageAsync(String imageUrl, Consumer<Image> onSuccess, Consumer<String> onError) {
         if (imageUrl == null || imageUrl.isEmpty()) {
             Platform.runLater(() -> onError.accept("Invalid image URL"));
             return;
         }
 
-        // Check memory cache first
         Image cachedImage = memoryCache.get(imageUrl);
         if (cachedImage != null) {
             Platform.runLater(() -> onSuccess.accept(cachedImage));
             return;
         }
 
-        // Check if already loading
         CompletableFuture<Image> existingLoad = loadingImages.get(imageUrl);
         if (existingLoad != null) {
             existingLoad.thenAccept(image -> Platform.runLater(() -> onSuccess.accept(image)))
@@ -67,7 +52,6 @@ public class ImageCache {
             return;
         }
 
-        // Start loading
         CompletableFuture<Image> loadingFuture = CompletableFuture.supplyAsync(() -> {
             try {
                 return loadImageWithCache(imageUrl);
@@ -93,18 +77,11 @@ public class ImageCache {
         });
     }
 
-    /**
-     * Synchronously gets an image from cache or loads it
-     * 
-     * @param imageUrl The URL of the image to load
-     * @return The loaded image or null if failed
-     */
     public static Image getImage(String imageUrl) {
         if (imageUrl == null || imageUrl.isEmpty()) {
             return null;
         }
 
-        // Check memory cache first
         Image cachedImage = memoryCache.get(imageUrl);
         if (cachedImage != null) {
             return cachedImage;
@@ -122,14 +99,10 @@ public class ImageCache {
         }
     }
 
-    /**
-     * Loads an image with file-based caching
-     */
     private static Image loadImageWithCache(String imageUrl) throws Exception {
         String fileName = generateCacheFileName(imageUrl);
         File cacheFile = new File(CACHE_DIR, fileName);
 
-        // Try to load from file cache first
         if (cacheFile.exists()) {
             try {
                 Image image = new Image(cacheFile.toURI().toString());
@@ -138,18 +111,13 @@ public class ImageCache {
                 }
             } catch (Exception e) {
                 System.err.println("Failed to load cached image, will re-download: " + e.getMessage());
-                // Delete corrupted cache file
                 cacheFile.delete();
             }
         }
 
-        // Download and cache the image
         return downloadAndCacheImage(imageUrl, cacheFile);
     }
 
-    /**
-     * Downloads an image from URL and caches it locally
-     */
     private static Image downloadAndCacheImage(String imageUrl, File cacheFile) throws Exception {
         System.out.println("Downloading image: " + imageUrl);
 
@@ -163,7 +131,6 @@ public class ImageCache {
             }
         }
 
-        // Load the cached image
         Image image = new Image(cacheFile.toURI().toString());
         if (image.isError()) {
             cacheFile.delete(); // Delete invalid cached file
@@ -174,9 +141,6 @@ public class ImageCache {
         return image;
     }
 
-    /**
-     * Generates a unique cache file name based on the image URL
-     */
     private static String generateCacheFileName(String imageUrl) {
         try {
             MessageDigest md = MessageDigest.getInstance("MD5");
@@ -186,8 +150,7 @@ public class ImageCache {
                 sb.append(String.format("%02x", b));
             }
 
-            // Try to preserve original extension
-            String extension = ".jpg"; // default
+            String extension = ".jpg";
             int lastDot = imageUrl.lastIndexOf('.');
             if (lastDot > 0 && lastDot < imageUrl.length() - 1) {
                 String urlExtension = imageUrl.substring(lastDot);
@@ -198,22 +161,15 @@ public class ImageCache {
 
             return sb.toString() + extension;
         } catch (Exception e) {
-            // Fallback to simple hash
             return String.valueOf(imageUrl.hashCode()) + ".jpg";
         }
     }
 
-    /**
-     * Clears the memory cache
-     */
     public static void clearMemoryCache() {
         memoryCache.clear();
         System.out.println("Memory cache cleared");
     }
 
-    /**
-     * Clears the file cache
-     */
     public static void clearFileCache() {
         try {
             File cacheDir = new File(CACHE_DIR);
@@ -231,9 +187,6 @@ public class ImageCache {
         }
     }
 
-    /**
-     * Gets cache statistics
-     */
     public static String getCacheStats() {
         File cacheDir = new File(CACHE_DIR);
         int fileCount = 0;

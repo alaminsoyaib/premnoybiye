@@ -19,12 +19,11 @@ public class userInfo {
     private String prefAge = "";
     private String prefLocation = "";
     private String prefProfession = "";
-    private String userId = ""; // Firebase primary key
-    private List<String> likedUsers = new ArrayList<>(); // List of liked user IDs
-    private List<String> rejectedUsers = new ArrayList<>(); // List of rejected user IDs
-    private List<String> matchedUsers = new ArrayList<>(); // List of matched user IDs
+    private String userId = "";
+    private List<String> likedUsers = new ArrayList<>();
+    private List<String> rejectedUsers = new ArrayList<>();
+    private List<String> matchedUsers = new ArrayList<>();
 
-    // Cached image object for performance optimization
     private transient Image cachedImage = null;
 
     public userInfo(String name, String email, String dob, String gender, String religion,
@@ -44,10 +43,9 @@ public class userInfo {
         this.prefAge = prefAge;
         this.prefLocation = prefLocation;
         this.prefProfession = prefProfession;
-        this.userId = ""; // Will be set to Firebase Authentication UID during login or registration
+        this.userId = "";
     }
 
-    // Constructor with userId
     public userInfo(String name, String email, String dob, String gender, String religion,
             String city, String image, String education, String profession, String income, String bio, String prefAge,
             String prefLocation, String prefProfession, String userId) {
@@ -212,7 +210,6 @@ public class userInfo {
         this.matchedUsers = matchedUsers;
     }
 
-    // Helper methods to add individual users to liked/rejected/matched lists
     public void addLikedUser(String userId) {
         if (!this.likedUsers.contains(userId)) {
             this.likedUsers.add(userId);
@@ -235,7 +232,6 @@ public class userInfo {
         return this.likedUsers.contains(userId) || this.rejectedUsers.contains(userId);
     }
 
-    // Image caching methods for performance optimization
     public Image getCachedImage() {
         return cachedImage;
     }

@@ -19,9 +19,8 @@ public class LoadingController {
     }
 
     public void initialize() {
-        // Start the loading animation
         if (loadingIndicator != null) {
-            loadingIndicator.setProgress(-1); // Indeterminate progress
+            loadingIndicator.setProgress(-1);
         }
     }
 }

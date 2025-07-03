@@ -62,9 +62,6 @@ public class FirebaseConnection {
         });
     }
 
-    /**
-     * Converts data to Firestore document format
-     */
     private Map<String, Object> toFirestoreDocument(Map<String, Object> data) {
         Map<String, Object> document = new HashMap<>();
         Map<String, Object> fields = new HashMap<>();
@@ -79,7 +76,6 @@ public class FirebaseConnection {
             } else if (value instanceof Boolean) {
                 field.put("booleanValue", value);
             } else if (value instanceof java.util.List) {
-                // Handle arrays/lists
                 Map<String, Object> arrayValue = new HashMap<>();
                 java.util.List<Map<String, Object>> values = new java.util.ArrayList<>();
 
@@ -105,9 +101,6 @@ public class FirebaseConnection {
         return document;
     }
 
-    /**
-     * Converts Firestore document to regular data format
-     */
     private Map<String, Object> fromFirestoreDocument(JsonNode document) {
         Map<String, Object> data = new HashMap<>();
 
@@ -123,7 +116,6 @@ public class FirebaseConnection {
                 } else if (field.has("booleanValue")) {
                     data.put(fieldName, field.get("booleanValue").asBoolean());
                 } else if (field.has("arrayValue")) {
-                    // Handle arrays
                     java.util.List<String> arrayList = new java.util.ArrayList<>();
                     JsonNode arrayValue = field.get("arrayValue");
 
@@ -146,15 +138,6 @@ public class FirebaseConnection {
         return data;
     }
 
-    /**
-     * Registers a new user in Firebase with Firebase Authentication and stores
-     * profile in Firestore
-     * 
-     * @param name     User's name
-     * @param email    User's email
-     * @param password User's password
-     * @return String userId if successful, null if failed
-     */
     public String registerUser(String name, String email, String password) {
         try {
             if (name.trim().isEmpty() || email.trim().isEmpty() || password.trim().isEmpty()) {
@@ -162,14 +145,11 @@ public class FirebaseConnection {
                 return null;
             }
 
-            // Step 1: Create user with Firebase Authentication
             String userId = createFirebaseAuthUser(email, password);
             if (userId == null) {
-                return null; // Error already shown in createFirebaseAuthUser
+                return null;
             }
 
-            // Step 2: Create user profile in Firestore using Firebase Auth UID as document
-            // ID
             Map<String, Object> userData = new HashMap<>();
             userData.put("name", name);
             userData.put("email", email);
@@ -187,11 +167,9 @@ public class FirebaseConnection {
             userData.put("prefProfession", "");
             userData.put("userId", userId);
 
-            // Convert to Firestore document format
             Map<String, Object> firestoreDoc = toFirestoreDocument(userData);
             String jsonData = objectMapper.writeValueAsString(firestoreDoc);
 
-            // Create HTTP PATCH request to Firestore
             String url = firestoreBaseUrl + "/users/" + userId + "?key=" + apiKey;
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(url))
@@ -201,18 +179,15 @@ public class FirebaseConnection {
 
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
             if (response.statusCode() == 200) {
-                // User profile created successfully
                 System.out.println(
                         "User registered successfully in Firestore: " + name + " (" + email + ") userId: " + userId);
-                return userId; // Return the Firebase Auth UID as primary key
+                return userId;
             } else {
                 showErrorAlert("Registration Failed",
                         "Failed to create user profile. Please check your internet connection and try again.");
                 System.err.println("Firestore user profile creation failed. Status: " + response.statusCode());
                 System.err.println("Response: " + response.body());
 
-                // Note: We could delete the Firebase Auth user here, but we'd need the ID token
-                // For now, just log the issue - the user can try registering again
                 System.err.println("Warning: Firebase Auth user created but profile creation failed for: " + email);
                 return null;
             }
@@ -225,16 +200,8 @@ public class FirebaseConnection {
         }
     }
 
-    /**
-     * Updates user profile information in Firestore
-     * 
-     * @param userInfo     Complete user information object
-     * @param currentEmail The current email (before any changes) for lookup
-     * @return boolean indicating success or failure
-     */
     public boolean updateUserProfile(userInfo user, String currentEmail) {
         try {
-            // Use current email to find the userId by querying users collection
             String targetUserId = getUserIdFromEmail(currentEmail);
 
             if (targetUserId != null) {
@@ -251,35 +218,16 @@ public class FirebaseConnection {
         }
     }
 
-    /**
-     * Updates user profile information in Firebase (overloaded method for backward
-     * compatibility)
-     * Uses the userId from the user object if available, otherwise falls back to
-     * email lookup
-     * 
-     * @param userInfo Complete user information object
-     * @return boolean indicating success or failure
-     */
     public boolean updateUserProfile(userInfo user) {
-        // If user has userId, use it directly instead of email lookup
         if (user.getUserId() != null && !user.getUserId().trim().isEmpty()) {
             return updateUserProfileByUserId(user, user.getUserId());
         }
 
-        // Fall back to email-based lookup
         return updateUserProfile(user, user.getEmail());
     }
 
-    /**
-     * Updates user profile using userId directly (most efficient method)
-     * 
-     * @param user   The user information object
-     * @param userId The userId to update
-     * @return boolean indicating success or failure
-     */
     private boolean updateUserProfileByUserId(userInfo user, String userId) {
         try {
-            // Get current user data to check if email is changing
             String getCurrentUrl = firestoreBaseUrl + "/users/" + userId + "?key=" + apiKey;
 
             HttpRequest getCurrentRequest = HttpRequest.newBuilder()
@@ -303,7 +251,6 @@ public class FirebaseConnection {
                 }
             }
 
-            // Create updated user data map
             Map<String, Object> userData = new HashMap<>();
             userData.put("name", user.getName());
             userData.put("email", user.getEmail());
@@ -319,13 +266,11 @@ public class FirebaseConnection {
             userData.put("prefAge", user.getPrefAge());
             userData.put("prefLocation", user.getPrefLocation());
             userData.put("prefProfession", user.getPrefProfession());
-            userData.put("userId", userId); // Ensure userId is maintained
+            userData.put("userId", userId);
 
-            // Convert to Firestore document format
             Map<String, Object> firestoreDoc = toFirestoreDocument(userData);
             String jsonData = objectMapper.writeValueAsString(firestoreDoc);
 
-            // Update user data using the userId
             String updateUrl = firestoreBaseUrl + "/users/" + userId + "?key=" + apiKey;
 
             System.out.println("Updating user profile with ID: " + userId);
@@ -360,23 +305,13 @@ public class FirebaseConnection {
         }
     }
 
-    /**
-     * Authenticates user login with Firebase Authentication and retrieves profile
-     * from Firestore
-     * 
-     * @param email    User's email
-     * @param password User's password
-     * @return userInfo object if successful, null if failed
-     */
     public userInfo loginUser(String email, String password) {
         try {
-            // Step 1: Authenticate with Firebase Authentication
             String userId = authenticateFirebaseUser(email, password);
             if (userId == null) {
-                return null; // Error already shown in authenticateFirebaseUser
+                return null;
             }
 
-            // Step 2: Get user profile from Firestore using userId
             String getUserUrl = firestoreBaseUrl + "/users/" + userId + "?key=" + apiKey;
 
             System.out.println("Fetching user data for login: " + userId);
@@ -395,9 +330,8 @@ public class FirebaseConnection {
                 JsonNode userDoc = objectMapper.readTree(getResponse.body());
 
                 if (userDoc != null && !userDoc.isNull()) {
-                    // Convert Firestore document to regular data format
-                    Map<String, Object> userData = fromFirestoreDocument(userDoc); // Create userInfo object with
-                                                                                   // retrieved data
+                    Map<String, Object> userData = fromFirestoreDocument(userDoc);
+
                     userInfo user = new userInfo(
                             (String) userData.getOrDefault("name", ""),
                             (String) userData.getOrDefault("email", ""),
@@ -413,7 +347,7 @@ public class FirebaseConnection {
                             (String) userData.getOrDefault("prefAge", ""),
                             (String) userData.getOrDefault("prefLocation", ""),
                             (String) userData.getOrDefault("prefProfession", ""),
-                            userId); // Set liked and rejected users lists
+                            userId);
                     @SuppressWarnings("unchecked")
                     java.util.List<String> likedUsers = (java.util.List<String>) userData.getOrDefault("likedUsers",
                             new java.util.ArrayList<String>());
@@ -449,26 +383,16 @@ public class FirebaseConnection {
         }
     }
 
-    /**
-     * Checks if an email is already registered in Firebase Authentication
-     * 
-     * @param email The email to check
-     * @return true if email is already registered, false otherwise
-     */
     public boolean isEmailAlreadyRegistered(String email) {
         try {
-            // Try to create a temporary user with Firebase Auth to check if email exists
-            // This will fail if email is already in use
             String tempPassword = "tempPassword123!";
             String tempUserId = createFirebaseAuthUser(email, tempPassword);
 
             if (tempUserId != null) {
-                // Email is not registered, delete the temporary user we just created
                 deleteFirebaseAuthUser(tempUserId);
                 System.out.println("Email not registered: " + email);
                 return false;
             } else {
-                // Creation failed, likely because email is already registered
                 System.out.println("Email already registered: " + email);
                 return true;
             }
@@ -476,22 +400,12 @@ public class FirebaseConnection {
         } catch (Exception e) {
             System.err.println("Error checking email registration status: " + e.getMessage());
             e.printStackTrace();
-            // In case of error, assume email is not registered to allow registration
-            // attempt
             return false;
         }
     }
 
-    /**
-     * Public method to get userId by email for use by controllers
-     * Queries the users collection directly to find the user with matching email
-     * 
-     * @param email The user's email
-     * @return userId if found, null otherwise
-     */
     public String getUserIdFromEmail(String email) {
         try {
-            // Query all users to find the one with matching email
             String url = firestoreBaseUrl + "/users";
 
             HttpRequest request = HttpRequest.newBuilder()
@@ -535,13 +449,6 @@ public class FirebaseConnection {
         }
     }
 
-    /**
-     * Get userId directly from the userInfo object if it exists
-     * Falls back to email lookup if userId is not available
-     * 
-     * @param user The user object
-     * @return userId if found, null otherwise
-     */
     public String getUserId(userInfo user) {
         if (user.getUserId() != null && !user.getUserId().trim().isEmpty()) {
             return user.getUserId();
@@ -550,13 +457,6 @@ public class FirebaseConnection {
         return getUserIdFromEmail(user.getEmail());
     }
 
-    /**
-     * Upload an image to Firebase Storage and return the download URL
-     * 
-     * @param imageFile The image file to upload
-     * @param userId    The user ID for renaming the file
-     * @return String download URL if successful, null if failed
-     */
     public String uploadImageToStorage(File imageFile, String userId) {
         try {
             if (imageFile == null || !imageFile.exists()) {
@@ -564,13 +464,12 @@ public class FirebaseConnection {
                 return null;
             }
 
-            // Get file extension from original file
             String originalName = imageFile.getName();
             String extension = "";
             int lastDotIndex = originalName.lastIndexOf('.');
             if (lastDotIndex > 0) {
                 extension = originalName.substring(lastDotIndex);
-            } // Create new filename with userId inside Prem-Noy-Biye folder
+            }
             String newFileName = "Prem-Noy-Biye/" + userId + extension;
             String contentType = getContentType(originalName);
 
@@ -579,13 +478,11 @@ public class FirebaseConnection {
             System.out.println("New filename: " + newFileName);
             System.out.println("Content type: " + contentType);
 
-            // Read file as bytes
             byte[] fileBytes;
             try (FileInputStream fis = new FileInputStream(imageFile)) {
                 fileBytes = fis.readAllBytes();
             }
 
-            // Upload to Firebase Storage (encode the full path including folder)
             String uploadUrl = "https://firebasestorage.googleapis.com/v0/b/" + storageBucket +
                     "/o/" + java.net.URLEncoder.encode(newFileName, "UTF-8");
 
@@ -598,11 +495,9 @@ public class FirebaseConnection {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() == 200) {
-                // Parse response to get download token
                 JsonNode responseJson = objectMapper.readTree(response.body());
                 String downloadToken = responseJson.get("downloadTokens").asText();
 
-                // Construct download URL
                 String downloadUrl = "https://firebasestorage.googleapis.com/v0/b/" + storageBucket +
                         "/o/" + java.net.URLEncoder.encode(newFileName, "UTF-8") +
                         "?alt=media&token=" + downloadToken;
@@ -623,14 +518,6 @@ public class FirebaseConnection {
         }
     }
 
-    /**
-     * Upload an image to Firebase Storage using ID token for authentication
-     * 
-     * @param imageFile The image file to upload
-     * @param userId    The user ID for renaming the file
-     * @param idToken   The Firebase ID token for authentication
-     * @return String download URL if successful, null if failed
-     */
     public String uploadImageToStorageWithToken(File imageFile, String userId, String idToken) {
         try {
             if (imageFile == null || !imageFile.exists()) {
@@ -638,13 +525,11 @@ public class FirebaseConnection {
                 return null;
             }
 
-            // Use the provided ID token for authentication
             if (idToken == null || idToken.trim().isEmpty()) {
                 System.err.println("ID token is required for authenticated storage upload");
                 return null;
             }
 
-            // Get file extension from original file
             String originalName = imageFile.getName();
             String extension = "";
             int lastDotIndex = originalName.lastIndexOf('.');
@@ -652,7 +537,6 @@ public class FirebaseConnection {
                 extension = originalName.substring(lastDotIndex);
             }
 
-            // Create new filename with userId inside Prem-Noy-Biye folder
             String newFileName = "Prem-Noy-Biye/" + userId + extension;
             String contentType = getContentType(originalName);
 
@@ -661,13 +545,11 @@ public class FirebaseConnection {
             System.out.println("New filename: " + newFileName);
             System.out.println("Content type: " + contentType);
 
-            // Read file as bytes
             byte[] fileBytes;
             try (FileInputStream fis = new FileInputStream(imageFile)) {
                 fileBytes = fis.readAllBytes();
             }
 
-            // Upload to Firebase Storage (encode the full path including folder)
             String uploadUrl = "https://firebasestorage.googleapis.com/v0/b/" + storageBucket +
                     "/o/" + java.net.URLEncoder.encode(newFileName, "UTF-8");
 
@@ -681,11 +563,9 @@ public class FirebaseConnection {
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() == 200) {
-                // Parse response to get download token
                 JsonNode responseJson = objectMapper.readTree(response.body());
                 String downloadToken = responseJson.get("downloadTokens").asText();
 
-                // Construct download URL
                 String downloadUrl = "https://firebasestorage.googleapis.com/v0/b/" + storageBucket +
                         "/o/" + java.net.URLEncoder.encode(newFileName, "UTF-8") +
                         "?alt=media&token=" + downloadToken;
@@ -710,15 +590,6 @@ public class FirebaseConnection {
         return getFirebaseIdToken(email, password);
     }
 
-    // ========== Firebase Authentication Helper Methods ==========
-
-    /**
-     * Creates a new user with Firebase Authentication
-     * 
-     * @param email    User's email
-     * @param password User's password
-     * @return Firebase Auth UID if successful, null if failed
-     */
     private String createFirebaseAuthUser(String email, String password) {
         try {
             String authUrl = "https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=" + apiKey;
@@ -747,7 +618,6 @@ public class FirebaseConnection {
                 System.out.println("Firebase Auth user created successfully with UID: " + localId);
                 return localId;
             } else {
-                // Parse error response
                 try {
                     JsonNode errorNode = objectMapper.readTree(response.body());
                     if (errorNode.has("error")) {
@@ -784,13 +654,6 @@ public class FirebaseConnection {
         }
     }
 
-    /**
-     * Authenticates user with Firebase Authentication
-     * 
-     * @param email    User's email
-     * @param password User's password
-     * @return Firebase Auth UID if successful, null if failed
-     */
     private String authenticateFirebaseUser(String email, String password) {
         try {
             String authUrl = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=" + apiKey;
@@ -819,7 +682,6 @@ public class FirebaseConnection {
                 System.out.println("Firebase Auth login successful with UID: " + localId);
                 return localId;
             } else {
-                // Parse error response
                 try {
                     JsonNode errorNode = objectMapper.readTree(response.body());
                     if (errorNode.has("error")) {
@@ -856,15 +718,8 @@ public class FirebaseConnection {
         }
     }
 
-    /**
-     * Deletes a Firebase Authentication user
-     * 
-     * @param userId The Firebase Auth UID
-     * @return true if successful, false if failed
-     */
     private boolean deleteFirebaseAuthUser(String userId) {
         try {
-            // Delete the Firebase Authentication user account
             String deleteUrl = "https://identitytoolkit.googleapis.com/v1/accounts:delete?key=" + apiKey;
 
             Map<String, Object> deleteData = new HashMap<>();
@@ -896,13 +751,6 @@ public class FirebaseConnection {
         }
     }
 
-    /**
-     * Gets Firebase ID token for authenticated user
-     * 
-     * @param email    User's email
-     * @param password User's password
-     * @return ID token if successful, null if failed
-     */
     private String getFirebaseIdToken(String email, String password) {
         try {
             String authUrl = "https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=" + apiKey;
@@ -930,7 +778,6 @@ public class FirebaseConnection {
                 System.out.println("Firebase ID token retrieved successfully");
                 return idToken;
             } else {
-                // Parse error response
                 try {
                     JsonNode errorNode = objectMapper.readTree(response.body());
                     if (errorNode.has("error")) {
@@ -964,13 +811,6 @@ public class FirebaseConnection {
         }
     }
 
-    /**
-     * Changes password using Firebase Authentication
-     * 
-     * @param idToken     Firebase ID token for authentication
-     * @param newPassword The new password to set
-     * @return true if successful, false if failed
-     */
     private boolean changeFirebaseAuthPassword(String idToken, String newPassword) {
         try {
             String changePasswordUrl = "https://identitytoolkit.googleapis.com/v1/accounts:update?key=" + apiKey;
@@ -997,7 +837,6 @@ public class FirebaseConnection {
                 System.out.println("Firebase Auth password changed successfully");
                 return true;
             } else {
-                // Parse error response
                 try {
                     JsonNode errorNode = objectMapper.readTree(response.body());
                     if (errorNode.has("error")) {
@@ -1031,12 +870,6 @@ public class FirebaseConnection {
         }
     }
 
-    /**
-     * Deletes Firebase Authentication user using ID token
-     * 
-     * @param idToken Firebase ID token for authentication
-     * @return true if successful, false if failed
-     */
     private boolean deleteFirebaseAuthUserWithToken(String idToken) {
         try {
             String deleteUrl = "https://identitytoolkit.googleapis.com/v1/accounts:delete?key=" + apiKey;
@@ -1071,18 +904,10 @@ public class FirebaseConnection {
         }
     }
 
-    /**
-     * Deletes all user data from Firestore
-     * 
-     * @param email The email of the user whose data to delete
-     * @return true if the user data was deleted successfully, false otherwise
-     */
     private boolean deleteUserData(String email) {
         try {
-            // Remove the user from the database
             boolean userRemoved = removeUserFromDatabase(email);
 
-            // Return true if user removal succeeded
             return userRemoved;
         } catch (Exception e) {
             System.err.println("Error deleting user data: " + e.getMessage());
@@ -1091,31 +916,21 @@ public class FirebaseConnection {
         }
     }
 
-    /**
-     * Removes a user from Firestore
-     * 
-     * @param email The email of the user to remove
-     * @return true if the user was removed successfully, false otherwise
-     */
     private boolean removeUserFromDatabase(String email) {
         try {
-            // First get the userId from email
             String userId = getUserIdFromEmail(email);
             if (userId == null) {
                 System.err.println("User not found for email: " + email);
                 return false;
             }
 
-            // URL for the user document
             String url = firestoreBaseUrl + "/users/" + userId + "?key=" + apiKey;
 
-            // Create DELETE request
             HttpRequest request = HttpRequest.newBuilder()
                     .uri(URI.create(url))
                     .DELETE()
                     .build();
 
-            // Send request
             HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
             if (response.statusCode() == 200) {
@@ -1133,12 +948,6 @@ public class FirebaseConnection {
         }
     }
 
-    /**
-     * Determines the content type based on file extension
-     * 
-     * @param fileName The name of the file
-     * @return The MIME content type
-     */
     private String getContentType(String fileName) {
         if (fileName == null) {
             return "application/octet-stream";
@@ -1167,25 +976,14 @@ public class FirebaseConnection {
         }
     }
 
-    /**
-     * Changes the password for a user by first authenticating with the current
-     * password
-     * 
-     * @param user            The user whose password to change
-     * @param currentPassword The current password for authentication
-     * @param newPassword     The new password to set
-     * @return true if the password was changed successfully, false otherwise
-     */
     public boolean changePassword(userInfo user, String currentPassword, String newPassword) {
         try {
-            // First, get an ID token by authenticating with current credentials
             String idToken = getIdTokenForUser(user.getEmail(), currentPassword);
             if (idToken == null) {
                 System.err.println("Failed to authenticate user for password change");
                 return false;
             }
 
-            // Use the private method to change the password
             return changeFirebaseAuthPassword(idToken, newPassword);
         } catch (Exception e) {
             System.err.println("Error changing password: " + e.getMessage());
@@ -1194,29 +992,18 @@ public class FirebaseConnection {
         }
     }
 
-    /**
-     * Deletes a user account by first authenticating with the password
-     * 
-     * @param user     The user to delete
-     * @param password The password for authentication
-     * @return true if the user was deleted successfully, false otherwise
-     */
     public boolean deleteUser(userInfo user, String password) {
         try {
-            // First, get an ID token by authenticating with credentials
             String idToken = getIdTokenForUser(user.getEmail(), password);
             if (idToken == null) {
                 System.err.println("Failed to authenticate user for account deletion");
                 return false;
             }
 
-            // Delete the user data from the database first
             boolean dataDeleted = deleteUserData(user.getEmail());
 
-            // Delete the user authentication account
             boolean authDeleted = deleteFirebaseAuthUserWithToken(idToken);
 
-            // Return true only if both operations succeeded
             return dataDeleted && authDeleted;
         } catch (Exception e) {
             System.err.println("Error deleting user: " + e.getMessage());
@@ -1225,15 +1012,10 @@ public class FirebaseConnection {
         }
     }
 
-    /**
-     * Get all users from Firestore filtered by gender (opposite gender for discover
-     * functionality)
-     */
     public java.util.List<userInfo> getUsersByGender(String desiredGender) {
         java.util.List<userInfo> users = new java.util.ArrayList<>();
 
         try {
-            // Create the query URL to get all users
             String url = firestoreBaseUrl + "/users";
 
             HttpRequest request = HttpRequest.newBuilder()
@@ -1252,7 +1034,7 @@ public class FirebaseConnection {
                     for (JsonNode document : documents) {
                         try {
                             Map<String, Object> userData = fromFirestoreDocument(document);
-                            String gender = (String) userData.get("gender"); // Filter by desired gender
+                            String gender = (String) userData.get("gender");
                             if (desiredGender.equalsIgnoreCase(gender)) {
                                 userInfo user = new userInfo(
                                         (String) userData.getOrDefault("name", ""),
@@ -1271,7 +1053,6 @@ public class FirebaseConnection {
                                         (String) userData.getOrDefault("prefProfession", ""),
                                         (String) userData.getOrDefault("userId", ""));
 
-                                // Set liked and rejected users lists
                                 @SuppressWarnings("unchecked")
                                 java.util.List<String> likedUsers = (java.util.List<String>) userData
                                         .getOrDefault("likedUsers", new java.util.ArrayList<String>());
@@ -1304,33 +1085,20 @@ public class FirebaseConnection {
         return users;
     }
 
-    /**
-     * Add a user to the liked users list
-     */
     public boolean addToLikedUsers(String userId, String targetUserId) {
         return updateUserInteractionList(userId, targetUserId, "likedUsers", "add");
     }
 
-    /**
-     * Add a user to the rejected users list
-     */
     public boolean addToRejectedUsers(String userId, String targetUserId) {
         return updateUserInteractionList(userId, targetUserId, "rejectedUsers", "add");
     }
 
-    /**
-     * Add a user to the matched users list
-     */
     public boolean addToMatchedUsers(String userId, String targetUserId) {
         return updateUserInteractionList(userId, targetUserId, "matchedUsers", "add");
     }
 
-    /**
-     * Check if two users have liked each other and create a match
-     */
     public boolean checkAndCreateMatch(String userId, String targetUserId) {
         try {
-            // Get the target user's data to check if they liked the current user
             String getTargetUserUrl = firestoreBaseUrl + "/users/" + targetUserId + "?key=" + apiKey;
 
             HttpRequest getRequest = HttpRequest.newBuilder()
@@ -1348,9 +1116,7 @@ public class FirebaseConnection {
                 java.util.List<String> targetUserLikedUsers = (java.util.List<String>) targetUserData
                         .getOrDefault("likedUsers", new java.util.ArrayList<String>());
 
-                // Check if target user has liked the current user
                 if (targetUserLikedUsers.contains(userId)) {
-                    // It's a match! Add both users to each other's matchedUsers list
                     boolean match1 = addToMatchedUsers(userId, targetUserId);
                     boolean match2 = addToMatchedUsers(targetUserId, userId);
 
@@ -1368,9 +1134,6 @@ public class FirebaseConnection {
         }
     }
 
-    /**
-     * Get user information by user ID
-     */
     public userInfo getUserById(String userId) {
         try {
             String getUserUrl = firestoreBaseUrl + "/users/" + userId + "?key=" + apiKey;
@@ -1386,7 +1149,6 @@ public class FirebaseConnection {
                 JsonNode userDocument = objectMapper.readTree(getResponse.body());
                 Map<String, Object> userData = fromFirestoreDocument(userDocument);
 
-                // Convert the map to userInfo object
                 userInfo user = new userInfo(
                         (String) userData.getOrDefault("name", ""),
                         (String) userData.getOrDefault("email", ""),
@@ -1404,7 +1166,6 @@ public class FirebaseConnection {
                         (String) userData.getOrDefault("prefProfession", ""),
                         userId);
 
-                // Set the interaction lists if they exist
                 @SuppressWarnings("unchecked")
                 java.util.List<String> likedUsers = (java.util.List<String>) userData.getOrDefault("likedUsers",
                         new java.util.ArrayList<>());
@@ -1432,12 +1193,8 @@ public class FirebaseConnection {
         }
     }
 
-    /**
-     * Helper method to update user interaction lists (liked/rejected/matched)
-     */
     private boolean updateUserInteractionList(String userId, String targetUserId, String listType, String action) {
         try {
-            // First, get the current user data to retrieve existing lists
             String getUserUrl = firestoreBaseUrl + "/users/" + userId + "?key=" + apiKey;
 
             HttpRequest getRequest = HttpRequest.newBuilder()
@@ -1451,19 +1208,15 @@ public class FirebaseConnection {
                 JsonNode userDocument = objectMapper.readTree(getResponse.body());
                 Map<String, Object> userData = fromFirestoreDocument(userDocument);
 
-                // Get existing list or create new one
                 @SuppressWarnings("unchecked")
                 java.util.List<String> currentList = (java.util.List<String>) userData.getOrDefault(listType,
                         new java.util.ArrayList<String>());
 
-                // Add target user ID if not already present
                 if (!currentList.contains(targetUserId)) {
                     currentList.add(targetUserId);
 
-                    // Update the user data
                     userData.put(listType, currentList);
 
-                    // Convert to Firestore format and update
                     Map<String, Object> firestoreDoc = toFirestoreDocument(userData);
                     String jsonData = objectMapper.writeValueAsString(firestoreDoc);
 
@@ -1487,7 +1240,7 @@ public class FirebaseConnection {
                     }
                 } else {
                     System.out.println("Target user already in " + listType + " list");
-                    return true; // Already in list, consider it success
+                    return true;
                 }
             } else {
                 System.err.println(
@@ -1502,19 +1255,13 @@ public class FirebaseConnection {
         }
     }
 
-    /**
-     * Send a message between two users
-     */
     public boolean sendMessage(com.bytebender.premnoybiye.DBConnection.Message message) {
         try {
-            // Generate a unique message ID
             String messageId = java.util.UUID.randomUUID().toString();
             message.setMessageId(messageId);
 
-            // Create conversation ID (consistent regardless of who sends first)
             String conversationId = createConversationId(message.getSenderId(), message.getReceiverId());
 
-            // Prepare message data
             Map<String, Object> messageData = new HashMap<>();
             messageData.put("messageId", message.getMessageId());
             messageData.put("senderId", message.getSenderId());
@@ -1523,11 +1270,9 @@ public class FirebaseConnection {
             messageData.put("timestamp", message.getTimestamp());
             messageData.put("isRead", message.isRead());
 
-            // Convert to Firestore format
             Map<String, Object> firestoreDoc = toFirestoreDocument(messageData);
             String jsonData = objectMapper.writeValueAsString(firestoreDoc);
 
-            // Send to Firestore
             String url = firestoreBaseUrl + "/conversations/" + conversationId + "/messages/" + messageId + "?key="
                     + apiKey;
 
@@ -1554,9 +1299,6 @@ public class FirebaseConnection {
         }
     }
 
-    /**
-     * Get conversation between two users
-     */
     public java.util.List<com.bytebender.premnoybiye.DBConnection.Message> getConversation(String userId1,
             String userId2) {
         java.util.List<com.bytebender.premnoybiye.DBConnection.Message> messages = new java.util.ArrayList<>();
@@ -1591,11 +1333,9 @@ public class FirebaseConnection {
                     }
                 }
 
-                // Sort messages by timestamp
                 messages.sort((m1, m2) -> m1.getTimestamp().compareTo(m2.getTimestamp()));
 
             } else if (response.statusCode() == 404) {
-                // No conversation exists yet, return empty list
                 System.out.println("No conversation found between users");
             } else {
                 System.err.println("Failed to get conversation. Status: " + response.statusCode());
@@ -1609,11 +1349,7 @@ public class FirebaseConnection {
         return messages;
     }
 
-    /**
-     * Create a consistent conversation ID for two users
-     */
     private String createConversationId(String userId1, String userId2) {
-        // Sort user IDs to ensure consistent conversation ID regardless of order
         java.util.List<String> userIds = java.util.Arrays.asList(userId1, userId2);
         java.util.Collections.sort(userIds);
         return userIds.get(0) + "_" + userIds.get(1);

@@ -1,5 +1,3 @@
-/* .root {
-} */
 #splash_background {
   -fx-background-image: url("img/Splash_bg.png");
   -fx-background-size: 100% 100%;
@@ -39,20 +37,12 @@
   -fx-border-radius: 6;
   -fx-text-fill: #6631c4;
 }
-/* .label {
-  -fx-text-fill: #344054;
-  -fx-font-family: "Inter";
-  -fx-font-size: 16px;
-  -fx-font-style: normal;
-  -fx-font-weight: 500;
-  -fx-line-height: 24px; 
-} */
 #login_label {
   -fx-text-fill: #1d2939;
   -fx-font-family: "Trebuchet MS, sans-serif";
   -fx-font-size: 32px;
   -fx-font-weight: 700;
-  -fx-line-height: 44px; /* 137.5% */
+  -fx-line-height: 44px;
 }
 #sub_label {
   -fx-text-fill: #667085;
@@ -70,7 +60,6 @@
   -fx-background-radius: 8;
 }
 
-/* Form Controls Styling */
 .form-control {
   -fx-background-color: white;
   -fx-border-color: #e4e7ec;
@@ -86,7 +75,6 @@
   -fx-border-width: 2;
 }
 
-/* DatePicker specific styling */
 .date-picker {
   -fx-background-color: white;
   -fx-border-color: #e4e7ec;
@@ -108,7 +96,6 @@
   -fx-border-width: 2;
 }
 
-/* ComboBox specific styling */
 .combo-box {
   -fx-background-color: white;
   -fx-border-color: #e4e7ec;
@@ -234,14 +221,12 @@
   visibility: hidden;
 }
 
-/* user card styling */
 .card {
   -fx-background-radius: 16;
   -fx-border-radius: 16;
   -fx-effect: dropshadow(gaussian, #25242d, 22, 0.15, 4, 0);
 }
 
-/* Card loading overlay styles */
 .card-loading-overlay {
   -fx-background-color: rgba(255, 255, 255, 0.9);
   -fx-alignment: center;
@@ -278,8 +263,6 @@
   -fx-text-fill: #1d2939;
 }
 
-/* for discover page */
-/* card stack */
 .card-stack {
   -fx-background-radius: 16;
   -fx-background-color: #ffffff;
@@ -303,7 +286,6 @@
   -fx-font-family: "Trebuchet MS", sans-serif;
 }
 
-/* Loading Animation Styles */
 .loading-spinner {
   -fx-progress-color: #6631c4;
   -fx-background-color: transparent;
@@ -320,7 +302,6 @@
   -fx-font-weight: 600;
 }
 
-/* Fade transition classes */
 .fade-out {
   -fx-opacity: 0;
 }

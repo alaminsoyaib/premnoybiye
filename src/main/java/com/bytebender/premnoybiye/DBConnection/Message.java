@@ -12,7 +12,6 @@ public class Message {
     private boolean isRead;
 
     public Message() {
-        // Default constructor for Firebase
     }
 
     public Message(String senderId, String receiverId, String content) {
@@ -33,7 +32,6 @@ public class Message {
         this.isRead = isRead;
     }
 
-    // Getters and setters
     public String getMessageId() {
         return messageId;
     }

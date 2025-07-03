@@ -18,13 +18,13 @@ public class App extends Application {
     }
 
     static void setRoot(String fxml) throws IOException {
-        scene.setRoot(loadFXML(fxml)); // Similar to JPanel in Swing
+        scene.setRoot(loadFXML(fxml));
     }
 
     @Override
     public void start(Stage stage) throws IOException {
         scene = new Scene(loadFXML("splash-screen"), 1000, 600);
-        stage.setScene(scene); // Similar to JFrame in Swing
+        stage.setScene(scene);
         stage.setTitle("Prem Noy Biye");
         stage.show();
 

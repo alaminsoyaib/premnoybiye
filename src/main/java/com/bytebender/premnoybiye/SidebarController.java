@@ -4,7 +4,6 @@ import java.io.IOException;
 
 import com.bytebender.premnoybiye.Component.Component;
 import com.bytebender.premnoybiye.Component.PageLoader;
-// import com.bytebender.premnoybiye.DBConnection.userInfo; 
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -60,7 +59,6 @@ public class SidebarController {
 
     @FXML
     void menuItemSwitch(MouseEvent event) throws IOException {
-        // Remove selected class from all menu items
         clearAllSelectedStates();
 
         if (event.getSource() == discoverButton) {
@@ -95,7 +93,6 @@ public class SidebarController {
 
     @FXML
     void sidebarCollapse(MouseEvent event) {
-        // Calling toggling method of the sidebar Component
         flag = component.toggleSidebarState(sidebarCollapse, sidebarProfileBox, discoverLabel, matchesLabel,
                 profileLabel, msgLabel, logoutLabel, Sidebar, flag);
     }

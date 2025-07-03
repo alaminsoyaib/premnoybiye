@@ -31,9 +31,6 @@ public class Component {
         }
     }
 
-    /**
-     * Enhanced setImage method with caching support for userInfo objects
-     */
     public void setImageCached(userInfo user, ImageView element, double width, double height, boolean preserveRatio,
             int arcSize) {
         if (user == null) {
@@ -41,7 +38,6 @@ public class Component {
             return;
         }
 
-        // Check if user has cached image
         if (user.hasCachedImage()) {
             applyImageToElement(user.getCachedImage(), element, width, height, preserveRatio, arcSize);
             return;
@@ -53,33 +49,24 @@ public class Component {
             return;
         }
 
-        // Set default image first, then load cached/remote image asynchronously
         setDefaultImage(element, width, height, preserveRatio, arcSize);
 
-        // Load image with caching
         ImageCache.getImageAsync(imagePath,
                 image -> {
-                    user.setCachedImage(image); // Cache in user object
+                    user.setCachedImage(image);
                     applyImageToElement(image, element, width, height, preserveRatio, arcSize);
                 },
                 error -> {
                     System.err.println("Failed to load image for user " + user.getName() + ": " + error);
-                    // Keep default image on error
                 });
     }
 
-    /**
-     * Sets a default placeholder image
-     */
     private void setDefaultImage(ImageView element, double width, double height, boolean preserveRatio, int arcSize) {
         Image defaultImage = new Image(
                 getClass().getResourceAsStream("/com/bytebender/premnoybiye/img/icon/card-img.png"));
         applyImageToElement(defaultImage, element, width, height, preserveRatio, arcSize);
     }
 
-    /**
-     * Applies an image to an ImageView element with specified properties
-     */
     private void applyImageToElement(Image image, ImageView element, double width, double height, boolean preserveRatio,
             int arcSize) {
         element.setImage(image);
@@ -99,9 +86,10 @@ public class Component {
         ProgressIndicator indicator = new ProgressIndicator();
         indicator.setProgress(-1);
         indicator.setPrefSize(50, 50);
+        indicator.setStyle("-fx-progress-color: #6631c4;-fx-control-inner-background: transparent;");
 
         Label label = new Label(message);
-        label.setStyle("-fx-font-size: 14px; -fx-text-fill: #666666;");
+        label.setStyle("-fx-font-size: 14px; -fx-text-fill: #6631c4;");
 
         VBox container = new VBox(15, indicator, label);
         container.setAlignment(Pos.CENTER);
@@ -147,13 +135,9 @@ public class Component {
         }
     }
 
-    /**
-     * Enhanced setImageWithClip method with caching support for userInfo objects
-     */
     public void setImageWithClipCached(userInfo user, ImageView imageView, ImageView blurView, StackPane stackPane,
             double width, double height) {
         if (user == null || user.getImage() == null || user.getImage().isEmpty()) {
-            // Set default image
             Image defaultImage = new Image(
                     getClass().getResourceAsStream("/com/bytebender/premnoybiye/img/icon/card-img.png"));
             imageView.setImage(defaultImage);
@@ -161,7 +145,6 @@ public class Component {
                 blurView.setImage(defaultImage);
             }
         } else {
-            // Check if user has cached image
             if (user.hasCachedImage()) {
                 Image cachedImage = user.getCachedImage();
                 imageView.setImage(cachedImage);
@@ -169,7 +152,6 @@ public class Component {
                     blurView.setImage(cachedImage);
                 }
             } else {
-                // Set default image first, then load asynchronously
                 Image defaultImage = new Image(
                         getClass().getResourceAsStream("/com/bytebender/premnoybiye/img/icon/card-img.png"));
                 imageView.setImage(defaultImage);
@@ -177,10 +159,9 @@ public class Component {
                     blurView.setImage(defaultImage);
                 }
 
-                // Load image with caching
                 ImageCache.getImageAsync(user.getImage(),
                         image -> {
-                            user.setCachedImage(image); // Cache in user object
+                            user.setCachedImage(image);
                             imageView.setImage(image);
                             if (blurView != null) {
                                 blurView.setImage(image);
@@ -188,12 +169,10 @@ public class Component {
                         },
                         error -> {
                             System.err.println("Failed to load image for user " + user.getName() + ": " + error);
-                            // Keep default image on error
                         });
             }
         }
 
-        // Apply clip regardless
         if (stackPane != null) {
             javafx.scene.shape.Rectangle clip = new javafx.scene.shape.Rectangle(width, height);
             clip.setArcWidth(20);
@@ -202,22 +181,17 @@ public class Component {
         }
     }
 
-    /**
-     * Cached version of setImage for userInfo objects with custom clipping
-     */
     public void setImageCachedWithCustomClip(userInfo user, ImageView imageView, ImageView blurView,
             StackPane stackPane, double width, double height, double arcSize) {
         String defaultImagePath = "/com/bytebender/premnoybiye/img/icon/profile-image.png";
 
         if (user == null || user.getImage() == null || user.getImage().isEmpty()) {
-            // Set default image
             Image defaultImage = new Image(getClass().getResourceAsStream(defaultImagePath));
             imageView.setImage(defaultImage);
             if (blurView != null) {
                 blurView.setImage(defaultImage);
             }
         } else {
-            // Check if user has cached image
             if (user.hasCachedImage()) {
                 Image cachedImage = user.getCachedImage();
                 applyImageToElement(cachedImage, imageView, width, height, true, (int) arcSize);
@@ -225,17 +199,15 @@ public class Component {
                     applyImageToElement(cachedImage, blurView, width, height, false, (int) arcSize);
                 }
             } else {
-                // Set default image first, then load asynchronously
                 Image defaultImage = new Image(getClass().getResourceAsStream(defaultImagePath));
                 applyImageToElement(defaultImage, imageView, width, height, true, (int) arcSize);
                 if (blurView != null) {
                     applyImageToElement(defaultImage, blurView, width, height, false, (int) arcSize);
                 }
 
-                // Load image with caching
                 ImageCache.getImageAsync(user.getImage(),
                         image -> {
-                            user.setCachedImage(image); // Cache in user object
+                            user.setCachedImage(image);
                             applyImageToElement(image, imageView, width, height, true, (int) arcSize);
                             if (blurView != null) {
                                 applyImageToElement(image, blurView, width, height, false, (int) arcSize);
@@ -243,12 +215,10 @@ public class Component {
                         },
                         error -> {
                             System.err.println("Failed to load image for user " + user.getName() + ": " + error);
-                            // Keep default image on error
                         });
             }
         }
 
-        // Apply clip to stack pane if provided
         if (stackPane != null) {
             javafx.scene.shape.Rectangle clip = new javafx.scene.shape.Rectangle(width, height);
             clip.setArcWidth(arcSize);

@@ -19,12 +19,6 @@ import java.util.Iterator;
 import java.util.concurrent.CompletableFuture;
 
 public class ImageProcessingService {
-
-    /**
-     * Opens a file chooser dialog to select an image file
-     * 
-     * @return Selected File or null if cancelled
-     */
     public static File selectImageFile() {
         FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter(
@@ -32,15 +26,6 @@ public class ImageProcessingService {
         return fileChooser.showOpenDialog(new Stage());
     }
 
-    /**
-     * Processes an image file synchronously (compression for JPEG, conversion for
-     * PNG)
-     * 
-     * @param imageFile    The input image file
-     * @param targetSizeKB Target size in KB (only used for JPEG compression, can be
-     *                     null for PNG)
-     * @return Processed image file or null if processing failed
-     */
     public static File processImageSync(File imageFile, Integer targetSizeKB) {
         if (imageFile == null || !imageFile.exists()) {
             System.err.println("Error: Invalid image file.");
@@ -51,7 +36,6 @@ public class ImageProcessingService {
             String imagePath = imageFile.getAbsolutePath();
             String extension = imagePath.substring(imagePath.lastIndexOf(".")).toLowerCase();
 
-            // Determine processing method based on file extension
             if (extension.equals(".png")) {
                 return convertPngToJpg(imagePath);
             } else if (extension.equals(".jpg") || extension.equals(".jpeg")) {
@@ -71,24 +55,10 @@ public class ImageProcessingService {
         }
     }
 
-    /**
-     * Processes an image file asynchronously
-     * 
-     * @param imageFile    The input image file
-     * @param targetSizeKB Target size in KB
-     * @return CompletableFuture with the processed image file
-     */
     public static CompletableFuture<File> processImageAsync(File imageFile, Integer targetSizeKB) {
         return CompletableFuture.supplyAsync(() -> processImageSync(imageFile, targetSizeKB));
     }
 
-    /**
-     * Processes an image file (compression for JPEG, conversion for PNG)
-     * 
-     * @param imagePath    Path to the input image
-     * @param targetSizeKB Target size in KB (only used for JPEG compression, can be
-     *                     null for PNG)
-     */
     public static void processImage(String imagePath, Integer targetSizeKB) {
         if (imagePath == null || imagePath.isEmpty()) {
             System.err.println("Error: Please select an image file.");
@@ -102,7 +72,6 @@ public class ImageProcessingService {
 
                 String extension = imagePath.substring(imagePath.lastIndexOf("."));
 
-                // Determine processing method based on file extension
                 if (extension.toLowerCase().equals(".png")) {
                     File result = convertPngToJpg(imagePath);
                     return result != null ? "PNG converted to JPG successfully!" : "Failed to convert PNG";
@@ -129,16 +98,13 @@ public class ImageProcessingService {
         try {
             System.out.println("Converting PNG to JPG...");
 
-            // Read the PNG image
             BufferedImage pngImage = ImageIO.read(new File(srcImg));
 
-            // Create a new BufferedImage with RGB color model (no transparency)
             BufferedImage jpgImage = new BufferedImage(
                     pngImage.getWidth(),
                     pngImage.getHeight(),
                     BufferedImage.TYPE_INT_RGB);
 
-            // Draw the PNG onto the JPG image with white background
             Graphics2D g2d = jpgImage.createGraphics();
             g2d.setColor(java.awt.Color.WHITE);
             g2d.fillRect(0, 0, jpgImage.getWidth(), jpgImage.getHeight());
@@ -146,11 +112,9 @@ public class ImageProcessingService {
             g2d.drawImage(pngImage, 0, 0, null);
             g2d.dispose();
 
-            // Generate output filename
             int dotpos = srcImg.lastIndexOf(".");
             String destImg = srcImg.substring(0, dotpos) + "_converted.jpg";
 
-            // Write the JPG image
             File output = new File(destImg);
             ImageIO.write(jpgImage, "jpg", output);
 
@@ -173,7 +137,7 @@ public class ImageProcessingService {
             if (fileSize / 1024 <= sizeThreshold) {
                 System.out.println("Image file size is already under threshold (" + fileSize / 1024 + "KB ≤ "
                         + sizeThreshold + "KB)");
-                return file; // Return original file if already under threshold
+                return file;
             }
 
             Iterator<ImageWriter> iter = ImageIO.getImageWritersByFormatName("jpeg");
@@ -192,7 +156,6 @@ public class ImageProcessingService {
             float quality = 1.0f;
             float step = 0.1f;
 
-            // Generate output filename
             int dotpos = srcImg.lastIndexOf(".");
             String destImg = srcImg.substring(0, dotpos) + "_compressed" + srcImg.substring(dotpos);
 
@@ -231,12 +194,6 @@ public class ImageProcessingService {
         }
     }
 
-    /**
-     * Get the file size in KB
-     * 
-     * @param file The file to check
-     * @return Size in KB
-     */
     public static long getFileSizeKB(File file) {
         if (file != null && file.exists()) {
             return file.length() / 1024;
@@ -244,13 +201,6 @@ public class ImageProcessingService {
         return 0;
     }
 
-    /**
-     * Check if the file needs processing based on size threshold
-     * 
-     * @param file        The file to check
-     * @param thresholdKB The size threshold in KB
-     * @return true if file needs processing
-     */
     public static boolean needsProcessing(File file, int thresholdKB) {
         return getFileSizeKB(file) > thresholdKB;
     }
